@@ -222,6 +222,9 @@ GEM
     regexp_parser (2.11.3)
     reline (0.6.2)
       io-console (~> 0.5)
+    responders (3.2.0)
+      actionpack (>= 7.0)
+      railties (>= 7.0)
     rexml (3.4.4)
     rubyzip (3.2.2)
     securerandom (0.4.1)
@@ -290,6 +293,7 @@ DEPENDENCIES
   jsbundling-rails
   puma (>= 5.0)
   rails (~> 7.1.3, >= 7.1.3.4)
+  responders
   selenium-webdriver
   sprockets-rails
   sqlite3 (~> 1.4)
