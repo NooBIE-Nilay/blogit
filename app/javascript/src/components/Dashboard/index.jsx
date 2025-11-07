@@ -1,29 +1,30 @@
 import React, { useState, useEffect } from "react";
 
-import tasksApi from "apis/tasks";
+import postsApi from "apis/posts";
 import { PageLoader, PageTitle, Container } from "components/commons";
 import Table from "components/Tasks/Table";
+import Logger from "js-logger";
 import { isNil, isEmpty, either } from "ramda";
 
 const Dashboard = () => {
-  const [tasks, setTasks] = useState([]);
+  const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchTasks = async () => {
+  const fetchPosts = async () => {
     try {
       const {
-        data: { tasks },
-      } = await tasksApi.fetch();
-      setTasks(tasks);
+        data: { posts },
+      } = await postsApi.fetch();
+      setPosts(posts);
       setLoading(false);
     } catch (error) {
-      logger.error(error);
       setLoading(false);
+      Logger.error(error);
     }
   };
 
   useEffect(() => {
-    fetchTasks();
+    fetchPosts();
   }, []);
 
   if (loading) {
@@ -34,7 +35,7 @@ const Dashboard = () => {
     );
   }
 
-  if (either(isNil, isEmpty)(tasks)) {
+  if (either(isNil, isEmpty)(posts)) {
     return (
       <Container>
         <h1 className="my-5 text-center text-xl leading-5">
@@ -48,7 +49,7 @@ const Dashboard = () => {
     <Container>
       <div className="flex flex-col gap-y-8">
         <PageTitle title="Todo list" />
-        <Table data={tasks} />
+        <Table data={posts} />
       </div>
     </Container>
   );
