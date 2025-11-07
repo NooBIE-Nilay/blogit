@@ -3,8 +3,31 @@
   "private": true,
   "packageManager": "yarn@4.5.3+sha512.3003a14012e2987072d244c720506549c1aab73ee728208f1b2580a9fd67b92d61ba6b08fe93f6dce68fd771e3af1e59a0afa28dd242dd0940d73b95fedd4e90",
   "scripts": {
-    "build": "node esbuild.config.js",
-    "dev": "vite"
+    "build": "esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets",
+    "dev": "vite",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "7.17.0",
+    "@eslint/compat": "^1.4.1",
+    "@eslint/eslintrc": "^3.3.1",
+    "@eslint/js": "^9.39.1",
+    "autoprefixer": "^10.4.21",
+    "eslint": "8.12.0",
+    "eslint-config-prettier": "8.5.0",
+    "eslint-plugin-import": "2.25.4",
+    "eslint-plugin-jam3": "0.2.3",
+    "eslint-plugin-json": "3.1.0",
+    "eslint-plugin-prettier": "4.0.0",
+    "eslint-plugin-promise": "6.0.0",
+    "eslint-plugin-react": "7.29.4",
+    "eslint-plugin-react-hooks": "4.4.0",
+    "eslint-plugin-unused-imports": "2.0.0",
+    "globals": "^16.5.0",
+    "husky": "^8.0.0",
+    "lint-staged": "12.3.7",
+    "prettier": "^2.6.1",
+    "prettier-plugin-tailwindcss": "^0.1.8"
   },
   "dependencies": {
     "@babel/core": "^7.19.1",
@@ -19,6 +42,7 @@
     "babel-plugin-macros": "^3.1.0",
     "buffer": "^6.0.3",
     "crypto-browserify": "^3.12.1",
+    "esbuild": "^0.25.12",
     "esbuild-plugin-svgr": "^3.1.0",
     "esbuild-plugins-node-modules-polyfill": "^1.6.8",
     "esbuild-sass-plugin": "^3.3.1",
@@ -32,9 +56,9 @@
     "prop-types": "^15.8.1",
     "ramda": "^0.29.0",
     "react": "^18.2.0",
+    "react_ujs": "3.1.1",
     "react-dom": "^18.2.0",
     "react-router-dom": "5.3.0",
-    "react_ujs": "3.1.1",
     "sass": "^1.59.3",
     "stream-browserify": "^3.0.0",
     "tailwindcss": "^3.4.1",
@@ -44,5 +68,28 @@
   "resolutions": {
     "strip-ansi": "^6.0.1",
     "string-width": "^4.2.2"
+  },
+  "lint-staged": {
+    "app/**/*.{js,jsx,json}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "{package.json,.eslintrc.js,.prettierrc.js}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    ".eslint-rules/**/*": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "./**/*.rb": [
+      "bundle exec rubocop -a --force-exclusion"
+    ],
+    "{Gemfile,Rakefile,config.ru}": [
+      "bundle exec rubocop -a --force-exclusion"
+    ],
+    "app/views/**/*.html.erb": [
+      "bundle exec erblint --lint-all --format compact -a"
+    ]
   }
 }
