@@ -50,6 +50,7 @@
     "esbuild-sass-plugin": "^3.3.1",
     "i18next": "21.7.0",
     "js-logger": "^1.6.1",
+    "lucide-react": "^0.553.0",
     "path-browserify": "^1.0.1",
     "postcss": "^8.4.31",
     "postcss-flexbugs-fixes": "^5.0.2",

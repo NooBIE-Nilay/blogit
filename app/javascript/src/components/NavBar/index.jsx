@@ -3,7 +3,7 @@ import React from "react";
 import classnames from "classnames";
 import { Link, useLocation } from "react-router-dom";
 
-import GraniteLogo from "./GraniteLogo";
+import BlogitLogo from "./BlogitLogo";
 
 const NavBar = () => {
   const location = useLocation();
@@ -14,7 +14,7 @@ const NavBar = () => {
         <div className="flex h-16 items-center justify-between">
           <div className="w-max flex-shrink-0">
             <Link className="h-full w-auto" to="/dashboard">
-              <GraniteLogo className="h-8 w-auto" />
+              <BlogitLogo className="h-8 w-auto" />
             </Link>
           </div>
           <div className="flex items-center gap-x-4">
@@ -28,9 +28,9 @@ const NavBar = () => {
             </Link>
             <Link
               className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:shadow"
-              to="/tasks/create"
+              to="/posts/create"
             >
-              Add new task
+              Add new post
             </Link>
           </div>
         </div>

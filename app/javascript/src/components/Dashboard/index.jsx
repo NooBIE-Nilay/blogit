@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 
 import postsApi from "apis/posts";
 import { PageLoader, PageTitle, Container } from "components/commons";
-import Table from "components/Tasks/Table";
 import Logger from "js-logger";
 import { isNil, isEmpty, either } from "ramda";
+
+import List from "./List";
 
 const Dashboard = () => {
   const [posts, setPosts] = useState([]);
@@ -39,7 +40,7 @@ const Dashboard = () => {
     return (
       <Container>
         <h1 className="my-5 text-center text-xl leading-5">
-          You have not created or been assigned any tasks 🥳
+          You have not created or been assigned any posts
         </h1>
       </Container>
     );
@@ -47,9 +48,9 @@ const Dashboard = () => {
 
   return (
     <Container>
-      <div className="flex flex-col gap-y-8">
-        <PageTitle title="Todo list" />
-        <Table data={posts} />
+      <div className="flex flex-col gap-y-8 ">
+        <PageTitle title="Blog posts" />
+        <List data={posts} />
       </div>
     </Container>
   );
