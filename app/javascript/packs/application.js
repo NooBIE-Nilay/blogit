@@ -3,6 +3,7 @@ import ReactRailsUJS from "react_ujs";
 import App from "../src/App";
 import { setAuthHeaders } from "apis/axios";
 import { initializeLogger } from "common/logger";
+import { registerIntercepts } from "../src/apis/axios";
 
 registerIntercepts();
 initializeLogger();

@@ -4,12 +4,15 @@ import postsApi from "apis/posts";
 import { PageLoader, PageTitle, Container } from "components/commons";
 import Logger from "js-logger";
 import { isNil, isEmpty, either } from "ramda";
+import { useHistory } from "react-router-dom";
 
 import List from "./List";
 
 const Dashboard = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const history = useHistory();
 
   const fetchPosts = async () => {
     try {
@@ -22,6 +25,10 @@ const Dashboard = () => {
       setLoading(false);
       Logger.error(error);
     }
+  };
+
+  const showPost = slug => {
+    history.push(`/posts/${slug}/show`);
   };
 
   useEffect(() => {
@@ -50,7 +57,7 @@ const Dashboard = () => {
     <Container>
       <div className="flex flex-col gap-y-8 ">
         <PageTitle title="Blog posts" />
-        <List data={posts} />
+        <List data={posts} {...{ showPost }} />
       </div>
     </Container>
   );

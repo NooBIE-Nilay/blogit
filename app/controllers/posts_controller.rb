@@ -6,6 +6,11 @@ class PostsController < ApplicationController
     render status: :ok, json: { posts: }
   end
 
+  def show
+    post = Post.find_by!(slug: params[:slug])
+    render status: :ok, json: { post: }
+  end
+
   def create
     post = Post.new(post_params)
     post.save!
