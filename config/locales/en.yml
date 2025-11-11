@@ -1,4 +1,6 @@
 en:
-  task:
+  successfully_created: "Task was successfully created!"
+  generic_error: "Something went wrong. Please try again later."
+  post:
     slug:
       immutable: "is immutable!"

@@ -6,7 +6,15 @@ class PostsController < ApplicationController
     render status: :ok, json: { posts: }
   end
 
-  def show
-    @post = Post.find_by(identifier_name: params[:identifier_name])
+  def create
+    post = Post.new(post_params)
+    post.save!
+    render status: :ok, json: { notice: t("successfully_created") }
   end
+
+  private
+
+    def post_params
+      params.require(:post).permit(:title, :description)
+    end
 end
