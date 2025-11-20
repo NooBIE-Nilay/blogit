@@ -10,11 +10,11 @@ const create = payload =>
   });
 
 const update = ({ slug, payload }) =>
-  axios.put(`/tasks/${slug}`, {
+  axios.put(`/posts/${slug}`, {
     task: payload,
   });
 
-const destroy = slug => axios.delete(`/tasks/${slug}`);
+const destroy = slug => axios.delete(`/posts/${slug}`);
 
 const postsApi = {
   fetch,

@@ -24,7 +24,7 @@ class PostsController < ApplicationController
   end
 
   def destroy
-    @task.destroy!
+    @post.destroy!
     render_json
   end
 
