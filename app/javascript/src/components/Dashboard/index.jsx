@@ -27,6 +27,15 @@ const Dashboard = () => {
     }
   };
 
+  const destroyPost = async slug => {
+    try {
+      await postsApi.destroy(slug);
+      await fetchPosts();
+    } catch (error) {
+      Logger.error(error);
+    }
+  };
+
   const showPost = slug => {
     history.push(`/posts/${slug}/show`);
   };
@@ -57,7 +66,7 @@ const Dashboard = () => {
     <Container>
       <div className="flex flex-col gap-y-8 ">
         <PageTitle title="Blog posts" />
-        <List data={posts} {...{ showPost }} />
+        <List data={posts} {...{ showPost, destroyPost }} />
       </div>
     </Container>
   );
