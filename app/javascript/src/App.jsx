@@ -9,14 +9,14 @@ import {
 import { ToastContainer } from "react-toastify";
 
 import Dashboard from "./components/Dashboard";
-import CreatePost from "./components/Posts/Create";
-import ShowPost from "./components/Posts/Show";
+import { CreatePost, ShowPost, EditPost } from "./components/Posts";
 
 const App = () => (
   <Router>
     <ToastContainer />
     <Switch>
       <Route exact component={Dashboard} path="/dashboard" />
+      <Route exact component={EditPost} path="/posts/:slug/edit" />
       <Route exact component={ShowPost} path="/posts/:slug/show" />
       <Route exact component={CreatePost} path="/posts/create" />
       <Redirect exact from="/" to="/dashboard" />

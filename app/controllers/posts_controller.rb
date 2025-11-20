@@ -1,14 +1,20 @@
 # frozen_string_literal: true
 
 class PostsController < ApplicationController
+  before_action :load_post!, only: %i[show update destroy]
+
   def index
     posts = Post.all
     render status: :ok, json: { posts: }
   end
 
   def show
-    post = Post.find_by!(slug: params[:slug])
-    render status: :ok, json: { post: }
+    render_json({ post: @post })
+  end
+
+  def update
+    @post.update!(post_params)
+    render_notice(t("successfully_updated"))
   end
 
   def create
@@ -17,7 +23,16 @@ class PostsController < ApplicationController
     render status: :ok, json: { notice: t("successfully_created") }
   end
 
+  def destroy
+    @task.destroy!
+    render_json
+  end
+
   private
+
+    def load_post!
+      @post = Post.find_by!(slug: params[:slug])
+    end
 
     def post_params
       params.require(:post).permit(:title, :description)
