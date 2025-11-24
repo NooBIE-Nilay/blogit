@@ -7,6 +7,7 @@ class User < ApplicationRecord
   MIN_PASSWORD_LENGTH = 6
 
   belongs_to :organization
+  has_many :posts
 
   has_secure_password
 
