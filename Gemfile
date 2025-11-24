@@ -88,3 +88,5 @@ group :development do
 end
 
 gem "react-rails", "~> 2.7.1"
+
+gem "bcrypt", "~> 3.1.13"
