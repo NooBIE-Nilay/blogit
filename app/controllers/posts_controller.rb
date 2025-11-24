@@ -9,23 +9,23 @@ class PostsController < ApplicationController
   end
 
   def show
-    render_json({ post: @post })
+    render
   end
 
   def update
     @post.update!(post_params)
-    render_notice(t("successfully_updated"))
+    render_notice(t("successfully_updated", name: post.title))
   end
 
   def create
     post = Post.new(post_params)
     post.save!
-    render status: :ok, json: { notice: t("successfully_created") }
+    render_notice(t("successfully_created", name: post.title))
   end
 
   def destroy
     @post.destroy!
-    render_json
+    render_notice(t("successfully_deleted", name: post.title))
   end
 
   private
