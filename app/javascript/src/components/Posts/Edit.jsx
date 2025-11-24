@@ -32,10 +32,11 @@ const Edit = ({ history }) => {
     try {
       const {
         data: {
-          post: { title },
+          post: { title, description },
         },
       } = await postsApi.show(slug);
       setTitle(title);
+      setDescription(description);
     } catch (error) {
       logger.error(error);
     } finally {
@@ -60,11 +61,14 @@ const Edit = ({ history }) => {
       <div className="flex flex-col gap-y-8">
         <PageTitle title="Edit post" />
         <Form
-          handleSubmit={handleSubmit}
-          loading={loading}
-          setDescription={setDescription}
-          setTitle={setTitle}
-          title={title}
+          {...{
+            handleSubmit,
+            loading,
+            title,
+            setTitle,
+            description,
+            setDescription,
+          }}
           type="update"
         />
       </div>

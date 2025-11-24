@@ -28,12 +28,16 @@ const Create = ({ history }) => {
   return (
     <Container>
       <div className="flex flex-col gap-y-8">
-        <PageTitle title="Add new blog post" />
+        <PageTitle title="New blog post" />
         <Form
-          handleSubmit={handleSubmit}
-          loading={loading}
-          setDescription={setDescription}
-          setTitle={setTitle}
+          {...{
+            handleSubmit,
+            loading,
+            title,
+            setTitle,
+            description,
+            setDescription,
+          }}
         />
       </div>
     </Container>

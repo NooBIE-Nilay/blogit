@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 
+import { Button } from "@bigbinary/neetoui";
 import postsApi from "apis/posts";
 import { PageLoader, PageTitle, Container } from "components/commons";
 import Logger from "js-logger";
@@ -65,7 +66,16 @@ const Dashboard = () => {
   return (
     <Container>
       <div className="flex flex-col gap-y-8 ">
-        <PageTitle title="Blog posts" />
+        <div className="flex flex-col justify-between sm:flex-row sm:items-center">
+          <PageTitle title="Blog posts" />
+          <div className="ml-4">
+            <Button
+              label="Add new blog post"
+              style="primary"
+              onClick={() => history.push("/posts/create")}
+            />
+          </div>
+        </div>
         <List data={posts} {...{ showPost, destroyPost }} />
       </div>
     </Container>

@@ -3,12 +3,12 @@ import React from "react";
 import classnames from "classnames";
 import PropTypes from "prop-types";
 
-import Sidebar from "../Sidebar";
+import Navbar from "../NavBar";
 
 const Container = ({ children, className = "" }) => (
   <>
-    <Sidebar />
-    <div className={classnames("mx-auto max-w-6xl px-6", [className])}>
+    <Navbar />
+    <div className={classnames("mx-auto  max-w-4xl md:pl-24 ", [className])}>
       {children}
     </div>
   </>

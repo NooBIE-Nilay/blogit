@@ -1,42 +1,47 @@
 import React from "react";
 
-import classnames from "classnames";
-import { Link, useLocation } from "react-router-dom";
+import { Button } from "@bigbinary/neetoui";
+import { FilePlusCorner } from "lucide-react";
+import { Link, useHistory } from "react-router-dom";
 
 import BlogitLogo from "./BlogitLogo";
 
-const NavBar = () => {
-  const location = useLocation();
+const Navbar = () => {
+  const history = useHistory();
 
   return (
-    <header className="bg-primary-white sticky top-0 z-20 w-full border-b border-gray-200 transition-all duration-500">
-      <div className="mx-auto max-w-6xl px-6">
-        <div className="flex h-16 items-center justify-between">
-          <div className="w-max flex-shrink-0">
-            <Link className="h-full w-auto" to="/dashboard">
-              <BlogitLogo className="h-8 w-auto" />
+    <>
+      <header className="border-b bg-white md:hidden">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="flex h-14 items-center justify-between">
+            <Link to="/dashboard">
+              <BlogitLogo />
             </Link>
-          </div>
-          <div className="flex items-center gap-x-4">
-            <Link
-              to="/dashboard"
-              className={classnames("text-sm font-medium text-gray-800", {
-                "text-indigo-600": location.pathname === "/dashboard",
-              })}
-            >
-              Posts
-            </Link>
-            <Link
-              className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:shadow"
-              to="/posts/create"
-            >
-              Add new post
-            </Link>
+            <div>
+              <Button
+                className="h-9 w-9 rounded-md"
+                icon={() => <FilePlusCorner size={18} />}
+                style="primary"
+                onClick={() => history.push("/posts/create")}
+              />
+            </div>
           </div>
         </div>
-      </div>
-    </header>
+      </header>
+      <aside className="hidden md:fixed md:left-0 md:top-0 md:flex md:h-screen md:w-20 md:flex-col md:items-center md:gap-y-3 md:border-r md:border-gray-200 md:bg-gray-50 md:pt-4">
+        <Link aria-label="Home" to="/dashboard">
+          <BlogitLogo />
+        </Link>
+        <hr className="w-[70%] border-gray-300/60" />
+        <Button
+          className="mx-auto flex h-10 w-10 items-center justify-center rounded-md"
+          icon={() => <FilePlusCorner size={18} />}
+          style="primary"
+          onClick={() => history.push("/posts/create")}
+        />
+      </aside>
+    </>
   );
 };
 
-export default NavBar;
+export default Navbar;
