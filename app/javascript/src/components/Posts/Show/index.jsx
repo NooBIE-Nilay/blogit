@@ -17,9 +17,7 @@ const Show = () => {
   const [pageLoading, setPageLoading] = useState(true);
 
   const { slug } = useParams();
-
   const history = useHistory();
-
   const { t } = useTranslation();
 
   const fetchPostDetails = async () => {
@@ -53,7 +51,7 @@ const Show = () => {
         <div>
           {either(isEmpty, isNil)(post?.categories) ? (
             <Tag
-              className="my-2 capitalize"
+              className=" capitalize"
               label={t("common.unknown")}
               style="success"
             />
@@ -62,7 +60,7 @@ const Show = () => {
               {post.categories.map(
                 category => (
                   <Tag
-                    className="my-2 capitalize"
+                    className="mt-2 capitalize"
                     key={category.id}
                     label={category.name}
                     style="success"
@@ -73,7 +71,7 @@ const Show = () => {
             </div>
           )}
         </div>
-        <div className="mt-2 flex w-full items-start justify-between gap-x-6 md:max-w-6xl">
+        <div className="mt-1 flex w-full items-start justify-between gap-x-6 md:max-w-6xl">
           <div className="flex flex-col gap-y-2">
             <Typography className="font-semibold" style="h1">
               {post?.title}

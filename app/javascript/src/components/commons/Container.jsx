@@ -7,7 +7,9 @@ import PropTypes from "prop-types";
 const Container = ({ children, className = "" }) => (
   <>
     <Navbar />
-    <div className={classnames("mx-auto  max-w-6xl md:pl-24 ", [className])}>
+    <div
+      className={classnames("mx-auto  max-w-6xl px-10 md:pl-24 ", [className])}
+    >
       {children}
     </div>
   </>
