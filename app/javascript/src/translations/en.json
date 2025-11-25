@@ -22,8 +22,7 @@
   },
   "removeItemConfirmation": {
     "title": "Remove item?",
-    "allItems": "Remove All Items?",
-    "message": "You are removing <strong>{{itemName}}</strong> from History. Do you want to continue?",
+    "message": "You are removing <strong>{{itemName}}</strong> blog post. Do you want to continue?",
     "button": "Yes, remove"
   },
   "pageNotFound": {

@@ -13,7 +13,7 @@ class PostsController < ApplicationController
 
   def update
     @post.update!(post_params)
-    render_notice(t("successfully_updated", name: post.title))
+    render_notice(t("successfully_updated", name: @post.title))
   end
 
   def create
@@ -24,7 +24,7 @@ class PostsController < ApplicationController
 
   def destroy
     @post.destroy!
-    render_notice(t("successfully_deleted", name: post.title))
+    render_notice(t("successfully_deleted", name: @post.title))
   end
 
   private

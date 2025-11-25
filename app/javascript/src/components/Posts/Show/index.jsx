@@ -78,7 +78,7 @@ const Show = () => {
             <Typography className="font-semibold" style="h1">
               {post?.title}
             </Typography>
-            <div className="flex items-center justify-center gap-3">
+            <div className="flex items-center  gap-3">
               <Avatar name={post.user.name} />
               <div className="">
                 <Typography className="text-lg font-bold text-gray-700">
