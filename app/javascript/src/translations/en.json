@@ -8,12 +8,24 @@
     "add": "Add new blog post",
     "edit": "Edit blog post"
   },
+  "auth": {
+    "signupTitle": "Sign Up",
+    "loginLink": "Or Login Now",
+    "name": "Name",
+    "namePlaceholder": "Oliver",
+    "email": "Email",
+    "emailPlaceholder": "oliver@example.com",
+    "password": "Password",
+    "passwordConfirmation": "Repeat Password",
+    "passwordPlaceholder": "******"
+  },
   "common": {
     "title": "Title",
     "titlePlaceholder": "Enter title",
     "category": "Category",
     "description": "Description",
     "descriptionPlaceholder": "Enter Description",
+    "register": "Register",
     "cancel": "Cancel",
     "submit": "Submit",
     "update": "Update",
