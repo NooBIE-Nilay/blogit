@@ -4,8 +4,7 @@ class PostsController < ApplicationController
   before_action :load_post!, only: %i[show update destroy]
 
   def index
-    posts = Post.all
-    render status: :ok, json: { posts: }
+    render
   end
 
   def show

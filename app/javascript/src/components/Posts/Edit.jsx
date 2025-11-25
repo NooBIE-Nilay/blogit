@@ -1,14 +1,16 @@
+import routes from "constants/routes";
+
 import React, { useState, useEffect } from "react";
 
 import postsApi from "apis/posts";
 import { Container, PageLoader, PageTitle } from "components/commons";
+import Form from "components/Posts/Form";
 import { useParams } from "react-router-dom";
-
-import Form from "./Form";
 
 const Edit = ({ history }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [selectedCategories, setSelectedCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pageLoading, setPageLoading] = useState(true);
   const { slug } = useParams();
@@ -18,10 +20,10 @@ const Edit = ({ history }) => {
     try {
       await postsApi.update({
         slug,
-        payload: { title, description },
+        payload: { title, description, categories: selectedCategories },
       });
       setLoading(false);
-      history.push("/dashboard");
+      history.push(routes.dashboard);
     } catch (error) {
       setLoading(false);
       logger.error(error);
@@ -32,11 +34,12 @@ const Edit = ({ history }) => {
     try {
       const {
         data: {
-          post: { title, description },
+          post: { title, description, categories },
         },
       } = await postsApi.show(slug);
       setTitle(title);
       setDescription(description);
+      setSelectedCategories(categories);
     } catch (error) {
       logger.error(error);
     } finally {
@@ -68,6 +71,8 @@ const Edit = ({ history }) => {
             setTitle,
             description,
             setDescription,
+            selectedCategories,
+            setSelectedCategories,
           }}
           type="update"
         />

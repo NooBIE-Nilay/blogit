@@ -4,6 +4,7 @@ json.post do
   json.extract! @post,
     :id,
     :title,
+    :slug,
     :description,
     :created_at,
     :updated_at

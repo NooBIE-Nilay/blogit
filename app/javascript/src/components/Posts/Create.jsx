@@ -1,24 +1,30 @@
+import routes from "constants/routes";
+
 import React, { useState } from "react";
 
+import postsApi from "apis/posts";
 import { Container, PageTitle } from "components/commons";
+import Form from "components/Posts/Form";
 import Logger from "js-logger";
 
-import Form from "./Form";
-
-import postsApi from "../../apis/posts";
-
 const Create = ({ history }) => {
-  const [description, setDescription] = useState("");
   const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [selectedCategories, setSelectedCategories] = useState([]);
+
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async event => {
     event.preventDefault();
     setLoading(true);
     try {
-      await postsApi.create({ title, description });
+      await postsApi.create({
+        title,
+        description,
+        categories: selectedCategories,
+      });
       setLoading(false);
-      history.push("/dashboard");
+      history.push(routes.dashboard);
     } catch (error) {
       Logger.error(error);
       setLoading(false);
@@ -36,6 +42,8 @@ const Create = ({ history }) => {
             title,
             setTitle,
             description,
+            selectedCategories,
+            setSelectedCategories,
             setDescription,
           }}
         />

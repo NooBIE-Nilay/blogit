@@ -1361,10 +1361,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@bigbinary/neeto-icons@npm:1.17.6":
-  version: 1.17.6
-  resolution: "@bigbinary/neeto-icons@npm:1.17.6"
-  checksum: 10c0/1c36a35145ce414e684f02b8477a3fc9555ee4e20214ff28828f8f2cb64b6fcfe13ccfe051f7955cdb667d6fa0866629104713284b0db0fee5b736b7ad9a6b0f
+"@bigbinary/neeto-icons@npm:^1.20.67":
+  version: 1.20.67
+  resolution: "@bigbinary/neeto-icons@npm:1.20.67"
+  peerDependencies:
+    react: 18.3.1
+    react-dom: 18.3.1
+  checksum: 10c0/6ebef7c52ced9260ab4b1e95c2f9ec8b4ab34ab39dc7c5dba1b07e11f601a53f2dfde5d7f29cf1e2486d2122e026f78be0af2d6a4e55c0367ffdb1169eefd6cc
   languageName: node
   linkType: hard
 
@@ -2809,7 +2812,7 @@ __metadata:
     "@babel/preset-env": "npm:7.17.10"
     "@babel/preset-react": "npm:^7.16.7"
     "@bigbinary/neeto-cist": "npm:1.0.17"
-    "@bigbinary/neeto-icons": "npm:1.17.6"
+    "@bigbinary/neeto-icons": "npm:^1.20.67"
     "@bigbinary/neetoui": "npm:5.2.41"
     "@emotion/is-prop-valid": "npm:1.2.0"
     "@eslint/compat": "npm:^1.4.1"

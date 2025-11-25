@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Button } from "@bigbinary/neetoui";
+import { Button, Tag, Typography } from "@bigbinary/neetoui";
 import PropTypes from "prop-types";
 import { isNil, isEmpty, either } from "ramda";
 
@@ -13,7 +13,7 @@ const List = ({ data, showPost, destroyPost }) => {
     <div className="w-full">
       {data.map(post => (
         <div
-          className="w-full border-b border-gray-200 py-6"
+          className="w-full  cursor-pointer rounded-md border-b border-gray-200 px-4 py-6 hover:bg-slate-100"
           key={post.id}
           onClick={() => showPost(post.slug)}
         >
@@ -25,6 +25,27 @@ const List = ({ data, showPost, destroyPost }) => {
               <div className="mt-2 line-clamp-2 text-sm text-gray-700">
                 {post.description}
               </div>
+              {either(isEmpty, isNil)(post.categories) ? (
+                <Tag
+                  className="my-2 capitalize"
+                  label="Unknown"
+                  style="success"
+                />
+              ) : (
+                <div className="flex gap-2">
+                  {post.categories?.map(category => (
+                    <Tag
+                      className="my-2 capitalize"
+                      key={category}
+                      label={category}
+                      style="success"
+                    />
+                  ))}
+                </div>
+              )}
+              <Typography className="font-semibold text-gray-600" style="h5">
+                {post.user?.name}
+              </Typography>
             </div>
             <div className="flex flex-col items-end space-y-2">
               <div className="text-sm text-gray-500">

@@ -1,13 +1,14 @@
+import routes from "constants/routes";
+
 import React, { useState, useEffect } from "react";
 
 import { Button } from "@bigbinary/neetoui";
 import postsApi from "apis/posts";
 import { PageLoader, PageTitle, Container } from "components/commons";
+import List from "components/Dashboard/List";
 import Logger from "js-logger";
 import { isNil, isEmpty, either } from "ramda";
 import { useHistory } from "react-router-dom";
-
-import List from "./List";
 
 const Dashboard = () => {
   const [posts, setPosts] = useState([]);
@@ -38,7 +39,7 @@ const Dashboard = () => {
   };
 
   const showPost = slug => {
-    history.push(`/posts/${slug}/show`);
+    history.push(`${routes.posts}/${slug}/show`);
   };
 
   useEffect(() => {
@@ -72,7 +73,7 @@ const Dashboard = () => {
             <Button
               label="Add new blog post"
               style="primary"
-              onClick={() => history.push("/posts/create")}
+              onClick={() => history.push(`${routes.posts}/create`)}
             />
           </div>
         </div>

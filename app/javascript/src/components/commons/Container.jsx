@@ -1,9 +1,8 @@
 import React from "react";
 
 import classnames from "classnames";
+import Navbar from "components/NavBar";
 import PropTypes from "prop-types";
-
-import Navbar from "../NavBar";
 
 const Container = ({ children, className = "" }) => (
   <>
