@@ -5,6 +5,8 @@ import React, { useState, useEffect } from "react";
 import postsApi from "apis/posts";
 import { Container, PageLoader, PageTitle } from "components/commons";
 import Form from "components/Posts/Form";
+import Logger from "js-logger";
+import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 
 const Edit = ({ history }) => {
@@ -13,7 +15,10 @@ const Edit = ({ history }) => {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pageLoading, setPageLoading] = useState(true);
+
   const { slug } = useParams();
+
+  const { t } = useTranslation();
 
   const handleSubmit = async event => {
     event.preventDefault();
@@ -26,7 +31,7 @@ const Edit = ({ history }) => {
       history.push(routes.dashboard);
     } catch (error) {
       setLoading(false);
-      logger.error(error);
+      Logger.error(error);
     }
   };
 
@@ -41,7 +46,7 @@ const Edit = ({ history }) => {
       setDescription(description);
       setSelectedCategories(categories);
     } catch (error) {
-      logger.error(error);
+      Logger.error(error);
     } finally {
       setPageLoading(false);
     }
@@ -62,7 +67,7 @@ const Edit = ({ history }) => {
   return (
     <Container>
       <div className="flex flex-col gap-y-8">
-        <PageTitle title="Edit post" />
+        <PageTitle title={t("posts.edit")} />
         <Form
           {...{
             handleSubmit,

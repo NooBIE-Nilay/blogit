@@ -17,9 +17,9 @@ const App = () => (
     <ToastContainer />
     <Switch>
       <Route exact component={Dashboard} path={routes.dashboard} />
-      <Route exact component={EditPost} path={`${routes.posts}/:slug/edit`} />
-      <Route exact component={ShowPost} path={`${routes.posts}/:slug/show`} />
-      <Route exact component={CreatePost} path={`${routes.posts}/create`} />
+      <Route exact component={EditPost} path={routes.posts.edit} />
+      <Route exact component={ShowPost} path={routes.posts.show} />
+      <Route exact component={CreatePost} path={routes.posts.create} />
       <Redirect exact from={routes.root} to={routes.dashboard} />
     </Switch>
   </Router>

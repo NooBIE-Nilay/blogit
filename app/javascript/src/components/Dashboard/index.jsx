@@ -2,12 +2,12 @@ import routes from "constants/routes";
 
 import React, { useState, useEffect } from "react";
 
-import { Button } from "@bigbinary/neetoui";
 import postsApi from "apis/posts";
 import { PageLoader, PageTitle, Container } from "components/commons";
 import List from "components/Dashboard/List";
 import Logger from "js-logger";
-import { isNil, isEmpty, either } from "ramda";
+import { Button } from "neetoui";
+import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 
 const Dashboard = () => {
@@ -15,6 +15,8 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
 
   const history = useHistory();
+
+  const { t } = useTranslation();
 
   const fetchPosts = async () => {
     try {
@@ -29,19 +31,6 @@ const Dashboard = () => {
     }
   };
 
-  const destroyPost = async slug => {
-    try {
-      await postsApi.destroy(slug);
-      await fetchPosts();
-    } catch (error) {
-      Logger.error(error);
-    }
-  };
-
-  const showPost = slug => {
-    history.push(`${routes.posts}/${slug}/show`);
-  };
-
   useEffect(() => {
     fetchPosts();
   }, []);
@@ -54,30 +43,20 @@ const Dashboard = () => {
     );
   }
 
-  if (either(isNil, isEmpty)(posts)) {
-    return (
-      <Container>
-        <h1 className="my-5 text-center text-xl leading-5">
-          You have not created or been assigned any posts
-        </h1>
-      </Container>
-    );
-  }
-
   return (
     <Container>
       <div className="flex flex-col gap-y-8 ">
         <div className="flex flex-col justify-between sm:flex-row sm:items-center">
-          <PageTitle title="Blog posts" />
+          <PageTitle title={t("posts.title")} />
           <div className="ml-4">
             <Button
-              label="Add new blog post"
+              label={t("posts.add")}
               style="primary"
-              onClick={() => history.push(`${routes.posts}/create`)}
+              onClick={() => history.push(routes.posts.create)}
             />
           </div>
         </div>
-        <List data={posts} {...{ showPost, destroyPost }} />
+        <List data={posts} {...{ fetchPosts }} />
       </div>
     </Container>
   );

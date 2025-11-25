@@ -1,12 +1,42 @@
+import routes from "constants/routes";
+
 import React from "react";
 
-import { Button, Tag, Typography } from "@bigbinary/neetoui";
+import postsApi from "apis/posts";
+import Logger from "js-logger";
+import { Button, NoData, Tag, Typography } from "neetoui";
 import PropTypes from "prop-types";
 import { isNil, isEmpty, either } from "ramda";
+import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
 
-const List = ({ data, showPost, destroyPost }) => {
+const List = ({ data, fetchPosts }) => {
+  const history = useHistory();
+
+  const { t } = useTranslation();
+  const destroyPost = async slug => {
+    try {
+      await postsApi.destroy(slug);
+      await fetchPosts();
+    } catch (error) {
+      Logger.error(error);
+    }
+  };
+
+  const showPost = slug => {
+    history.push(routes.posts.show.replace(":slug", slug));
+  };
+
   if (either(isNil, isEmpty)(data)) {
-    return <div>No posts available</div>;
+    return (
+      <NoData
+        title={t("posts.empty")}
+        primaryButtonProps={{
+          label: t("posts.add"),
+          onClick: () => history.push(routes.posts.create),
+        }}
+      />
+    );
   }
 
   return (
@@ -22,9 +52,6 @@ const List = ({ data, showPost, destroyPost }) => {
               <div className="text-xl font-semibold text-gray-900">
                 {post.title}
               </div>
-              <div className="mt-2 line-clamp-2 text-sm text-gray-700">
-                {post.description}
-              </div>
               {either(isEmpty, isNil)(post.categories) ? (
                 <Tag
                   className="my-2 capitalize"
@@ -33,17 +60,20 @@ const List = ({ data, showPost, destroyPost }) => {
                 />
               ) : (
                 <div className="flex gap-2">
-                  {post.categories?.map(category => (
+                  {post.categories.map(category => (
                     <Tag
                       className="my-2 capitalize"
-                      key={category}
-                      label={category}
+                      key={category.id}
+                      label={category.name}
                       style="success"
                     />
                   ))}
                 </div>
               )}
-              <Typography className="font-semibold text-gray-600" style="h5">
+              <Typography
+                className="ml-1 font-semibold text-gray-600"
+                style="h5"
+              >
                 {post.user?.name}
               </Typography>
             </div>
@@ -71,8 +101,7 @@ const List = ({ data, showPost, destroyPost }) => {
 
 List.propTypes = {
   data: PropTypes.array.isRequired,
-  destroyPost: PropTypes.func,
-  showPost: PropTypes.func,
+  fetchPosts: PropTypes.func,
 };
 
 export default List;

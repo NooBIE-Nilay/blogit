@@ -1,0 +1,33 @@
+{
+  "title": "Blogit",
+  "pageTitle": "{{title}} | Blogit",
+  "posts": {
+    "empty": "No blogs to see. Create some blogs to display here!",
+    "showAll": "Show all posts",
+    "title": "Blog posts",
+    "add": "Add new blog post",
+    "edit": "Edit blog post"
+  },
+  "common": {
+    "title": "Title",
+    "titlePlaceholder": "Enter title",
+    "category": "Category",
+    "description": "Description",
+    "descriptionPlaceholder": "Enter Description",
+    "cancel": "Cancel",
+    "submit": "Submit",
+    "update": "Update",
+    "na": "N/A",
+    "unknown": "Unknown"
+  },
+  "removeItemConfirmation": {
+    "title": "Remove item?",
+    "allItems": "Remove All Items?",
+    "message": "You are removing <strong>{{itemName}}</strong> from History. Do you want to continue?",
+    "button": "Yes, remove"
+  },
+  "pageNotFound": {
+    "title": "The page you're looking for can't be found",
+    "label": "Back to home"
+  }
+}

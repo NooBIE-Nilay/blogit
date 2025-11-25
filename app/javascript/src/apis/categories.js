@@ -6,7 +6,7 @@ const fetch = () => axios.get(API_ENDPOINTS.CATEGORIES);
 
 const create = payload =>
   axios.post(API_ENDPOINTS.CATEGORIES, {
-    post: payload,
+    category: payload,
   });
 
 const categoriesApi = { fetch, create };

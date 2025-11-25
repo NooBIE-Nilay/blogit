@@ -2,8 +2,9 @@ import routes from "constants/routes";
 
 import React, { useEffect, useState } from "react";
 
-import { Input, Textarea, Button, Select } from "@bigbinary/neetoui";
 import categoriesApi from "apis/categories";
+import { Input, Textarea, Button, Select } from "neetoui";
+import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 
 const Form = ({
@@ -19,6 +20,8 @@ const Form = ({
 }) => {
   const history = useHistory();
   const [categories, setCategories] = useState([]);
+
+  const { t } = useTranslation();
 
   const fetchCategories = async () => {
     const {
@@ -37,15 +40,17 @@ const Form = ({
         <div className="space-y-4">
           <Input
             required
-            label="Title"
-            placeholder="Enter title"
+            label={t("common.title")}
+            placeholder={t("common.titlePlaceholder")}
             value={title}
             onChange={e => setTitle(e.target.value.slice(0, 50))}
           />
           <div>
             <Select
               isMulti
+              required
               initialValues={selectedCategories}
+              label={t("common.category")}
               optionRemapping={{ label: "name", value: "id" }}
               options={categories}
               onChange={value => setSelectedCategories(value)}
@@ -54,7 +59,7 @@ const Form = ({
           <div>
             <div className="flex items-center justify-between">
               <div className="text-sm font-medium text-gray-800">
-                Description*
+                {t("common.description")}*
               </div>
               <div className="text-xs text-gray-500">
                 {description.length}/10000
@@ -63,7 +68,7 @@ const Form = ({
             <div className="mt-1">
               <Textarea
                 required
-                placeholder="Enter description"
+                placeholder={t("common.descriptionPlaceholder")}
                 rows={8}
                 value={description}
                 onChange={e => setDescription(e.target.value.slice(0, 10000))}
@@ -75,7 +80,7 @@ const Form = ({
           <div className="w-full sm:w-auto">
             <Button
               className="w-full sm:w-auto"
-              label="Cancel"
+              label={t("common.cancel")}
               style="secondary"
               type="button"
               onClick={() => history.push(routes.dashboard)}
@@ -84,10 +89,12 @@ const Form = ({
           <div className="w-full sm:w-auto">
             <Button
               className="w-full sm:w-auto"
-              label={type === "create" ? "Submit" : "Update"}
               loading={loading}
               style="primary"
               type="submit"
+              label={
+                type === "create" ? t("common.submit") : t("common.update")
+              }
             />
           </div>
         </div>

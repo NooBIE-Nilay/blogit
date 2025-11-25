@@ -2,14 +2,17 @@ import routes from "constants/routes";
 
 import React from "react";
 
-import { Articles } from "@bigbinary/neeto-icons";
-import { Button } from "@bigbinary/neetoui";
 import BlogitLogo from "components/Navbar/BlogitLogo";
 import { FilePlusCorner } from "lucide-react";
+import { Articles } from "neetoIcons";
+import { Button } from "neetoui";
+import { useTranslation } from "react-i18next";
 import { Link, useHistory } from "react-router-dom";
 
 const Navbar = () => {
   const history = useHistory();
+
+  const { t } = useTranslation();
 
   return (
     <>
@@ -25,15 +28,15 @@ const Navbar = () => {
                 className="flex h-9 w-9 items-center justify-center rounded-md"
                 icon={() => <Articles size="20" />}
                 style="primary"
-                tooltipProps={{ content: "Show all posts" }}
+                tooltipProps={{ content: t("posts.showAll") }}
                 onClick={() => history.push(routes.dashboard)}
               />
               <Button
                 className="flex h-9 w-9 items-center justify-center rounded-md"
                 icon={() => <FilePlusCorner size="18" />}
                 style="primary"
-                tooltipProps={{ content: "Add a blog post" }}
-                onClick={() => history.push(`${routes.posts}/create`)}
+                tooltipProps={{ content: t("posts.add") }}
+                onClick={() => history.push(routes.posts.create)}
               />
             </div>
           </div>
@@ -49,15 +52,15 @@ const Navbar = () => {
           className="mx-auto flex h-10 w-10 items-center justify-center rounded-md"
           icon={() => <Articles size={18} />}
           style="secondary"
-          tooltipProps={{ content: "Show all posts" }}
+          tooltipProps={{ content: t("posts.showAll") }}
           onClick={() => history.push(routes.dashboard)}
         />
         <Button
           className="mx-auto flex h-10 w-10 items-center justify-center rounded-md"
           icon={() => <FilePlusCorner size={18} />}
           style="secondary"
-          tooltipProps={{ content: "Add a new post" }}
-          onClick={() => history.push(`${routes.posts}/create`)}
+          tooltipProps={{ content: t("posts.add") }}
+          onClick={() => history.push(routes.posts.create)}
         />
       </aside>
     </>

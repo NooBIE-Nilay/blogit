@@ -4,6 +4,7 @@ import App from "../src/App";
 import { setAuthHeaders } from "apis/axios";
 import { initializeLogger } from "common/logger";
 import { registerIntercepts } from "apis/axios";
+import "common/i18n";
 
 registerIntercepts();
 initializeLogger();
