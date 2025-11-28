@@ -13,6 +13,7 @@ class User < ApplicationRecord
   has_many :posts
 
   has_secure_password
+  has_secure_token :authentication_token
 
   validates :name,
     presence: true,

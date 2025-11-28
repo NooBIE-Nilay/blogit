@@ -18,9 +18,9 @@ const Form = ({
   loading,
   handleSubmit,
 }) => {
-  const history = useHistory();
   const [categories, setCategories] = useState([]);
 
+  const history = useHistory();
   const { t } = useTranslation();
 
   const fetchCategories = async () => {
@@ -49,7 +49,7 @@ const Form = ({
             <Select
               isMulti
               required
-              initialValues={selectedCategories}
+              defaultValue={selectedCategories}
               label={t("common.category")}
               optionRemapping={{ label: "name", value: "id" }}
               options={categories}

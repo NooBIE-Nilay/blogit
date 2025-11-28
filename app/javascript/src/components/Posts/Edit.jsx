@@ -25,7 +25,13 @@ const Edit = ({ history }) => {
     try {
       await postsApi.update({
         slug,
-        payload: { title, description, categories: selectedCategories },
+        payload: {
+          title,
+          description,
+          category_ids: selectedCategories.map(
+            selectedCategory => selectedCategory.id
+          ),
+        },
       });
       setLoading(false);
       history.push(routes.dashboard);

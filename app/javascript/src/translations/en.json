@@ -8,8 +8,14 @@
     "add": "Add new blog post",
     "edit": "Edit blog post"
   },
+  "category": {
+    "filter": "Filter by categories"
+  },
   "auth": {
     "signupTitle": "Sign Up",
+    "signinTitle": "Sign In",
+    "logoutTitle": "Log Out",
+    "signupLink": "Or Register Now",
     "loginLink": "Or Login Now",
     "name": "Name",
     "namePlaceholder": "Oliver",

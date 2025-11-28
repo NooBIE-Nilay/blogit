@@ -21,7 +21,7 @@ const Create = ({ history }) => {
       await postsApi.create({
         title,
         description,
-        categories: selectedCategories,
+        category_ids: selectedCategories.map(category => category.id),
       });
       setLoading(false);
       history.push(routes.dashboard);

@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     resources :posts, except: %i[new edit], param: :slug
     resources :categories, only: %i[index create show]
     resources :users, only: %i[index create]
+    resource :session, only: %i[create destroy]
   end
 
   root "home#index"

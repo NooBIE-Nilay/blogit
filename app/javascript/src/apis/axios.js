@@ -1,10 +1,12 @@
+import { API_ENDPOINTS } from "constants/axios";
+
 import axios from "axios";
 import { Toastr } from "components/commons";
 import { setToLocalStorage, getFromLocalStorage } from "utils/storage";
 
 const DEFAULT_ERROR_NOTIFICATION = "Something went wrong!";
 
-axios.defaults.baseURL = "/";
+axios.defaults.baseURL = API_ENDPOINTS.ROOT;
 
 const setAuthHeaders = () => {
   axios.defaults.headers = {
@@ -55,4 +57,8 @@ const registerIntercepts = () => {
   );
 };
 
-export { setAuthHeaders, registerIntercepts };
+const resetAuthTokens = () => {
+  delete axios.defaults.headers["X-Auth-Email"];
+  delete axios.defaults.headers["X-Auth-Token"];
+};
+export { setAuthHeaders, registerIntercepts, resetAuthTokens };

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
+  before_action :authenticate_user_using_x_auth_token
+
   protect_from_forgery
 
   rescue_from StandardError, with: :handle_api_exception
@@ -49,7 +51,7 @@ class ApplicationController < ActionController::Base
     is_exception = error.kind_of?(StandardError)
     if is_exception
       is_having_record = error.methods.include? "record"
-      error_message = is_having_record ? message.record&.errors.full_messages.to_sentence : error.message
+      error_message = is_having_record ? error.record&.errors.full_messages.to_sentence : error.message
     end
     render status:, json: { error: error_message }.merge(context)
   end
@@ -61,4 +63,24 @@ class ApplicationController < ActionController::Base
   def render_json(json = {}, status = :ok)
     render status:, json:
   end
+
+  private
+
+    def authenticate_user_using_x_auth_token
+      user_email = request.headers["X-Auth-Email"].presence
+      auth_token = request.headers["X-Auth-Token"].presence
+      user = user_email && User.find_by!(email: user_email)
+      is_valid_token = user && auth_token && ActiveSupport::SecurityUtils.secure_compare(
+        user.authentication_token,
+        auth_token)
+      if is_valid_token
+        @current_user = user
+      else
+        render_error(t("session.could_not_auth"), :unauthorized)
+      end
+    end
+
+    def current_user
+      @current_user
+    end
 end

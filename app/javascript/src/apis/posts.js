@@ -8,7 +8,7 @@ const show = slug => axios.get(`${API_ENDPOINTS.POSTS}/${slug}`);
 
 const create = payload =>
   axios.post(API_ENDPOINTS.POSTS, {
-    post: payload,
+    post: { user_id: 1, organization_id: 1, ...payload },
   });
 
 const update = ({ slug, payload }) =>
