@@ -8,7 +8,7 @@ const Form = ({ handleSubmit, setEmail, setPassword, isLoading, t }) => (
   <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
     <div className="w-full max-w-md">
       <h2 className="mt-6 text-center text-3xl font-extrabold leading-9 text-gray-700">
-        {t("auth.signupTitle")}
+        {t("auth.signinTitle")}
       </h2>
       <div className="text-center">
         <Link

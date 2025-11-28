@@ -11,6 +11,7 @@ const Signup = ({ history }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const [selectedOrganizationId, setSelectedOrganizationId] = useState("");
 
   const { mutateAsync: signup, isLoading } = useSignup({
     onSuccess: () => {
@@ -28,17 +29,21 @@ const Signup = ({ history }) => {
       email,
       password,
       password_confirmation: passwordConfirmation,
+      organization_id: selectedOrganizationId,
     });
   };
 
   return (
     <Form
-      handleSubmit={handleSubmit}
-      isLoading={isLoading}
-      setEmail={setEmail}
-      setName={setName}
-      setPassword={setPassword}
-      setPasswordConfirmation={setPasswordConfirmation}
+      {...{
+        handleSubmit,
+        setName,
+        setEmail,
+        setPassword,
+        isLoading,
+        setPasswordConfirmation,
+        setSelectedOrganizationId,
+      }}
     />
   );
 };

@@ -22,6 +22,8 @@
     "namePlaceholder": "Oliver",
     "email": "Email",
     "emailPlaceholder": "oliver@example.com",
+    "organizations": "Organizations",
+    "organizationsPlaceholder": "Select Organizations",
     "password": "Password",
     "passwordConfirmation": "Repeat Password",
     "passwordPlaceholder": "******"
