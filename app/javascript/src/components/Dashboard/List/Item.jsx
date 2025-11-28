@@ -2,7 +2,7 @@ import routes from "constants/routes";
 
 import React, { useState } from "react";
 
-import postsApi from "apis/posts";
+import { useDeletePost } from "hooks/reactQuery/usePostsApi";
 import Logger from "js-logger";
 import { Alert, Button, Tag, Typography } from "neetoui";
 import PropTypes from "prop-types";
@@ -10,21 +10,18 @@ import { either, isEmpty, isNil } from "ramda";
 import { Trans, useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 
-const Item = ({ post, fetchPosts }) => {
+const Item = ({ post }) => {
   const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false);
 
   const { t } = useTranslation();
 
   const history = useHistory();
 
-  const destroyPost = async slug => {
-    try {
-      await postsApi.destroy(slug);
-      await fetchPosts();
-    } catch (error) {
+  const { mutate: deletePost } = useDeletePost({
+    onError: error => {
       Logger.error(error);
-    }
-  };
+    },
+  });
 
   const showPost = slug => {
     if (isDeleteAlertOpen) return;
@@ -89,7 +86,7 @@ const Item = ({ post, fetchPosts }) => {
               onSubmit={event => {
                 event?.stopPropagation();
                 setIsDeleteAlertOpen(prev => !prev);
-                destroyPost(post.slug);
+                deletePost(post.slug);
               }}
             />
           </div>
@@ -101,7 +98,6 @@ const Item = ({ post, fetchPosts }) => {
 
 Item.propTypes = {
   post: PropTypes.object.isRequired,
-  fetchPosts: PropTypes.func,
 };
 
 export default Item;

@@ -2,13 +2,13 @@ import { API_ENDPOINTS } from "constants/axios";
 
 import axios from "axios";
 
-const fetch = () => axios.get(API_ENDPOINTS.POSTS);
+const fetch = (params = {}) => axios.get(API_ENDPOINTS.POSTS, { params });
 
 const show = slug => axios.get(`${API_ENDPOINTS.POSTS}/${slug}`);
 
 const create = payload =>
   axios.post(API_ENDPOINTS.POSTS, {
-    post: { user_id: 1, organization_id: 1, ...payload },
+    post: payload,
   });
 
 const update = ({ slug, payload }) =>

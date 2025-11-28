@@ -4,8 +4,6 @@ import React, { useEffect, useRef, useState } from "react";
 
 import authApi from "apis/auth";
 import { resetAuthTokens } from "apis/axios";
-import categoriesApi from "apis/categories";
-import Logger from "js-logger";
 import { FilePlusCorner } from "lucide-react";
 import { Articles, Category } from "neetoIcons";
 import { Avatar, Button } from "neetoui";
@@ -19,8 +17,6 @@ import CategoryPane from "./CategoryPane";
 const Navbar = () => {
   const [isCategoryPaneOpen, setIsCategoryPaneOpen] = useState(false);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
-  const [categories, setCategories] = useState([]);
-  const [selectedCategoryIds, setSelectedCategoryIds] = useState([]);
 
   const userName = getFromLocalStorage("authUserName");
 
@@ -29,19 +25,6 @@ const Navbar = () => {
 
   const history = useHistory();
   const { t } = useTranslation();
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const resp = await categoriesApi.fetch();
-        setCategories(resp.data.categories);
-      } catch (error) {
-        Logger.error("Failed to fetch categories", error);
-      }
-    };
-
-    fetchCategories();
-  }, []);
 
   useEffect(() => {
     const handleClickOutside = event => {
@@ -113,7 +96,7 @@ const Navbar = () => {
         </div>
       </header>
       {/* Sidebar for Larger Screens */}
-      <aside className="z-20 hidden justify-between pb-8 md:fixed md:left-0 md:top-0 md:flex md:h-screen md:w-20 md:flex-col md:items-center md:border-gray-200 md:bg-gray-50">
+      <aside className=" hidden justify-between pb-8 md:fixed md:left-0 md:top-0 md:flex md:h-screen md:w-20 md:flex-col md:items-center md:border-gray-200 md:bg-gray-50">
         <div className="flex flex-col  gap-y-3 pt-4">
           <Link aria-label="Home" to={routes.dashboard}>
             <BlogitLogo />
@@ -168,9 +151,6 @@ const Navbar = () => {
           categoryPaneRef,
           setIsCategoryPaneOpen,
           isCategoryPaneOpen,
-          categories,
-          selectedCategoryIds,
-          setSelectedCategoryIds,
         }}
       />
     </>

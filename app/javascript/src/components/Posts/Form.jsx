@@ -1,8 +1,9 @@
 import routes from "constants/routes";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 
-import categoriesApi from "apis/categories";
+import { PageLoader } from "components/commons";
+import { useFetchCategories } from "hooks/reactQuery/useCategoriesApi";
 import { Input, Textarea, Button, Select } from "neetoui";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
@@ -15,24 +16,24 @@ const Form = ({
   setDescription,
   selectedCategories,
   setSelectedCategories,
-  loading,
+  isLoading,
   handleSubmit,
 }) => {
-  const [categories, setCategories] = useState([]);
-
   const history = useHistory();
   const { t } = useTranslation();
 
-  const fetchCategories = async () => {
-    const {
-      data: { categories },
-    } = await categoriesApi.fetch();
-    setCategories(categories);
-  };
+  const {
+    data: { data: { categories } = {} } = {},
+    isLoading: isCategoriesLoading,
+  } = useFetchCategories();
 
-  useEffect(() => {
-    fetchCategories();
-  }, []);
+  if (isLoading && isCategoriesLoading) {
+    return (
+      <div className="h-screen w-screen">
+        <PageLoader />
+      </div>
+    );
+  }
 
   return (
     <form className="mb-4 w-full" onSubmit={handleSubmit}>
@@ -49,10 +50,11 @@ const Form = ({
             <Select
               isMulti
               required
-              defaultValue={selectedCategories}
+              disabled={isCategoriesLoading && isLoading}
               label={t("common.category")}
               optionRemapping={{ label: "name", value: "id" }}
               options={categories}
+              value={selectedCategories}
               onChange={value => setSelectedCategories(value)}
             />
           </div>
@@ -89,7 +91,7 @@ const Form = ({
           <div className="w-full sm:w-auto">
             <Button
               className="w-full sm:w-auto"
-              loading={loading}
+              loading={isLoading}
               style="primary"
               type="submit"
               label={

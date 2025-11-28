@@ -2,6 +2,7 @@ import { API_ENDPOINTS } from "constants/axios";
 
 import axios from "axios";
 import { Toastr } from "components/commons";
+import { keysToSnakeCase } from "neetoCist";
 import { setToLocalStorage, getFromLocalStorage } from "utils/storage";
 
 const DEFAULT_ERROR_NOTIFICATION = "Something went wrong!";
@@ -52,6 +53,14 @@ const handleErrorResponse = axiosErrorObject => {
 };
 
 const registerIntercepts = () => {
+  axios.interceptors.request.use(config => {
+    if (config.params) {
+      config.params = keysToSnakeCase(config.params);
+    }
+
+    return config;
+  });
+
   axios.interceptors.response.use(handleSuccessResponse, error =>
     handleErrorResponse(error)
   );

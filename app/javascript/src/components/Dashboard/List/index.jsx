@@ -10,7 +10,7 @@ import { useHistory } from "react-router-dom";
 
 import Item from "./Item";
 
-const List = ({ data, fetchPosts }) => {
+const List = ({ data }) => {
   const history = useHistory();
   const { t } = useTranslation();
 
@@ -29,7 +29,7 @@ const List = ({ data, fetchPosts }) => {
   return (
     <div className="w-full">
       {data.map(post => (
-        <Item key={post.id} {...{ post, fetchPosts }} />
+        <Item key={post.id} {...{ post }} />
       ))}
     </div>
   );

@@ -4,7 +4,7 @@ import { Input, Button } from "neetoui";
 import { withTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
-const Form = ({ handleSubmit, setEmail, setPassword, loading, t }) => (
+const Form = ({ handleSubmit, setEmail, setPassword, isLoading, t }) => (
   <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
     <div className="w-full max-w-md">
       <h2 className="mt-6 text-center text-3xl font-extrabold leading-9 text-gray-700">
@@ -31,7 +31,11 @@ const Form = ({ handleSubmit, setEmail, setPassword, loading, t }) => (
           type="password"
           onChange={e => setPassword(e.target.value)}
         />
-        <Button label={t("auth.signinTitle")} loading={loading} type="submit" />
+        <Button
+          disabled={isLoading}
+          label={t("auth.signinTitle")}
+          type="submit"
+        />
       </form>
     </div>
   </div>

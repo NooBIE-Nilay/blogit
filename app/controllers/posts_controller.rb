@@ -4,7 +4,10 @@ class PostsController < ApplicationController
   before_action :load_post!, only: %i[show update destroy]
 
   def index
-    render
+    @posts = Post
+      .where(organization_id: @current_user.organization_id)
+      .order(created_at: :desc)
+    @posts = @posts.where(category_id: params[:category_id]) if params[:category_id].present?
   end
 
   def show
@@ -17,7 +20,10 @@ class PostsController < ApplicationController
   end
 
   def create
-    post = Post.new(post_params)
+    post = Post.new(
+      post_params.merge(
+        user_id: @current_user.id,
+        organization_id: @current_user.organization_id))
     post.save!
     render_notice(t("successfully_created", name: post.title))
   end
@@ -30,10 +36,12 @@ class PostsController < ApplicationController
   private
 
     def load_post!
-      @post = Post.find_by!(slug: params[:slug])
+      @post = Post.includes(:categories, :user).find_by!(
+        slug: params[:slug],
+        organization_id: @current_user.organization_id)
     end
 
     def post_params
-      params.require(:post).permit(:title, :description, :user_id, :organization_id, category_ids: [])
+      params.require(:post).permit(:title, :description, category_ids: [])
     end
 end

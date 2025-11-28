@@ -2,42 +2,41 @@ import routes from "constants/routes";
 
 import React, { useState } from "react";
 
-import authApi from "apis/auth";
 import { setAuthHeaders } from "apis/axios";
 import LoginForm from "components/Authentication/Login/Form";
+import { useLogin } from "hooks/reactQuery/useAuthApi";
+import Logger from "js-logger";
 import { setToLocalStorage } from "utils/storage";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async event => {
-    event.preventDefault();
-    setLoading(true);
-    try {
-      const response = await authApi.login({ email, password });
-      if (!response) return;
+  const { mutateAsync: login, isLoading: isLoginLoading } = useLogin({
+    onSuccess: ({ data }) => {
       setToLocalStorage({
-        authToken: response.data.authentication_token,
+        authToken: data.authentication_token,
         email: email.toLowerCase(),
-        userId: response.data.id,
-        userName: response.data.name,
+        userId: data.id,
+        userName: data.name,
       });
       setAuthHeaders();
       window.location.href = routes.root;
-    } catch (error) {
-      logger.error(error);
-      setLoading(false);
-    }
+    },
+    onError: error => {
+      Logger.error(error);
+    },
+  });
+
+  const handleSubmit = async event => {
+    event.preventDefault();
+    await login({ email, password });
   };
 
   return (
     <LoginForm
-      handleSubmit={handleSubmit}
-      loading={loading}
-      setEmail={setEmail}
-      setPassword={setPassword}
+      isLoading={isLoginLoading}
+      {...{ handleSubmit, setEmail, setPassword }}
     />
   );
 };

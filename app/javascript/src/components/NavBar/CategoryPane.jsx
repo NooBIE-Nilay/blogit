@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 
 import classNames from "classnames";
+import { PageLoader } from "components/commons";
+import { useFetchCategories } from "hooks/reactQuery/useCategoriesApi";
 import { Close, Plus } from "neetoIcons";
 import { Button, Typography } from "neetoui";
 import { useTranslation } from "react-i18next";
@@ -9,11 +11,11 @@ const CategoryPane = ({
   categoryPaneRef,
   setIsCategoryPaneOpen,
   isCategoryPaneOpen,
-  categories,
-  selectedCategoryIds,
-  setSelectedCategoryIds,
 }) => {
+  const [selectedCategoryIds, setSelectedCategoryIds] = useState([]);
   const { t } = useTranslation();
+
+  const { data, isLoading } = useFetchCategories();
 
   const handleCategorySelection = categoryId => {
     setSelectedCategoryIds(selectedCategoryIds =>
@@ -23,11 +25,21 @@ const CategoryPane = ({
     );
   };
 
+  const categories = data?.data?.categories;
+
   if (!isCategoryPaneOpen) return <div />;
+
+  if (isLoading) {
+    return (
+      <div className="h-screen w-screen">
+        <PageLoader />
+      </div>
+    );
+  }
 
   return (
     <div
-      className="fixed left-0 h-screen w-72 rounded-r-md border border-gray-800/20 bg-gray-800/20 pt-2 backdrop-blur-sm md:left-20"
+      className="fixed left-0 z-0 h-screen w-72 rounded-r-md border border-gray-800/20 bg-gray-800/20 pt-2 backdrop-blur-sm md:left-20"
       ref={categoryPaneRef}
     >
       <div className="flex h-8 w-full items-center justify-between">

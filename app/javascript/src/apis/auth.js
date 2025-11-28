@@ -9,7 +9,7 @@ const login = payload =>
 
 const signup = payload =>
   axios.post(API_ENDPOINTS.USERS, {
-    user: { organization_id: 1, ...payload },
+    user: payload,
   });
 
 const logout = () => axios.delete(API_ENDPOINTS.SESSION);

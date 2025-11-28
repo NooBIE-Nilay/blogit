@@ -6,10 +6,8 @@ class SessionsController < ApplicationController
   def create
     @user = User.find_by!(email: login_params[:email].downcase.strip)
     unless @user.authenticate(login_params[:password])
-      return render_error(t("session.incorrect_credentials"), :unauthorized)
+      render_error(t("session.incorrect_credentials"), :unauthorized)
     end
-
-    render json: @user.as_json(only: [:id, :name], methods: [:authentication_token])
   end
 
   def destroy

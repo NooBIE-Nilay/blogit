@@ -11,7 +11,7 @@ const Form = ({
   setName,
   setEmail,
   setPassword,
-  loading,
+  isLoading,
   setPasswordConfirmation,
   t,
 }) => (
@@ -64,7 +64,11 @@ const Form = ({
           type="password"
           onChange={e => setPasswordConfirmation(e.target.value)}
         />
-        <Button label={t("common.register")} {...{ loading }} type="submit" />
+        <Button
+          disabled={isLoading}
+          label={t("common.register")}
+          type="submit"
+        />
       </form>
     </div>
   </div>
