@@ -3,10 +3,12 @@ import { QUERY_KEYS } from "constants/query";
 import postsApi from "apis/posts";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
-const useFetchPosts = ({ selectedCategoryIds = [] }) =>
+const useFetchPosts = ({ selectedCategoryIds = [], page, perPage }) =>
   useQuery({
-    queryKey: [QUERY_KEYS.POSTS, selectedCategoryIds],
-    queryFn: () => postsApi.fetch({ categoryIds: selectedCategoryIds }),
+    queryKey: [QUERY_KEYS.POSTS, selectedCategoryIds, page, perPage],
+    queryFn: () =>
+      postsApi.fetch({ categoryIds: selectedCategoryIds, page, perPage }),
+    keepPreviousData: true,
   });
 
 const useShowPost = slug =>

@@ -1,6 +1,6 @@
 import routes from "constants/routes";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 
 import authApi from "apis/auth";
 import { resetAuthTokens } from "apis/axios";
@@ -9,14 +9,16 @@ import { Articles, Category } from "neetoIcons";
 import { Avatar, Button } from "neetoui";
 import { useTranslation } from "react-i18next";
 import { Link, useHistory } from "react-router-dom";
+import useUIStore from "stores/useUIStore";
 import { getFromLocalStorage, setToLocalStorage } from "utils/storage";
 
 import BlogitLogo from "./BlogitLogo";
 import CategoryPane from "./CategoryPane";
 
 const Navbar = () => {
-  const [isCategoryPaneOpen, setIsCategoryPaneOpen] = useState(false);
-  const [isMenuVisible, setIsMenuVisible] = useState(false);
+  const { isCategoryPaneOpen, setIsCategoryPaneOpen, toggleCategoryPane } =
+    useUIStore();
+  const [isMenuVisible, setIsMenuVisible] = React.useState(false);
 
   const userName = getFromLocalStorage("authUserName");
 
@@ -117,7 +119,7 @@ const Navbar = () => {
             icon={() => <Category size={20} />}
             style="secondary"
             tooltipProps={{ content: t("category.filter") }}
-            onClick={() => setIsCategoryPaneOpen(prev => !prev)}
+            onClick={() => toggleCategoryPane()}
           />
         </div>
         <div className="" ref={menuRef}>

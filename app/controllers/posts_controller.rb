@@ -6,11 +6,25 @@ class PostsController < ApplicationController
   before_action :load_post!, only: %i[show update destroy]
 
   def index
+    # Step 1: Base scope — only posts in the same organization
     @posts = policy_scope(Post)
-    @posts = Post
-      .where(organization_id: @current_user.organization_id)
+    @posts = Post.where(organization_id: @current_user.organization_id)
+
+    # Step 2: Optional filter by category_ids[]
+    if params[:category_ids].present?
+      # Ensures category_ids is an array of integers
+      category_ids = Array(params[:category_ids]).map(&:to_i)
+
+      @posts = @posts.joins(:categories)
+        .where(categories: { id: category_ids })
+        .distinct
+    end
+
+    # Step 3: Sorting + Pagination
+    @posts = @posts
       .order(created_at: :desc)
-    @posts = @posts.where(category_id: params[:category_id]) if params[:category_id].present?
+      .page(params[:page] || 1)
+      .per(params[:per_page] || 4)
   end
 
   def show

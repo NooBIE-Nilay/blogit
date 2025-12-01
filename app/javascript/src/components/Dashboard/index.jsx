@@ -27,7 +27,7 @@ const Dashboard = () => {
   const perPage = Number(propOr(DEFAULT_PAGE_SIZE, "perPage", queryParams));
 
   const { data, isLoading } = useFetchPosts({
-    selectedCategoryIds: selectedCategories,
+    selectedCategoryIds: selectedCategories.map(category => category.id),
     page: pageNo,
     perPage,
   });

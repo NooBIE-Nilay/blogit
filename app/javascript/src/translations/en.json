@@ -10,7 +10,8 @@
     "edit": "Edit blog post"
   },
   "category": {
-    "filter": "Filter by categories"
+    "filter": "Filter by categories",
+    "searchPlaceholder": "Search category"
   },
   "auth": {
     "signupTitle": "Sign Up",
