@@ -1,9 +1,12 @@
 # frozen_string_literal: true
 
 class PostsController < ApplicationController
+  after_action :verify_authorized, except: :index
+  after_action :verify_policy_scoped, only: :index
   before_action :load_post!, only: %i[show update destroy]
 
   def index
+    @posts = policy_scope(Post)
     @posts = Post
       .where(organization_id: @current_user.organization_id)
       .order(created_at: :desc)
@@ -11,10 +14,12 @@ class PostsController < ApplicationController
   end
 
   def show
+    authorize @post
     render
   end
 
   def update
+    authorize @post
     @post.update!(post_params)
     render_notice(t("successfully_updated", name: @post.title))
   end
@@ -24,11 +29,13 @@ class PostsController < ApplicationController
       post_params.merge(
         user_id: @current_user.id,
         organization_id: @current_user.organization_id))
+    authorize post
     post.save!
     render_notice(t("successfully_created", name: post.title))
   end
 
   def destroy
+    authorize @post
     @post.destroy!
     render_notice(t("successfully_deleted", name: @post.title))
   end
