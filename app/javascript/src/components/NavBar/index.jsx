@@ -47,10 +47,6 @@ const Navbar = () => {
     };
   }, [menuRef, categoryPaneRef]);
 
-  const toggleMenu = () => {
-    setIsMenuVisible(!isMenuVisible);
-  };
-
   const handleLogout = async () => {
     try {
       await authApi.logout();
@@ -129,7 +125,7 @@ const Navbar = () => {
             user={{
               name: userName,
             }}
-            onClick={toggleMenu}
+            onClick={() => setIsMenuVisible(prev => !prev)}
           />
           {isMenuVisible && (
             <div className="absolute bottom-12 z-20 mt-2 w-48 rounded-md border border-gray-300 bg-white py-1 shadow-xl">

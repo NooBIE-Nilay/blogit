@@ -1,3 +1,5 @@
+import routes from "constants/routes";
+
 import React, { useState } from "react";
 
 import { Container, PageTitle } from "components/commons";
@@ -5,15 +7,21 @@ import Form from "components/Posts/Form";
 import { useCreatePost } from "hooks/reactQuery/usePostsApi";
 import Logger from "js-logger";
 import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
 
 const Create = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [selectedCategories, setSelectedCategories] = useState([]);
 
+  const history = useHistory();
+
   const { t } = useTranslation();
 
   const { mutate: createPost, isLoading } = useCreatePost({
+    onSuccess: () => {
+      history.push(routes.root);
+    },
     onError: error => {
       Logger.error(error);
     },

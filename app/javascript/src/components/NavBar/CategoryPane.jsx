@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import classNames from "classnames";
 import { PageLoader } from "components/commons";
@@ -6,26 +6,20 @@ import { useFetchCategories } from "hooks/reactQuery/useCategoriesApi";
 import { Close, Plus } from "neetoIcons";
 import { Button, Typography } from "neetoui";
 import { useTranslation } from "react-i18next";
+import useCategoryStore from "stores/useCategoryStore";
 
 const CategoryPane = ({
   categoryPaneRef,
   setIsCategoryPaneOpen,
   isCategoryPaneOpen,
 }) => {
-  const [selectedCategoryIds, setSelectedCategoryIds] = useState([]);
   const { t } = useTranslation();
 
   const { data, isLoading } = useFetchCategories();
 
-  const handleCategorySelection = categoryId => {
-    setSelectedCategoryIds(selectedCategoryIds =>
-      selectedCategoryIds.includes(categoryId)
-        ? selectedCategoryIds.filter(id => id !== categoryId)
-        : [categoryId, ...selectedCategoryIds]
-    );
-  };
+  const { toggleCategory, isSelected } = useCategoryStore();
 
-  const categories = data?.data?.categories;
+  const categories = data?.data.categories;
 
   if (!isCategoryPaneOpen) return <div />;
 
@@ -59,27 +53,23 @@ const CategoryPane = ({
         />
       </div>
       <div className="mt-4 flex flex-col gap-2">
-        {categories?.map(category => {
-          const isSelectedCategory = selectedCategoryIds.includes(category.id);
-
-          return (
-            <div
-              key={category.id}
-              className={classNames(
-                "relative mx-2  flex items-center justify-center rounded-md  py-2 font-medium ",
-                {
-                  "bg-gray-500 text-white hover:bg-white hover:text-black":
-                    isSelectedCategory,
-                  "bg-white  hover:bg-gray-500 hover:text-white":
-                    !isSelectedCategory,
-                }
-              )}
-              onClick={() => handleCategorySelection(category.id)}
-            >
-              {category.name}
-            </div>
-          );
-        })}
+        {categories?.map(category => (
+          <div
+            key={category.id}
+            className={classNames(
+              "relative mx-2  flex items-center justify-center rounded-md  py-2 font-medium ",
+              {
+                "bg-gray-500 text-white hover:bg-white hover:text-black":
+                  isSelected(category),
+                "bg-white  hover:bg-gray-500 hover:text-white":
+                  !isSelected(category),
+              }
+            )}
+            onClick={() => toggleCategory(category)}
+          >
+            {category.name}
+          </div>
+        ))}
       </div>
     </div>
   );

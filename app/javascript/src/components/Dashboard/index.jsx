@@ -11,22 +11,29 @@ import { Button, Pagination } from "neetoui";
 import { mergeLeft, propOr } from "ramda";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
+import useCategoryStore from "stores/useCategoryStore";
 import { buildUrl } from "utils/urls";
 
 const Dashboard = () => {
   const history = useHistory();
 
-  const { t } = useTranslation();
-
   const queryParams = useQueryParams();
 
-  const { data: { data: { posts = [], meta = {} } = {} } = {}, isLoading } =
-    useFetchPosts({
-      selectedCategoryIds: [],
-    });
+  const { t } = useTranslation();
 
-  const currentPage = Number(propOr(DEFAULT_PAGE_NUMBER, "page", queryParams));
+  const { selectedCategories } = useCategoryStore();
+
+  const pageNo = Number(propOr(DEFAULT_PAGE_NUMBER, "page", queryParams));
   const perPage = Number(propOr(DEFAULT_PAGE_SIZE, "perPage", queryParams));
+
+  const { data, isLoading } = useFetchPosts({
+    selectedCategoryIds: selectedCategories,
+    page: pageNo,
+    perPage,
+  });
+
+  const posts = data?.data.posts || [];
+  const meta = data?.data.meta || {};
 
   const handlePageNavigation = page => {
     history.replace(
@@ -37,10 +44,10 @@ const Dashboard = () => {
   useEffect(() => {
     if (isLoading) return;
 
-    if (meta.total_pages && currentPage > meta.total_pages) {
+    if (meta.total_pages && pageNo > meta.total_pages) {
       handlePageNavigation(DEFAULT_PAGE_NUMBER);
     }
-  }, [meta, isLoading, queryParams]);
+  }, [meta, isLoading, pageNo, queryParams]);
 
   if (isLoading) {
     return (
@@ -64,12 +71,14 @@ const Dashboard = () => {
           </div>
         </div>
         <List data={posts} />
-        <Pagination
-          count={meta.total_count}
-          navigate={handlePageNavigation}
-          pageNo={meta.current_page || currentPage}
-          pageSize={meta.per_page || perPage}
-        />
+        <div className="flex items-center justify-end">
+          <Pagination
+            count={meta.total_count}
+            navigate={handlePageNavigation}
+            pageNo={meta.current_page || pageNo}
+            pageSize={meta.per_page || perPage}
+          />
+        </div>
       </div>
     </Container>
   );
