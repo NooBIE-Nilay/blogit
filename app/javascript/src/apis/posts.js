@@ -1,20 +1,22 @@
+import { API_ENDPOINTS } from "constants/axios";
+
 import axios from "axios";
 
-const fetch = () => axios.get("/posts");
+const fetch = (params = {}) => axios.get(API_ENDPOINTS.POSTS, { params });
 
-const show = slug => axios.get(`/posts/${slug}`);
+const show = slug => axios.get(`${API_ENDPOINTS.POSTS}/${slug}`);
 
 const create = payload =>
-  axios.post("/posts", {
+  axios.post(API_ENDPOINTS.POSTS, {
     post: payload,
   });
 
 const update = ({ slug, payload }) =>
-  axios.put(`/posts/${slug}`, {
+  axios.put(`${API_ENDPOINTS.POSTS}/${slug}`, {
     post: payload,
   });
 
-const destroy = slug => axios.delete(`/posts/${slug}`);
+const destroy = slug => axios.delete(`${API_ENDPOINTS.POSTS}/${slug}`);
 
 const postsApi = {
   fetch,

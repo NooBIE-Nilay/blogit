@@ -1,0 +1,59 @@
+{
+  "title": "Blogit",
+  "pageTitle": "{{title}} | Blogit",
+  "posts": {
+    "empty": "No blogs to see. Create some blogs to display here!",
+    "showAll": "Show all posts",
+    "title": "Blog posts",
+    "new": "New blog post",
+    "add": "Add new blog post",
+    "edit": "Edit blog post"
+  },
+  "category": {
+    "new": {
+      "title": "New Category",
+      "label": "Category Title",
+      "placeholder": "Enter Category Title"
+    },
+    "filter": "Filter by categories",
+    "searchPlaceholder": "Search category"
+  },
+  "auth": {
+    "signupTitle": "Sign Up",
+    "signinTitle": "Sign In",
+    "logoutTitle": "Log Out",
+    "signupLink": "Or Register Now",
+    "loginLink": "Or Login Now",
+    "name": "Name",
+    "namePlaceholder": "Oliver",
+    "email": "Email",
+    "emailPlaceholder": "oliver@example.com",
+    "organizations": "Organizations",
+    "organizationsPlaceholder": "Select Organizations",
+    "password": "Password",
+    "passwordConfirmation": "Repeat Password",
+    "passwordPlaceholder": "******"
+  },
+  "common": {
+    "title": "Title",
+    "titlePlaceholder": "Enter title",
+    "category": "Category",
+    "description": "Description",
+    "descriptionPlaceholder": "Enter Description",
+    "register": "Register",
+    "cancel": "Cancel",
+    "submit": "Submit",
+    "update": "Update",
+    "na": "N/A",
+    "unknown": "Unknown"
+  },
+  "removeItemConfirmation": {
+    "title": "Remove item?",
+    "message": "You are removing <strong>{{itemName}}</strong> blog post. Do you want to continue?",
+    "button": "Yes, remove"
+  },
+  "pageNotFound": {
+    "title": "The page you're looking for can't be found",
+    "label": "Back to home"
+  }
+}

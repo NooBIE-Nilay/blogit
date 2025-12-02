@@ -1,10 +1,13 @@
+import { API_ENDPOINTS } from "constants/axios";
+
 import axios from "axios";
 import { Toastr } from "components/commons";
+import { keysToSnakeCase } from "neetoCist";
 import { setToLocalStorage, getFromLocalStorage } from "utils/storage";
 
 const DEFAULT_ERROR_NOTIFICATION = "Something went wrong!";
 
-axios.defaults.baseURL = "/";
+axios.defaults.baseURL = API_ENDPOINTS.ROOT;
 
 const setAuthHeaders = () => {
   axios.defaults.headers = {
@@ -50,9 +53,21 @@ const handleErrorResponse = axiosErrorObject => {
 };
 
 const registerIntercepts = () => {
+  axios.interceptors.request.use(config => {
+    if (config.params) {
+      config.params = keysToSnakeCase(config.params);
+    }
+
+    return config;
+  });
+
   axios.interceptors.response.use(handleSuccessResponse, error =>
     handleErrorResponse(error)
   );
 };
 
-export { setAuthHeaders, registerIntercepts };
+const resetAuthTokens = () => {
+  delete axios.defaults.headers["X-Auth-Email"];
+  delete axios.defaults.headers["X-Auth-Token"];
+};
+export { setAuthHeaders, registerIntercepts, resetAuthTokens };

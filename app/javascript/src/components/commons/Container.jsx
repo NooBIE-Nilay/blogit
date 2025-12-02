@@ -1,14 +1,15 @@
 import React from "react";
 
 import classnames from "classnames";
+import Navbar from "components/NavBar";
 import PropTypes from "prop-types";
-
-import Navbar from "../NavBar";
 
 const Container = ({ children, className = "" }) => (
   <>
     <Navbar />
-    <div className={classnames("mx-auto  max-w-4xl md:pl-24 ", [className])}>
+    <div
+      className={classnames("mx-auto  max-w-6xl px-10 md:pl-24 ", [className])}
+    >
       {children}
     </div>
   </>

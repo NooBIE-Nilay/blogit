@@ -1,41 +1,54 @@
+import routes from "constants/routes";
+
 import React, { useState } from "react";
 
 import { Container, PageTitle } from "components/commons";
+import Form from "components/Posts/Form";
+import { useCreatePost } from "hooks/reactQuery/usePostsApi";
 import Logger from "js-logger";
+import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
 
-import Form from "./Form";
-
-import postsApi from "../../apis/posts";
-
-const Create = ({ history }) => {
-  const [description, setDescription] = useState("");
+const Create = () => {
   const [title, setTitle] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [description, setDescription] = useState("");
+  const [selectedCategories, setSelectedCategories] = useState([]);
+
+  const history = useHistory();
+
+  const { t } = useTranslation();
+
+  const { mutate: createPost, isLoading } = useCreatePost({
+    onSuccess: () => {
+      history.push(routes.root);
+    },
+    onError: error => {
+      Logger.error(error);
+    },
+  });
 
   const handleSubmit = async event => {
     event.preventDefault();
-    setLoading(true);
-    try {
-      await postsApi.create({ title, description });
-      setLoading(false);
-      history.push("/dashboard");
-    } catch (error) {
-      Logger.error(error);
-      setLoading(false);
-    }
+    createPost({
+      title,
+      description,
+      category_ids: selectedCategories.map(category => category.id),
+    });
   };
 
   return (
     <Container>
       <div className="flex flex-col gap-y-8">
-        <PageTitle title="New blog post" />
+        <PageTitle title={t("posts.new")} />
         <Form
           {...{
             handleSubmit,
-            loading,
+            isLoading,
             title,
             setTitle,
             description,
+            selectedCategories,
+            setSelectedCategories,
             setDescription,
           }}
         />

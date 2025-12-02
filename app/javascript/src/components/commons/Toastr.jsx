@@ -1,4 +1,4 @@
-import { TOASTR_OPTIONS } from "constants";
+import { TOASTR_OPTIONS } from "constants/toastr";
 
 import React from "react";
 

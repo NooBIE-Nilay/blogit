@@ -6,20 +6,23 @@ import { absolutePath } from "./constants.js";
 const require = createRequire(import.meta.url);
 
 const alias = {
+  neetoui: "@bigbinary/neetoui",
+  neetoIcons: "@bigbinary/neeto-icons",
+  neetoCist: "@bigbinary/neeto-cist",
   apis: absolutePath("src/apis"),
-  assets: absolutePath("../assets"),
-  buffer: require.resolve("buffer"),
   common: absolutePath("src/common"),
   components: absolutePath("src/components"),
   constants: absolutePath("src/constants"),
+  hooks: absolutePath("src/hooks"),
+  stores: absolutePath("src/stores"),
+  translations: absolutePath("src/translations"),
+  utils: absolutePath("src/utils"),
+  assets: absolutePath("../assets"),
+  buffer: require.resolve("buffer"),
   crypto: require.resolve("crypto-browserify"),
   images: path.resolve(process.cwd(), "app/assets/images"),
-  neetoCist: absolutePath("@bigbinary/neeto-cist"),
-  neetoIcons: absolutePath("@bigbinary/neeto-icons"),
-  neetoui: absolutePath("@bigbinary/neetoui"),
   path: require.resolve("path-browserify"),
   stream: require.resolve("stream-browserify"),
-  utils: absolutePath("src/utils"),
 };
 
 export { alias };

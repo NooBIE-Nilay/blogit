@@ -1,6 +1,7 @@
 import React from "react";
 
 import classnames from "classnames";
+import { Spinner } from "neetoui";
 
 const PageLoader = ({ className = "" }) => (
   <div
@@ -9,7 +10,7 @@ const PageLoader = ({ className = "" }) => (
       "flex h-screen w-screen flex-row items-center justify-center"
     )}
   >
-    <h1 className="text-lg leading-5">Loading...</h1>
+    <Spinner />
   </div>
 );
 

@@ -108,3 +108,4 @@ dump.rdb
 !/app/assets/builds/.keep
 
 /node_modules
+coverage

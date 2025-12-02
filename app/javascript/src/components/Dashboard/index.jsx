@@ -1,51 +1,55 @@
-import React, { useState, useEffect } from "react";
+import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from "constants/pagination";
+import routes from "constants/routes";
 
-import { Button } from "@bigbinary/neetoui";
-import postsApi from "apis/posts";
+import React, { useEffect } from "react";
+
 import { PageLoader, PageTitle, Container } from "components/commons";
-import Logger from "js-logger";
-import { isNil, isEmpty, either } from "ramda";
+import List from "components/Dashboard/List";
+import { useFetchPosts } from "hooks/reactQuery/usePostsApi";
+import useQueryParams from "hooks/useQueryParams";
+import { Button, Pagination } from "neetoui";
+import { mergeLeft, propOr } from "ramda";
+import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
-
-import List from "./List";
+import useCategoryStore from "stores/useCategoryStore";
+import { buildUrl } from "utils/urls";
 
 const Dashboard = () => {
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
-
   const history = useHistory();
 
-  const fetchPosts = async () => {
-    try {
-      const {
-        data: { posts },
-      } = await postsApi.fetch();
-      setPosts(posts);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      Logger.error(error);
-    }
-  };
+  const queryParams = useQueryParams();
 
-  const destroyPost = async slug => {
-    try {
-      await postsApi.destroy(slug);
-      await fetchPosts();
-    } catch (error) {
-      Logger.error(error);
-    }
-  };
+  const { t } = useTranslation();
 
-  const showPost = slug => {
-    history.push(`/posts/${slug}/show`);
+  const { selectedCategories } = useCategoryStore();
+
+  const pageNo = Number(propOr(DEFAULT_PAGE_NUMBER, "page", queryParams));
+  const perPage = Number(propOr(DEFAULT_PAGE_SIZE, "perPage", queryParams));
+
+  const { data, isLoading } = useFetchPosts({
+    selectedCategoryIds: selectedCategories.map(category => category.id),
+    page: pageNo,
+    perPage,
+  });
+
+  const posts = data?.data.posts || [];
+  const meta = data?.data.meta || {};
+
+  const handlePageNavigation = page => {
+    history.replace(
+      buildUrl(routes.root, mergeLeft({ page, per_page: perPage }, queryParams))
+    );
   };
 
   useEffect(() => {
-    fetchPosts();
-  }, []);
+    if (isLoading) return;
 
-  if (loading) {
+    if (meta.total_pages && pageNo > meta.total_pages) {
+      handlePageNavigation(DEFAULT_PAGE_NUMBER);
+    }
+  }, [meta, isLoading, pageNo, queryParams]);
+
+  if (isLoading) {
     return (
       <div className="h-screen w-screen">
         <PageLoader />
@@ -53,30 +57,28 @@ const Dashboard = () => {
     );
   }
 
-  if (either(isNil, isEmpty)(posts)) {
-    return (
-      <Container>
-        <h1 className="my-5 text-center text-xl leading-5">
-          You have not created or been assigned any posts
-        </h1>
-      </Container>
-    );
-  }
-
   return (
     <Container>
       <div className="flex flex-col gap-y-8 ">
         <div className="flex flex-col justify-between sm:flex-row sm:items-center">
-          <PageTitle title="Blog posts" />
+          <PageTitle title={t("posts.title")} />
           <div className="ml-4">
             <Button
-              label="Add new blog post"
+              label={t("posts.add")}
               style="primary"
-              onClick={() => history.push("/posts/create")}
+              onClick={() => history.push(routes.posts.create)}
             />
           </div>
         </div>
-        <List data={posts} {...{ showPost, destroyPost }} />
+        <List data={posts} />
+        <div className="flex items-center justify-end">
+          <Pagination
+            count={meta.total_count}
+            navigate={handlePageNavigation}
+            pageNo={meta.current_page || pageNo}
+            pageSize={meta.per_page || perPage}
+          />
+        </div>
       </div>
     </Container>
   );
