@@ -7,7 +7,7 @@ json.post do
     :title,
     :status,
     :description,
-    :created_at,
+    :last_published_at,
     :updated_at
 
   json.user do

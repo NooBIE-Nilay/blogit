@@ -2,6 +2,7 @@ import routes from "constants/routes";
 
 import React from "react";
 
+import dayjs from "dayjs";
 import { Tag, Typography } from "neetoui";
 import PropTypes from "prop-types";
 import { either, isEmpty, isNil } from "ramda";
@@ -42,7 +43,7 @@ const Item = ({ post }) => {
         </div>
         <div className="flex flex-col items-end space-y-2">
           <div className="text-sm text-gray-500">
-            {new Date(post.created_at).toDateString()}
+            {dayjs(post.updated_at).format("DD MMMM YYYY")}
           </div>
         </div>
       </div>

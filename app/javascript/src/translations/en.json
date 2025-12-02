@@ -9,6 +9,16 @@
     "add": "Add new blog post",
     "edit": "Edit blog post"
   },
+  "table": {
+    "title": "Title",
+    "category": "Category",
+    "status": "Status",
+    "lastPublishedAt": "Last published at"
+  },
+  "myPosts": {
+    "show": "Show my blog posts",
+    "title": "My blog posts"
+  },
   "status": {
     "published": "Publish",
     "draft": "Save as draft"

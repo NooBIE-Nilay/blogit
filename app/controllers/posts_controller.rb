@@ -59,6 +59,10 @@ class PostsController < ApplicationController
     end
 
     def post_params
-      params.require(:post).permit(:title, :description, :status, category_ids: [],)
+      permitted = params.require(:post).permit(:title, :description, :status, category_ids: [],)
+      if permitted[:status] == "published"
+        permitted[:last_published_at] = Time.current
+      end
+      permitted
     end
 end

@@ -3,6 +3,7 @@ import routes from "constants/routes";
 import React from "react";
 
 import { Container, PageLoader } from "components/commons";
+import dayjs from "dayjs";
 import { useShowPost } from "hooks/reactQuery/usePostsApi";
 import { Edit } from "neetoIcons";
 import { Avatar, Button, Tag, Typography } from "neetoui";
@@ -69,7 +70,8 @@ const Show = () => {
                   {post.user.name}
                 </Typography>
                 <Typography className="text-sm font-semibold text-gray-500">
-                  {new Date(post.created_at).toDateString()}
+                  {dayjs(post.last_published_at).isValid() &&
+                    dayjs(post.last_published_at).format("DD MMMM YYYY")}
                 </Typography>
               </div>
             </div>

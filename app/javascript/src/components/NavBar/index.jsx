@@ -5,7 +5,7 @@ import React, { useEffect, useRef } from "react";
 import authApi from "apis/auth";
 import { resetAuthTokens } from "apis/axios";
 import { FilePlusCorner } from "lucide-react";
-import { Articles, Category } from "neetoIcons";
+import { Articles, Category, Folder } from "neetoIcons";
 import { Avatar, Button } from "neetoui";
 import { useTranslation } from "react-i18next";
 import { Link, useHistory } from "react-router-dom";
@@ -112,6 +112,13 @@ const Navbar = () => {
             style="secondary"
             tooltipProps={{ content: t("category.filter") }}
             onClick={() => toggleCategoryPane()}
+          />
+          <Button
+            className="mx-auto flex h-10 w-10 items-center justify-center rounded-md"
+            icon={() => <Folder size={18} />}
+            style="secondary"
+            tooltipProps={{ content: t("myPosts.show") }}
+            onClick={() => history.push(routes.myPosts)}
           />
         </div>
         <div className="" ref={menuRef}>
