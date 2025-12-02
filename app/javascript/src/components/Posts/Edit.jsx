@@ -2,22 +2,22 @@ import routes from "constants/routes";
 
 import React, { useState, useEffect } from "react";
 
-import { Container, PageLoader, PageTitle } from "components/commons";
-import Form from "components/Posts/Form";
+import { Container, PageLoader } from "components/commons";
 import { useShowPost, useUpdatePost } from "hooks/reactQuery/usePostsApi";
 import Logger from "js-logger";
-import { useTranslation } from "react-i18next";
 import { useParams, useHistory } from "react-router-dom";
+
+import Form from "./Form";
+import FormHeader from "./FormHeader";
 
 const Edit = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [status, setStatus] = useState("");
   const [selectedCategories, setSelectedCategories] = useState([]);
 
-  const { history } = useHistory();
+  const history = useHistory();
   const { slug } = useParams();
-
-  const { t } = useTranslation();
 
   const { data: { data: { post = {} } = {} } = {}, isLoading: isPageLoading } =
     useShowPost(slug);
@@ -38,6 +38,7 @@ const Edit = () => {
       payload: {
         title,
         description,
+        status,
         category_ids: selectedCategories.map(category => category.id),
       },
     });
@@ -50,6 +51,7 @@ const Edit = () => {
       setTitle(post.title);
       setDescription(post.description);
       setSelectedCategories(post.categories);
+      setStatus(post.status);
     }
   }, [post, isPageLoading]);
 
@@ -64,10 +66,9 @@ const Edit = () => {
   return (
     <Container>
       <div className="flex flex-col gap-y-8">
-        <PageTitle title={t("posts.edit")} />
+        <FormHeader type="update" {...{ status, setStatus, handleSubmit }} />
         <Form
           {...{
-            handleSubmit,
             isLoading,
             title,
             setTitle,
@@ -76,7 +77,6 @@ const Edit = () => {
             selectedCategories,
             setSelectedCategories,
           }}
-          type="update"
         />
       </div>
     </Container>

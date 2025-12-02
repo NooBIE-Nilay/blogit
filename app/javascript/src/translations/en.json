@@ -9,6 +9,7 @@
     "add": "Add new blog post",
     "edit": "Edit blog post"
   },
+  "status": { "published": "Publish", "draft": "Add to draft" },
   "category": {
     "new": {
       "title": "New Category",
@@ -41,6 +42,7 @@
     "description": "Description",
     "descriptionPlaceholder": "Enter Description",
     "register": "Register",
+    "add": "Add",
     "cancel": "Cancel",
     "submit": "Submit",
     "update": "Update",

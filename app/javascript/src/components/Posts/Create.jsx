@@ -2,21 +2,21 @@ import routes from "constants/routes";
 
 import React, { useState } from "react";
 
-import { Container, PageTitle } from "components/commons";
-import Form from "components/Posts/Form";
+import { Container } from "components/commons";
 import { useCreatePost } from "hooks/reactQuery/usePostsApi";
 import Logger from "js-logger";
-import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
+
+import Form from "./Form";
+import FormHeader from "./FormHeader";
 
 const Create = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [status, setStatus] = useState("draft");
   const [selectedCategories, setSelectedCategories] = useState([]);
 
   const history = useHistory();
-
-  const { t } = useTranslation();
 
   const { mutate: createPost, isLoading } = useCreatePost({
     onSuccess: () => {
@@ -33,23 +33,23 @@ const Create = () => {
       title,
       description,
       category_ids: selectedCategories.map(category => category.id),
+      status,
     });
   };
 
   return (
     <Container>
       <div className="flex flex-col gap-y-8">
-        <PageTitle title={t("posts.new")} />
+        <FormHeader {...{ status, setStatus, handleSubmit }} />
         <Form
           {...{
-            handleSubmit,
             isLoading,
             title,
             setTitle,
             description,
+            setDescription,
             selectedCategories,
             setSelectedCategories,
-            setDescription,
           }}
         />
       </div>
