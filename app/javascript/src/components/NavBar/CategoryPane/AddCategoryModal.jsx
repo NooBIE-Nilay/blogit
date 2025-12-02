@@ -58,12 +58,12 @@ const AddCategoryModal = ({ isAddCategoryOpen, setIsAddCategoryOpen }) => {
         <Modal.Footer className="flex gap-2">
           <Button
             disabled={isAddCategoryLoading}
-            label="Add"
+            label={t("common.add")}
             onClick={handleSubmit}
           />
           <Button
             disabled={isAddCategoryLoading}
-            label="Cancel"
+            label={t("common.cancel")}
             style="secondary"
             onClick={() => setIsAddCategoryOpen(false)}
           />
