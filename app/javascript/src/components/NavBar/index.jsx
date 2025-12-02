@@ -23,7 +23,6 @@ const Navbar = () => {
   const userName = getFromLocalStorage("authUserName");
 
   const menuRef = useRef();
-  const categoryPaneRef = useRef();
 
   const history = useHistory();
   const { t } = useTranslation();
@@ -33,13 +32,6 @@ const Navbar = () => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setIsMenuVisible(false);
       }
-
-      if (
-        categoryPaneRef.current &&
-        !categoryPaneRef.current.contains(event.target)
-      ) {
-        setIsCategoryPaneOpen(false);
-      }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
@@ -47,7 +39,7 @@ const Navbar = () => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [menuRef, categoryPaneRef]);
+  }, [menuRef]);
 
   const handleLogout = async () => {
     try {
@@ -146,7 +138,6 @@ const Navbar = () => {
       </aside>
       <CategoryPane
         {...{
-          categoryPaneRef,
           setIsCategoryPaneOpen,
           isCategoryPaneOpen,
         }}

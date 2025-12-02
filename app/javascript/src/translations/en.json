@@ -10,6 +10,11 @@
     "edit": "Edit blog post"
   },
   "category": {
+    "new": {
+      "title": "New Category",
+      "label": "Category Title",
+      "placeholder": "Enter Category Title"
+    },
     "filter": "Filter by categories",
     "searchPlaceholder": "Search category"
   },

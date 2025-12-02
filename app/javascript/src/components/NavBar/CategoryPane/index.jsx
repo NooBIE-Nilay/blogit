@@ -1,19 +1,20 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
-import classNames from "classnames";
 import { useFetchCategories } from "hooks/reactQuery/useCategoriesApi";
-import { Close, Plus, Search } from "neetoIcons";
+import { Close, Search } from "neetoIcons";
 import { Button, Typography, Input } from "neetoui";
 import { useTranslation } from "react-i18next";
 import useCategoryStore from "stores/useCategoryStore";
 
-const CategoryPane = ({
-  categoryPaneRef,
-  setIsCategoryPaneOpen,
-  isCategoryPaneOpen,
-}) => {
+import AddCategoryModal from "./AddCategoryModal";
+import FilteredCategories from "./FilteredCategories";
+
+const CategoryPane = ({ setIsCategoryPaneOpen, isCategoryPaneOpen }) => {
   const [showSearchInput, setShowSearchInput] = useState(false);
+  const [isAddCategoryOpen, setIsAddCategoryOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+
+  const categoryPaneRef = useRef();
 
   const { t } = useTranslation();
 
@@ -22,6 +23,24 @@ const CategoryPane = ({
   const { toggleCategory, isSelected } = useCategoryStore();
 
   const categories = data?.data.categories;
+
+  useEffect(() => {
+    const handleClickOutside = event => {
+      if (
+        categoryPaneRef.current &&
+        !categoryPaneRef.current.contains(event.target) &&
+        !isAddCategoryOpen
+      ) {
+        setIsCategoryPaneOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [categoryPaneRef, isAddCategoryOpen]);
 
   const filteredCategories = useMemo(() => {
     if (!categories) return [];
@@ -46,7 +65,7 @@ const CategoryPane = ({
           >
             {t("common.category")}
           </Typography>
-          <Button icon={() => <Plus />} size="small" style="text" />
+          <AddCategoryModal {...{ isAddCategoryOpen, setIsAddCategoryOpen }} />
           <Button
             icon={() => <Search />}
             size="small"
@@ -69,25 +88,9 @@ const CategoryPane = ({
             onChange={event => setSearchTerm(event.target.value)}
           />
         )}
-        <div className="mt-4 flex flex-col gap-2">
-          {filteredCategories?.map(category => (
-            <div
-              key={category.id}
-              className={classNames(
-                "relative mx-2  flex items-center justify-center rounded-md  py-2 font-medium ",
-                {
-                  "bg-gray-500 text-white hover:bg-white hover:text-black":
-                    isSelected(category),
-                  "bg-white  hover:bg-gray-500 hover:text-white":
-                    !isSelected(category),
-                }
-              )}
-              onClick={() => toggleCategory(category)}
-            >
-              {category.name}
-            </div>
-          ))}
-        </div>
+        <FilteredCategories
+          {...{ filteredCategories, isSelected, toggleCategory }}
+        />
       </div>
     </div>
   );
