@@ -11,6 +11,18 @@ const useFetchPosts = ({ selectedCategoryIds = [], page, perPage }) =>
     keepPreviousData: true,
   });
 
+const useFetchMyPosts = ({ selectedCategoryIds = [], page, perPage }) =>
+  useQuery({
+    queryKey: [QUERY_KEYS.MY_POSTS, selectedCategoryIds, page, perPage],
+    queryFn: () =>
+      postsApi.fetchMyPosts({
+        categoryIds: selectedCategoryIds,
+        page,
+        perPage,
+      }),
+    keepPreviousData: true,
+  });
+
 const useShowPost = slug =>
   useQuery({
     queryKey: [QUERY_KEYS.POSTS, slug],
@@ -66,6 +78,7 @@ const useDeletePost = ({ onSuccess, onError } = {}) => {
 
 export {
   useFetchPosts,
+  useFetchMyPosts,
   useShowPost,
   useCreatePost,
   useUpdatePost,

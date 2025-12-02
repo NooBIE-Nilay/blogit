@@ -4,7 +4,7 @@ import routes from "constants/routes";
 import React, { useEffect } from "react";
 
 import { PageLoader, PageTitle, Container } from "components/commons";
-import { useFetchPosts } from "hooks/reactQuery/usePostsApi";
+import { useFetchMyPosts } from "hooks/reactQuery/usePostsApi";
 import useQueryParams from "hooks/useQueryParams";
 import { Pagination } from "neetoui";
 import { mergeLeft, propOr } from "ramda";
@@ -27,7 +27,7 @@ const MyPosts = () => {
   const pageNo = Number(propOr(DEFAULT_PAGE_NUMBER, "page", queryParams));
   const perPage = Number(propOr(DEFAULT_PAGE_SIZE, "perPage", queryParams));
 
-  const { data, isLoading } = useFetchPosts({
+  const { data, isLoading } = useFetchMyPosts({
     selectedCategoryIds: selectedCategories.map(category => category.id),
     page: pageNo,
     perPage,
@@ -38,7 +38,10 @@ const MyPosts = () => {
 
   const handlePageNavigation = page => {
     history.replace(
-      buildUrl(routes.root, mergeLeft({ page, per_page: perPage }, queryParams))
+      buildUrl(
+        routes.myPosts,
+        mergeLeft({ page, per_page: perPage }, queryParams)
+      )
     );
   };
 

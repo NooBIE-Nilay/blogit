@@ -1,26 +1,18 @@
 # frozen_string_literal: true
 
 class PostsController < ApplicationController
-  after_action :verify_authorized, except: :index
-  after_action :verify_policy_scoped, only: :index
+  after_action :verify_authorized, except: %i[index my_posts]
+  after_action :verify_policy_scoped, only: %i[index my_posts]
   before_action :load_post!, only: %i[show update destroy]
 
   def index
-    @posts = policy_scope(Post)
-    @posts = Post.where(organization_id: @current_user.organization_id)
+    @posts = apply_filters(policy_scope(Post))
+  end
 
-    if params[:category_ids].present?
-      category_ids = Array(params[:category_ids]).map(&:to_i)
-
-      @posts = @posts.joins(:categories)
-        .where(categories: { id: category_ids })
-        .distinct
-    end
-
-    @posts = @posts
-      .order(created_at: :desc)
-      .page(params[:page] || 1)
-      .per(params[:per_page] || 4)
+  def my_posts
+    @posts = apply_filters(
+      policy_scope(Post).where(user_id: @current_user.id)
+       )
   end
 
   def show
@@ -64,5 +56,23 @@ class PostsController < ApplicationController
         permitted[:last_published_at] = Time.current
       end
       permitted
+    end
+
+    def apply_filters(scope)
+      scope =
+        scope.where(organization_id: @current_user.organization_id)
+
+      if params[:category_ids].present?
+        ids = Array(params[:category_ids]).map(&:to_i)
+
+        scope =
+          scope.joins(:categories)
+            .where(categories: { id: ids })
+            .distinct
+      end
+
+      scope.order(created_at: :desc)
+        .page(params[:page] || 1)
+        .per(params[:per_page] || 4)
     end
 end
