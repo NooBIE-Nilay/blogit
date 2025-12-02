@@ -37,7 +37,7 @@ const useUpdatePost = ({ onSuccess, onError } = {}) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ payload, slug }) => postsApi.update(payload, slug),
+    mutationFn: ({ payload, slug }) => postsApi.update({ payload, slug }),
     onSuccess: (...args) => {
       queryClient.invalidateQueries([QUERY_KEYS.POSTS]);
       onSuccess?.(...args);

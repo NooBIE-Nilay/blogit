@@ -9,6 +9,7 @@ import { Avatar, Button, Tag, Typography } from "neetoui";
 import { either, isEmpty, isNil } from "ramda";
 import { useTranslation } from "react-i18next";
 import { useHistory, useParams } from "react-router-dom";
+import { getFromLocalStorage } from "utils/storage";
 
 const Show = () => {
   const { slug } = useParams();
@@ -23,6 +24,8 @@ const Show = () => {
   const updatePost = () => {
     history.push(routes.posts.edit.replace(":slug", slug));
   };
+
+  const userId = getFromLocalStorage("authUserId");
 
   if (isPageLoading) {
     return <PageLoader />;
@@ -72,15 +75,17 @@ const Show = () => {
             </div>
             <pre className="text-wrap">{post?.description}</pre>
           </div>
-          <div className="flex items-center justify-end gap-x-3">
-            <Button
-              icon={() => <Edit />}
-              size="small"
-              style="secondary"
-              tooltipProps={{ content: t("posts.edit") }}
-              onClick={updatePost}
-            />
-          </div>
+          {userId === post.user.id && (
+            <div className="flex items-center justify-end gap-x-3">
+              <Button
+                icon={() => <Edit />}
+                size="small"
+                style="secondary"
+                tooltipProps={{ content: t("posts.edit") }}
+                onClick={updatePost}
+              />
+            </div>
+          )}
         </div>
       </div>
     </Container>
