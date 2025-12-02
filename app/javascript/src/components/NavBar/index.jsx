@@ -4,8 +4,7 @@ import React, { useEffect, useRef } from "react";
 
 import authApi from "apis/auth";
 import { resetAuthTokens } from "apis/axios";
-import { FilePlusCorner } from "lucide-react";
-import { Articles, Category, Folder } from "neetoIcons";
+import { List, Edit, ListDetails, Folder } from "neetoIcons";
 import { Avatar, Button } from "neetoui";
 import { useTranslation } from "react-i18next";
 import { Link, useHistory } from "react-router-dom";
@@ -16,8 +15,7 @@ import BlogitLogo from "./BlogitLogo";
 import CategoryPane from "./CategoryPane";
 
 const Navbar = () => {
-  const { isCategoryPaneOpen, setIsCategoryPaneOpen, toggleCategoryPane } =
-    useUIStore();
+  const { isCategoryPaneOpen, setIsCategoryPaneOpen } = useUIStore();
   const [isMenuVisible, setIsMenuVisible] = React.useState(false);
 
   const userName = getFromLocalStorage("authUserName");
@@ -59,8 +57,9 @@ const Navbar = () => {
 
   return (
     <>
-      {/* Mobile Topbar */}
+      {/* For mobile screens */}
       <header className="border-b bg-white md:hidden">
+        {/* TODO: Update it */}
         <div className="mx-auto max-w-6xl px-4">
           <div className="flex h-14 items-center justify-between">
             <Link to={routes.dashboard}>
@@ -69,14 +68,14 @@ const Navbar = () => {
             <div className="mr-3 flex gap-2">
               <Button
                 className="flex h-9 w-9 items-center justify-center rounded-md"
-                icon={() => <Articles size="20" />}
+                icon={() => <List />}
                 style="primary"
                 tooltipProps={{ content: t("posts.showAll") }}
                 onClick={() => history.push(routes.dashboard)}
               />
               <Button
                 className="flex h-9 w-9 items-center justify-center rounded-md"
-                icon={() => <FilePlusCorner size="18" />}
+                icon={() => <ListDetails />}
                 style="primary"
                 tooltipProps={{ content: t("posts.add") }}
                 onClick={() => history.push(routes.posts.create)}
@@ -85,7 +84,7 @@ const Navbar = () => {
           </div>
         </div>
       </header>
-      {/* Sidebar for Larger Screens */}
+      {/* For larger screens */}
       <aside className=" hidden justify-between pb-8 md:fixed md:left-0 md:top-0 md:flex md:h-screen md:w-20 md:flex-col md:items-center md:border-gray-200 md:bg-gray-50">
         <div className="flex flex-col  gap-y-3 pt-4">
           <Link aria-label="Home" to={routes.dashboard}>
@@ -94,28 +93,28 @@ const Navbar = () => {
           <hr className=" border-gray-300/60" />
           <Button
             className="mx-auto flex h-10 w-10 items-center justify-center rounded-md"
-            icon={() => <Articles size={18} />}
+            icon={() => <List size={20} />}
             style="secondary"
             tooltipProps={{ content: t("posts.showAll") }}
             onClick={() => history.push(routes.dashboard)}
           />
           <Button
             className="mx-auto flex h-10 w-10 items-center justify-center rounded-md"
-            icon={() => <FilePlusCorner size={18} />}
+            icon={() => <Edit size={20} />}
             style="secondary"
             tooltipProps={{ content: t("posts.add") }}
             onClick={() => history.push(routes.posts.create)}
           />
           <Button
             className="mx-auto flex h-10 w-10 items-center justify-center rounded-md"
-            icon={() => <Category size={20} />}
+            icon={() => <ListDetails size={20} />}
             style="secondary"
             tooltipProps={{ content: t("category.filter") }}
-            onClick={() => toggleCategoryPane()}
+            onClick={() => setIsCategoryPaneOpen(prevState => !prevState)}
           />
           <Button
             className="mx-auto flex h-10 w-10 items-center justify-center rounded-md"
-            icon={() => <Folder size={18} />}
+            icon={() => <Folder size={20} />}
             style="secondary"
             tooltipProps={{ content: t("myPosts.show") }}
             onClick={() => history.push(routes.myPosts)}
