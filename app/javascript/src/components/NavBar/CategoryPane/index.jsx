@@ -4,7 +4,6 @@ import { useFetchCategories } from "hooks/reactQuery/useCategoriesApi";
 import { Close, Search } from "neetoIcons";
 import { Button, Typography, Input } from "neetoui";
 import { useTranslation } from "react-i18next";
-import useCategoryStore from "stores/useCategoryStore";
 
 import AddCategoryModal from "./AddCategoryModal";
 import FilteredCategories from "./FilteredCategories";
@@ -19,8 +18,6 @@ const CategoryPane = ({ setIsCategoryPaneOpen, isCategoryPaneOpen }) => {
   const { t } = useTranslation();
 
   const { data } = useFetchCategories();
-
-  const { toggleCategory, isSelected } = useCategoryStore();
 
   const categories = data?.data.categories;
 
@@ -88,9 +85,7 @@ const CategoryPane = ({ setIsCategoryPaneOpen, isCategoryPaneOpen }) => {
             onChange={event => setSearchTerm(event.target.value)}
           />
         )}
-        <FilteredCategories
-          {...{ filteredCategories, isSelected, toggleCategory }}
-        />
+        <FilteredCategories {...{ filteredCategories }} />
       </div>
     </div>
   );
