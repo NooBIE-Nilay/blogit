@@ -3,7 +3,11 @@ import routes from "constants/routes";
 import React, { useState, useEffect } from "react";
 
 import { Container, PageLoader } from "components/commons";
-import { useShowPost, useUpdatePost } from "hooks/reactQuery/usePostsApi";
+import {
+  useShowPost,
+  useUpdatePost,
+  useDeletePost,
+} from "hooks/reactQuery/usePostsApi";
 import Logger from "js-logger";
 import { useParams, useHistory } from "react-router-dom";
 
@@ -31,7 +35,7 @@ const Edit = () => {
     },
   });
 
-  const handleSubmit = async event => {
+  const handleUpdate = async event => {
     event.preventDefault();
     updatePost({
       slug,
@@ -44,8 +48,22 @@ const Edit = () => {
     });
   };
 
+  const { mutate: deletePost, isLoading: isDeleteLoading } = useDeletePost({
+    onSuccess: () => {
+      history.push(routes.root);
+    },
+    onError: error => {
+      Logger.error(error);
+    },
+  });
+
+  const handleDelete = event => {
+    event.stopPropagation();
+    deletePost(slug);
+  };
+
   useEffect(() => {
-    if (isPageLoading) return;
+    if (isPageLoading || isDeleteLoading) return;
 
     if (post) {
       setTitle(post.title);
@@ -53,7 +71,7 @@ const Edit = () => {
       setSelectedCategories(post.categories);
       setStatus(post.status);
     }
-  }, [post, isPageLoading]);
+  }, [post, isPageLoading, isDeleteLoading]);
 
   if (isPageLoading) {
     return (
@@ -66,7 +84,17 @@ const Edit = () => {
   return (
     <Container>
       <div className="flex flex-col gap-y-8">
-        <FormHeader type="update" {...{ status, setStatus, handleSubmit }} />
+        <FormHeader
+          handleSubmit={handleUpdate}
+          type="update"
+          {...{
+            isDeleteLoading,
+            status,
+            setStatus,
+            post,
+            handleDelete,
+          }}
+        />
         <Form
           {...{
             isLoading,

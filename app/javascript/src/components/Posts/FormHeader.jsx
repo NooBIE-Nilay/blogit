@@ -2,13 +2,22 @@ import routes from "constants/routes";
 
 import React from "react";
 
-import { ActionDropdown, Button } from "neetoui";
+import { MenuHorizontal } from "neetoIcons";
+import { ActionDropdown, Button, Dropdown } from "neetoui";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 
-import PageTitle from "../commons/PageTitle";
+import { DeleteButton, PageTitle } from "../commons";
 
-const FormHeader = ({ status, setStatus, type = "create", handleSubmit }) => {
+const FormHeader = ({
+  status,
+  setStatus,
+  type = "create",
+  handleSubmit,
+  handleDelete,
+  isDeleteLoading,
+  post,
+}) => {
   const { t } = useTranslation();
   const history = useHistory();
 
@@ -39,10 +48,22 @@ const FormHeader = ({ status, setStatus, type = "create", handleSubmit }) => {
                 setStatus(event.target.id);
               }}
             >
-              {t(`status.draft`)}
+              {t("status.draft")}
             </MenuItem.Button>
           </Menu>
         </ActionDropdown>
+        {type === "update" && (
+          <Dropdown
+            buttonStyle="secondary"
+            closeOnOutsideClick={false}
+            icon={() => <MenuHorizontal />}
+          >
+            <DeleteButton
+              isLoading={isDeleteLoading}
+              {...{ post, handleDelete }}
+            />
+          </Dropdown>
+        )}
       </div>
     </div>
   );

@@ -9,7 +9,10 @@
     "add": "Add new blog post",
     "edit": "Edit blog post"
   },
-  "status": { "published": "Publish", "draft": "Add to draft" },
+  "status": {
+    "published": "Publish",
+    "draft": "Save as draft"
+  },
   "category": {
     "new": {
       "title": "New Category",
@@ -37,6 +40,7 @@
   },
   "common": {
     "title": "Title",
+    "delete": "Delete",
     "titlePlaceholder": "Enter title",
     "category": "Category",
     "description": "Description",

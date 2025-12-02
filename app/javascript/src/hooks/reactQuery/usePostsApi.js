@@ -53,9 +53,10 @@ const useDeletePost = ({ onSuccess, onError } = {}) => {
 
   return useMutation({
     mutationFn: slug => postsApi.destroy(slug),
-    onSuccess: (...args) => {
+    onSuccess: (data, slug) => {
+      queryClient.removeQueries([QUERY_KEYS.POSTS, slug]);
       queryClient.invalidateQueries([QUERY_KEYS.POSTS]);
-      onSuccess?.(...args);
+      onSuccess?.(data);
     },
     onError: (...args) => {
       onError?.(...args);
