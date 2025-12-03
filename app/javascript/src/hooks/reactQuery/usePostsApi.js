@@ -51,7 +51,7 @@ const useUpdatePost = ({ onSuccess, onError } = {}) => {
 
   return useMutation({
     mutationFn: ({ payload, slug }) => postsApi.update({ payload, slug }),
-    onSuccess: (data, slug) => {
+    onSuccess: (data, { slug }) => {
       queryClient.invalidateQueries([QUERY_KEYS.POSTS]);
       queryClient.invalidateQueries([QUERY_KEYS.MY_POSTS]);
       queryClient.invalidateQueries([QUERY_KEYS.POST, slug]);

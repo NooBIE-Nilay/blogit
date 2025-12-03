@@ -9,6 +9,7 @@ const setToLocalStorage = ({ key, value }) => {
   localStorage.setItem(key, value);
 };
 
+const deleteFromLocalStorage = key => localStorage.removeItem(key);
 const getFromLocalStorage = key => {
   try {
     return JSON.parse(localStorage.getItem(key));
@@ -17,4 +18,9 @@ const getFromLocalStorage = key => {
   }
 };
 
-export { setToLocalStorage, setAuthToLocalStorage, getFromLocalStorage };
+export {
+  setToLocalStorage,
+  setAuthToLocalStorage,
+  getFromLocalStorage,
+  deleteFromLocalStorage,
+};

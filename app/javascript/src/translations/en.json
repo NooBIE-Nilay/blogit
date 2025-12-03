@@ -5,6 +5,9 @@
     "empty": "No blogs to see. Create some blogs to display here!",
     "empty_filter": "No blogs to see. Maybe try updating filters",
     "showAll": "Show all posts",
+    "preview": {
+      "empty": "Something went wrong, unable to load blog preview."
+    },
     "title": "Blog posts",
     "new": "New blog post",
     "add": "Add new blog post",
@@ -59,6 +62,7 @@
     "passwordPlaceholder": "******"
   },
   "common": {
+    "home": "Redirect to home",
     "title": "Title",
     "delete": "Delete",
     "articles": " articles",

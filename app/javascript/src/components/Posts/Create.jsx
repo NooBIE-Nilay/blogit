@@ -1,12 +1,19 @@
 import routes from "constants/routes";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { Container } from "components/commons";
 import { useCreatePost } from "hooks/reactQuery/usePostsApi";
+import useFuncDebounce from "hooks/useFuncDebounce";
 import Logger from "js-logger";
 import { useHistory } from "react-router-dom";
+import {
+  setToLocalStorage,
+  getFromLocalStorage,
+  deleteFromLocalStorage,
+} from "utils/storage";
 
+import { CREATE_POST_PREVIEW_DATA } from "./constants";
 import Form from "./Form";
 import FormHeader from "./FormHeader";
 
@@ -20,6 +27,7 @@ const Create = () => {
 
   const { mutate: createPost, isLoading } = useCreatePost({
     onSuccess: () => {
+      deleteFromLocalStorage(CREATE_POST_PREVIEW_DATA);
       history.push(routes.root);
     },
     onError: error => {
@@ -36,6 +44,41 @@ const Create = () => {
       status,
     });
   };
+
+  const savePreview = () => {
+    const payload = {
+      title,
+      description,
+      categories: selectedCategories,
+      status,
+      user: {
+        id: getFromLocalStorage("authUserId"),
+        name: getFromLocalStorage("authUserName"),
+      },
+      updated_at: new Date().toISOString(),
+    };
+
+    setToLocalStorage({
+      key: CREATE_POST_PREVIEW_DATA,
+      value: JSON.stringify(payload),
+    });
+  };
+
+  const debouncedSave = useFuncDebounce(savePreview);
+
+  useEffect(() => {
+    const savedPreview = getFromLocalStorage(CREATE_POST_PREVIEW_DATA);
+    if (savedPreview) {
+      setTitle(savedPreview.title || "");
+      setDescription(savedPreview.description || "");
+      setSelectedCategories(savedPreview.categories || []);
+      setStatus(savedPreview.status || "draft");
+    }
+  }, []);
+
+  useEffect(() => {
+    debouncedSave();
+  }, [title, description, selectedCategories, status]);
 
   return (
     <Container>

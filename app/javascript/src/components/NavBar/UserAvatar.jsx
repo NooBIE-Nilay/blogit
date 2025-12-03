@@ -1,3 +1,5 @@
+import routes from "constants/routes";
+
 import React from "react";
 
 import authApi from "apis/auth";
@@ -5,12 +7,15 @@ import { resetAuthTokens } from "apis/axios";
 import Logger from "js-logger";
 import { Avatar, Button, Dropdown, Typography } from "neetoui";
 import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
 import { getFromLocalStorage, setAuthToLocalStorage } from "utils/storage";
 
 const UserAvatar = () => {
   const { Menu, Divider } = Dropdown;
 
   const { t } = useTranslation();
+
+  const history = useHistory();
 
   const userName = getFromLocalStorage("authUserName");
 
@@ -24,7 +29,7 @@ const UserAvatar = () => {
         userName: null,
       });
       resetAuthTokens();
-      window.location.href = "/";
+      history.push(routes.root);
     } catch (error) {
       Logger.error(error);
     }

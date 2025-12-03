@@ -1,8 +1,8 @@
 import routes from "constants/routes";
 
-import React from "react";
+import React, { useState } from "react";
 
-import { MenuHorizontal } from "neetoIcons";
+import { MenuHorizontal, ExternalLink } from "neetoIcons";
 import { ActionDropdown, Button, Dropdown } from "neetoui";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
@@ -16,15 +16,29 @@ const FormHeader = ({
   handleSubmit,
   post,
 }) => {
+  const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false);
   const { t } = useTranslation();
   const history = useHistory();
 
   const { Menu, MenuItem } = ActionDropdown;
 
+  const handlePreview = () => {
+    if (type === "update") {
+      history.push(routes.posts.preview.edit.replace(":slug", post.slug));
+    } else {
+      history.push(routes.posts.preview.create);
+    }
+  };
+
   return (
     <div className="flex w-full items-center justify-between  pr-6">
       <PageTitle title={t(type === "create" ? "posts.new" : "posts.edit")} />
       <div className="flex gap-2">
+        <Button
+          icon={() => <ExternalLink />}
+          style="text"
+          onClick={handlePreview}
+        />
         <Button
           label="Cancel"
           style="secondary"
@@ -52,11 +66,13 @@ const FormHeader = ({
         </ActionDropdown>
         {type === "update" && (
           <Dropdown
-            buttonStyle="secondary"
+            buttonStyle="text"
             closeOnOutsideClick={false}
             icon={() => <MenuHorizontal />}
           >
-            <DeleteButton {...{ post }} />
+            <DeleteButton
+              {...{ post, isDeleteAlertOpen, setIsDeleteAlertOpen }}
+            />
           </Dropdown>
         )}
       </div>

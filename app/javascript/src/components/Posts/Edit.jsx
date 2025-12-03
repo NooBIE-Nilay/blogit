@@ -4,9 +4,16 @@ import React, { useState, useEffect } from "react";
 
 import { Container, PageLoader } from "components/commons";
 import { useShowPost, useUpdatePost } from "hooks/reactQuery/usePostsApi";
+import useFuncDebounce from "hooks/useFuncDebounce";
 import Logger from "js-logger";
 import { useParams, useHistory } from "react-router-dom";
+import {
+  setToLocalStorage,
+  getFromLocalStorage,
+  deleteFromLocalStorage,
+} from "utils/storage";
 
+import { EDIT_POST_PREVIEW_DATA } from "./constants";
 import Form from "./Form";
 import FormHeader from "./FormHeader";
 
@@ -25,6 +32,7 @@ const Edit = () => {
   const { mutate: updatePost, isLoading } = useUpdatePost({
     onSuccess: () => {
       history.push(routes.dashboard);
+      deleteFromLocalStorage(`${EDIT_POST_PREVIEW_DATA}:${slug}`);
     },
     onError: error => {
       Logger.error(error);
@@ -48,12 +56,46 @@ const Edit = () => {
     if (isPageLoading) return;
 
     if (post) {
-      setTitle(post.title);
-      setDescription(post.description);
-      setSelectedCategories(post.categories);
-      setStatus(post.status);
+      const previewKey = `${EDIT_POST_PREVIEW_DATA}:${slug}`;
+      const savedPreview = getFromLocalStorage(previewKey);
+
+      if (savedPreview && savedPreview.updated_at > post.updated_at) {
+        setTitle(savedPreview.title || post.title);
+        setDescription(savedPreview.description || post.description);
+        setSelectedCategories(savedPreview.categories || post.categories);
+        setStatus(savedPreview.status || post.status);
+      } else {
+        setTitle(post.title);
+        setDescription(post.description);
+        setSelectedCategories(post.categories);
+        setStatus(post.status);
+      }
     }
-  }, [post, isPageLoading]);
+  }, [post, isPageLoading, slug]);
+
+  const savePreview = () => {
+    const previewKey = `${EDIT_POST_PREVIEW_DATA}:${slug}`;
+    const payload = {
+      title,
+      description,
+      categories: selectedCategories,
+      status,
+      user: {
+        id: getFromLocalStorage("authUserId"),
+        name: getFromLocalStorage("authUserName"),
+      },
+      updated_at: new Date().toISOString(),
+    };
+
+    setToLocalStorage({ key: previewKey, value: JSON.stringify(payload) });
+  };
+
+  const debouncedSave = useFuncDebounce(savePreview);
+
+  useEffect(() => {
+    if (!slug) return;
+    debouncedSave();
+  }, [title, description, selectedCategories, status, slug]);
 
   if (isPageLoading) {
     return (

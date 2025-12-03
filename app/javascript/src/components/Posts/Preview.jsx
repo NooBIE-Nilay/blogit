@@ -2,37 +2,53 @@ import routes from "constants/routes";
 
 import React from "react";
 
-import { Container, PageLoader } from "components/commons";
-import { useShowPost } from "hooks/reactQuery/usePostsApi";
-import { Edit } from "neetoIcons";
-import { Avatar, Button, Tag, Typography } from "neetoui";
+import { Container } from "components/commons";
+import useQueryParams from "hooks/useQueryParams";
+import { Avatar, Tag, Typography, NoData } from "neetoui";
 import { either, isEmpty, isNil } from "ramda";
 import { useTranslation } from "react-i18next";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { getLastUpdatedDate } from "utils/date";
 import { getFromLocalStorage } from "utils/storage";
 
-const Show = () => {
-  const { slug } = useParams();
+import {
+  CREATE_POST_PREVIEW_DATA,
+  EDIT_POST_PREVIEW_DATA,
+  POST_STATUS,
+} from "./constants";
+
+const Preview = () => {
+  const { slug, source } = useQueryParams();
 
   const history = useHistory();
 
   const { t } = useTranslation();
 
-  const { data, isLoading: isPageLoading } = useShowPost(slug);
-  const post = data?.data.post;
+  const previewKey =
+    source === "edit" && slug
+      ? `${EDIT_POST_PREVIEW_DATA}:${slug}`
+      : CREATE_POST_PREVIEW_DATA;
 
-  const updatePost = () => {
-    history.push(routes.posts.edit.replace(":slug", slug));
-  };
+  const post = getFromLocalStorage(previewKey);
+  const isPostInvalid = isNil(post) || isEmpty(post);
 
-  const userId = getFromLocalStorage("authUserId");
+  if (isPostInvalid) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <NoData
+          title={t("posts.preview.empty")}
+          primaryButtonProps={{
+            label: t("common.home"),
+            onClick: () => history.push(routes.root),
+          }}
+        />
+      </div>
+    );
+  }
 
   const lastUpdatedDate = getLastUpdatedDate(post);
 
-  if (isPageLoading) {
-    return <PageLoader />;
-  }
+  const isDraft = post.status === POST_STATUS.DRAFT;
 
   return (
     <Container>
@@ -61,9 +77,9 @@ const Show = () => {
           <div className="flex flex-col gap-y-2">
             <div className="mt-6 flex items-center gap-2">
               <Typography className="font-semibold" style="h1">
-                {post?.title}
+                {post.title}
               </Typography>
-              {post.status === "draft" && (
+              {isDraft && (
                 <Tag
                   className="border-red-500 px-4  text-red-500"
                   label={t("status.draftTitle")}
@@ -84,21 +100,10 @@ const Show = () => {
             </div>
             <pre className="text-wrap">{post?.description}</pre>
           </div>
-          {userId === post.user.id && (
-            <div className="flex items-center justify-end gap-x-3">
-              <Button
-                icon={() => <Edit />}
-                size="small"
-                style="secondary"
-                tooltipProps={{ content: t("posts.edit") }}
-                onClick={updatePost}
-              />
-            </div>
-          )}
         </div>
       </div>
     </Container>
   );
 };
 
-export default Show;
+export default Preview;
