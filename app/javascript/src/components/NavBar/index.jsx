@@ -1,65 +1,27 @@
 import routes from "constants/routes";
 
-import React, { useEffect, useRef } from "react";
+import React from "react";
 
-import authApi from "apis/auth";
-import { resetAuthTokens } from "apis/axios";
 import { List, Edit, ListDetails, Folder } from "neetoIcons";
-import { Avatar, Button } from "neetoui";
+import { Button } from "neetoui";
 import { useTranslation } from "react-i18next";
 import { Link, useHistory } from "react-router-dom";
 import useUIStore from "stores/useUIStore";
-import { getFromLocalStorage, setToLocalStorage } from "utils/storage";
 
 import BlogitLogo from "./BlogitLogo";
 import CategoryPane from "./CategoryPane";
+import UserAvatar from "./UserAvatar";
 
 const Navbar = () => {
   const { isCategoryPaneOpen, setIsCategoryPaneOpen } = useUIStore();
-  const [isMenuVisible, setIsMenuVisible] = React.useState(false);
-
-  const userName = getFromLocalStorage("authUserName");
-
-  const menuRef = useRef();
 
   const history = useHistory();
   const { t } = useTranslation();
-
-  useEffect(() => {
-    const handleClickOutside = event => {
-      if (menuRef.current && !menuRef.current.contains(event.target)) {
-        setIsMenuVisible(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [menuRef]);
-
-  const handleLogout = async () => {
-    try {
-      await authApi.logout();
-      setToLocalStorage({
-        authToken: null,
-        email: null,
-        userId: null,
-        userName: null,
-      });
-      resetAuthTokens();
-      window.location.href = "/";
-    } catch (error) {
-      logger.error(error);
-    }
-  };
 
   return (
     <>
       {/* For mobile screens */}
       <header className="border-b bg-white md:hidden">
-        {/* TODO: Update it */}
         <div className="mx-auto max-w-6xl px-4">
           <div className="flex h-14 items-center justify-between">
             <Link to={routes.dashboard}>
@@ -121,27 +83,7 @@ const Navbar = () => {
             onClick={() => history.push(routes.myPosts)}
           />
         </div>
-        <div className="" ref={menuRef}>
-          <Avatar
-            user={{
-              name: userName,
-            }}
-            onClick={() => setIsMenuVisible(prev => !prev)}
-          />
-          {isMenuVisible && (
-            <div className="absolute bottom-12 z-20 mt-2 w-48 rounded-md border border-gray-300 bg-white py-1 shadow-xl">
-              <span className="p-2 font-semibold text-gray-500">
-                {userName}
-              </span>
-              <div
-                className="block cursor-pointer px-3 py-1.5 text-sm text-gray-800 hover:bg-gray-100"
-                onClick={handleLogout}
-              >
-                {t("auth.logoutTitle")}
-              </div>
-            </div>
-          )}
-        </div>
+        <UserAvatar />
       </aside>
       <CategoryPane
         {...{
