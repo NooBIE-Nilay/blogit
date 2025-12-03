@@ -12,9 +12,10 @@ const FilteredCategories = ({ filteredCategories }) => {
         <div
           key={category.id}
           className={classNames(
-            "relative mx-2  flex items-center justify-center rounded-md  bg-white py-2 font-medium hover:bg-gray-400 hover:text-white",
+            "relative mx-2  flex items-center justify-center rounded-md   py-2 font-medium hover:bg-gray-400 hover:text-white ",
             {
-              "bg-gray-600 ": isSelected(category),
+              "bg-gray-600 text-white": isSelected(category),
+              "bg-white ": !isSelected(category),
             }
           )}
           onClick={() => toggleCategory(category)}

@@ -19,7 +19,7 @@ const useCategoryStore = create(
 
       clear: () => set({ selectedCategories: [] }),
 
-      isSelected: category => findById(category.id, get().selectedCategories),
+      isSelected: category => !!findById(category.id, get().selectedCategories),
     }),
     { name: "categoryStore" }
   )
