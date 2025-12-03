@@ -3,13 +3,13 @@ import routes from "constants/routes";
 import React from "react";
 
 import { Container, PageLoader } from "components/commons";
-import dayjs from "dayjs";
 import { useShowPost } from "hooks/reactQuery/usePostsApi";
 import { Edit } from "neetoIcons";
 import { Avatar, Button, Tag, Typography } from "neetoui";
 import { either, isEmpty, isNil } from "ramda";
 import { useTranslation } from "react-i18next";
 import { useHistory, useParams } from "react-router-dom";
+import { getLastUpdatedDate } from "utils/date";
 import { getFromLocalStorage } from "utils/storage";
 
 const Show = () => {
@@ -28,6 +28,8 @@ const Show = () => {
 
   const userId = getFromLocalStorage("authUserId");
 
+  const lastUpdatedDate = getLastUpdatedDate();
+
   if (isPageLoading) {
     return <PageLoader />;
   }
@@ -44,17 +46,14 @@ const Show = () => {
             />
           ) : (
             <div className="flex gap-2">
-              {post.categories.map(
-                category => (
-                  <Tag
-                    className="mt-2 capitalize"
-                    key={category.id}
-                    label={category.name}
-                    style="success"
-                  />
-                ),
-                []
-              )}
+              {post.categories.map(category => (
+                <Tag
+                  className="mt-2 capitalize"
+                  key={category.id}
+                  label={category.name}
+                  style="success"
+                />
+              ))}
             </div>
           )}
         </div>
@@ -79,8 +78,7 @@ const Show = () => {
                   {post.user.name}
                 </Typography>
                 <Typography className="text-sm font-semibold text-gray-500">
-                  {dayjs(post.last_published_at).isValid() &&
-                    dayjs(post.last_published_at).format("DD MMMM YYYY")}
+                  {lastUpdatedDate}
                 </Typography>
               </div>
             </div>

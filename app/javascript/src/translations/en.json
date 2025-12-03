@@ -10,6 +10,10 @@
     "add": "Add new blog post",
     "edit": "Edit blog post"
   },
+  "date": {
+    "published": "Last published",
+    "created": "Draft created on"
+  },
   "table": {
     "title": "Title",
     "category": "Category",

@@ -1,8 +1,12 @@
-const setToLocalStorage = ({ authToken, email, userId, userName }) => {
+const setAuthToLocalStorage = ({ authToken, email, userId, userName }) => {
   localStorage.setItem("authToken", JSON.stringify(authToken));
   localStorage.setItem("authEmail", JSON.stringify(email));
   localStorage.setItem("authUserId", JSON.stringify(userId));
   localStorage.setItem("authUserName", JSON.stringify(userName));
+};
+
+const setToLocalStorage = ({ key, value }) => {
+  localStorage.setItem(key, value);
 };
 
 const getFromLocalStorage = key => {
@@ -13,4 +17,4 @@ const getFromLocalStorage = key => {
   }
 };
 
-export { setToLocalStorage, getFromLocalStorage };
+export { setToLocalStorage, setAuthToLocalStorage, getFromLocalStorage };

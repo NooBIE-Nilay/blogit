@@ -3,7 +3,7 @@ import { API_ENDPOINTS } from "constants/axios";
 import axios from "axios";
 import { Toastr } from "components/commons";
 import { keysToSnakeCase } from "neetoCist";
-import { setToLocalStorage, getFromLocalStorage } from "utils/storage";
+import { setAuthToLocalStorage, getFromLocalStorage } from "utils/storage";
 
 const DEFAULT_ERROR_NOTIFICATION = "Something went wrong!";
 
@@ -38,7 +38,7 @@ const handleSuccessResponse = response => {
 
 const handleErrorResponse = axiosErrorObject => {
   if (axiosErrorObject.response?.status === 401) {
-    setToLocalStorage({ authToken: null, email: null, userId: null });
+    setAuthToLocalStorage({ authToken: null, email: null, userId: null });
     setTimeout(() => (window.location.href = "/"), 2000);
   }
 

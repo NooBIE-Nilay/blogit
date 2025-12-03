@@ -5,7 +5,7 @@ import { resetAuthTokens } from "apis/axios";
 import Logger from "js-logger";
 import { Avatar, Button, Dropdown, Typography } from "neetoui";
 import { useTranslation } from "react-i18next";
-import { getFromLocalStorage, setToLocalStorage } from "utils/storage";
+import { getFromLocalStorage, setAuthToLocalStorage } from "utils/storage";
 
 const UserAvatar = () => {
   const { Menu, Divider } = Dropdown;
@@ -17,7 +17,7 @@ const UserAvatar = () => {
   const handleLogout = async () => {
     try {
       await authApi.logout();
-      setToLocalStorage({
+      setAuthToLocalStorage({
         authToken: null,
         email: null,
         userId: null,
