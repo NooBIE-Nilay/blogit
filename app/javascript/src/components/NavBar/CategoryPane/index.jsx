@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import AddCategoryModal from "./AddCategoryModal";
 import FilteredCategories from "./FilteredCategories";
 
-const CategoryPane = ({ setIsCategoryPaneOpen, isCategoryPaneOpen }) => {
+const CategoryPane = ({ isCategoryPaneOpen, setIsCategoryPaneOpen }) => {
   const [showSearchInput, setShowSearchInput] = useState(false);
   const [isAddCategoryOpen, setIsAddCategoryOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");

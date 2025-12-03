@@ -38,12 +38,11 @@ const Form = ({
             label={t("common.title")}
             placeholder={t("common.titlePlaceholder")}
             value={title}
-            onChange={e => setTitle(e.target.value.slice(0, 50))}
+            onChange={e => setTitle(e.target.value.slice(0, 125))}
           />
           <div>
             <Select
               isMulti
-              required
               disabled={isCategoriesLoading && isLoading}
               label={t("common.category")}
               optionRemapping={{ label: "name", value: "id" }}

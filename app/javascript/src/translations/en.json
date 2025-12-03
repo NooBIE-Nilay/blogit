@@ -21,7 +21,12 @@
   },
   "status": {
     "published": "Publish",
-    "draft": "Save as draft"
+    "draftTitle": "Draft",
+    "draft": "Save as draft",
+    "update": {
+      "publish": "Publish",
+      "unpublish": "Unpublish"
+    }
   },
   "category": {
     "new": {

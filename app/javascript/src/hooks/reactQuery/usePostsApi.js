@@ -13,7 +13,7 @@ const useFetchPosts = ({ selectedCategoryIds = [], page, perPage }) =>
 
 const useFetchMyPosts = ({ selectedCategoryIds = [], page, perPage }) =>
   useQuery({
-    queryKey: [QUERY_KEYS.MY_POSTS, selectedCategoryIds, page, perPage],
+    queryKey: [QUERY_KEYS.MY_POSTS],
     queryFn: () =>
       postsApi.fetchMyPosts({
         categoryIds: selectedCategoryIds,
@@ -25,7 +25,7 @@ const useFetchMyPosts = ({ selectedCategoryIds = [], page, perPage }) =>
 
 const useShowPost = slug =>
   useQuery({
-    queryKey: [QUERY_KEYS.POSTS, slug],
+    queryKey: [QUERY_KEYS.POST, slug],
     queryFn: () => postsApi.show(slug),
     enabled: !!slug,
   });
@@ -37,6 +37,7 @@ const useCreatePost = ({ onSuccess, onError } = {}) => {
     mutationFn: payload => postsApi.create(payload),
     onSuccess: (...args) => {
       queryClient.invalidateQueries([QUERY_KEYS.POSTS]);
+      queryClient.invalidateQueries([QUERY_KEYS.MY_POSTS]);
       onSuccess?.(...args);
     },
     onError: (...args) => {
@@ -50,9 +51,11 @@ const useUpdatePost = ({ onSuccess, onError } = {}) => {
 
   return useMutation({
     mutationFn: ({ payload, slug }) => postsApi.update({ payload, slug }),
-    onSuccess: (...args) => {
+    onSuccess: (data, slug) => {
       queryClient.invalidateQueries([QUERY_KEYS.POSTS]);
-      onSuccess?.(...args);
+      queryClient.invalidateQueries([QUERY_KEYS.MY_POSTS]);
+      queryClient.invalidateQueries([QUERY_KEYS.POST, slug]);
+      onSuccess?.(data);
     },
     onError: (...args) => {
       onError?.(...args);
@@ -66,8 +69,9 @@ const useDeletePost = ({ onSuccess, onError } = {}) => {
   return useMutation({
     mutationFn: slug => postsApi.destroy(slug),
     onSuccess: (data, slug) => {
-      queryClient.removeQueries([QUERY_KEYS.POSTS, slug]);
+      queryClient.removeQueries([QUERY_KEYS.POST, slug]);
       queryClient.invalidateQueries([QUERY_KEYS.POSTS]);
+      queryClient.invalidateQueries([QUERY_KEYS.MY_POSTS]);
       onSuccess?.(data);
     },
     onError: (...args) => {

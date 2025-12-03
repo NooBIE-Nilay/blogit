@@ -1,18 +1,43 @@
+import routes from "constants/routes";
+
 import React, { useState } from "react";
 
 import dayjs from "dayjs";
 import { t } from "i18next";
-import { capitalize } from "neetoCist";
-import { Table as NeetoTable } from "neetoui";
+import { Tooltip, Table as NeetoTable } from "neetoui";
+import { isEmpty } from "ramda";
+import { useHistory } from "react-router-dom";
 
-const Table = ({ data = [] }) => {
+import StatusField from "./StatusField";
+
+const Table = ({ data: rowData = [] }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
+  const history = useHistory();
+
   const columnData = [
-    { title: t("table.title"), dataIndex: "title" },
+    {
+      title: t("table.title"),
+      dataIndex: "title",
+      render: (title, post) => (
+        <div
+          onClick={() => {
+            history.push(routes.posts.show.replace(":slug", post.slug));
+          }}
+        >
+          <Tooltip content={title}>
+            <div className="max-w-60 truncate">{title}</div>
+          </Tooltip>
+        </div>
+      ),
+    },
     {
       title: t("table.category"),
-      dataIndex: "category_names",
+      dataIndex: "categories",
+      render: categories =>
+        isEmpty(categories)
+          ? t("common.unknown")
+          : categories.map(category => category.name).join(", "),
     },
     {
       title: t("table.lastPublishedAt"),
@@ -28,24 +53,16 @@ const Table = ({ data = [] }) => {
     {
       title: t("table.status"),
       dataIndex: "status",
-      render: status => capitalize(status),
+      render: (_, post) => <StatusField {...{ post }} />,
     },
   ];
-
-  const rowData = data.map(post => ({
-    id: post.id,
-    title: post.title,
-    last_published_at: post.last_published_at,
-    status: post.status,
-    category_names: post.categories.map(category => category.name).join(", "),
-  }));
 
   return (
     <div className="inline-block min-w-full">
       <NeetoTable
         rowSelection
         {...{ rowData, columnData, selectedRowKeys }}
-        onRowSelect={arg1 => setSelectedRowKeys(arg1)}
+        onRowSelect={selectedRowKeys => setSelectedRowKeys(selectedRowKeys)}
       />
     </div>
   );

@@ -15,9 +15,6 @@ const useUIStore = create(
 
           return { isCategoryPaneOpen: nextValue };
         }),
-
-      toggleCategoryPane: () =>
-        set(state => ({ isCategoryPaneOpen: !state.isCategoryPaneOpen })),
     }),
     { name: "uiStore" }
   )

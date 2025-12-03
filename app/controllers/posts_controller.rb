@@ -6,7 +6,7 @@ class PostsController < ApplicationController
   before_action :load_post!, only: %i[show update destroy]
 
   def index
-    @posts = apply_filters(policy_scope(Post))
+    @posts = apply_filters(policy_scope(Post)).where(status: :published)
   end
 
   def my_posts
@@ -23,7 +23,7 @@ class PostsController < ApplicationController
   def update
     authorize @post
     @post.update!(post_params)
-    render_notice(t("successfully_updated", name: @post.title))
+    render_notice(t("successfully_updated", name: @post.title.truncate(15)))
   end
 
   def create
@@ -33,13 +33,13 @@ class PostsController < ApplicationController
         organization_id: @current_user.organization_id))
     authorize post
     post.save!
-    render_notice(t("successfully_created", name: post.title))
+    render_notice(t("successfully_created", name: post.title.truncate(15)))
   end
 
   def destroy
     authorize @post
     @post.destroy!
-    render_notice(t("successfully_deleted", name: @post.title))
+    render_notice(t("successfully_deleted", name: @post.title.truncate(15)))
   end
 
   private

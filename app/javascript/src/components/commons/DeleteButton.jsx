@@ -1,10 +1,36 @@
-import React, { useState } from "react";
+import routes from "constants/routes";
 
+import React from "react";
+
+import { useDeletePost } from "hooks/reactQuery/usePostsApi";
+import Logger from "js-logger";
 import { Alert, Button } from "neetoui";
+import PropTypes from "prop-types";
 import { Trans, useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
 
-const DeleteButton = ({ post: { title }, handleDelete, isLoading }) => {
-  const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false);
+const DeleteButton = ({
+  post,
+  isDeleteAlertOpen,
+  setIsDeleteAlertOpen,
+  redirectRoute = routes.root,
+}) => {
+  const history = useHistory();
+
+  const { mutate: deletePost, isLoading } = useDeletePost({
+    onSuccess: () => {
+      history.push(redirectRoute);
+    },
+    onError: error => {
+      Logger.error(error);
+    },
+  });
+
+  const handleDelete = event => {
+    event.stopPropagation();
+    deletePost(post.slug);
+    setIsDeleteAlertOpen(false);
+  };
 
   const { t } = useTranslation();
 
@@ -13,6 +39,7 @@ const DeleteButton = ({ post: { title }, handleDelete, isLoading }) => {
       <Button
         fullWidth
         label={t("common.delete")}
+        loading={isLoading}
         style="danger-text"
         onClick={event => {
           event.stopPropagation();
@@ -27,7 +54,7 @@ const DeleteButton = ({ post: { title }, handleDelete, isLoading }) => {
         message={
           <Trans
             i18nKey="removeItemConfirmation.message"
-            values={{ itemName: title }}
+            values={{ itemName: post.title }}
           />
         }
         onSubmit={handleDelete}
@@ -39,4 +66,12 @@ const DeleteButton = ({ post: { title }, handleDelete, isLoading }) => {
     </>
   );
 };
+
+DeleteButton.propTypes = {
+  post: PropTypes.object.isRequired,
+  isDeleteAlertOpen: PropTypes.bool.isRequired,
+  setIsDeleteAlertOpen: PropTypes.func.isRequired,
+  redirectRoute: PropTypes.string,
+};
+
 export default DeleteButton;

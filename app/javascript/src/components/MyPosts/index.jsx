@@ -1,4 +1,7 @@
-import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from "constants/pagination";
+import {
+  DEFAULT_PAGE_NUMBER,
+  DEFAULT_TABLE_PAGE_SIZE,
+} from "constants/pagination";
 import routes from "constants/routes";
 
 import React, { useEffect } from "react";
@@ -25,7 +28,9 @@ const MyPosts = () => {
   const { selectedCategories } = useCategoryStore();
 
   const pageNo = Number(propOr(DEFAULT_PAGE_NUMBER, "page", queryParams));
-  const perPage = Number(propOr(DEFAULT_PAGE_SIZE, "perPage", queryParams));
+  const perPage = Number(
+    propOr(DEFAULT_TABLE_PAGE_SIZE, "perPage", queryParams)
+  );
 
   const { data, isLoading } = useFetchMyPosts({
     selectedCategoryIds: selectedCategories.map(category => category.id),

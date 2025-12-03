@@ -37,7 +37,6 @@ const List = ({ data }) => {
 
 List.propTypes = {
   data: PropTypes.array.isRequired,
-  fetchPosts: PropTypes.func,
 };
 
 export default List;

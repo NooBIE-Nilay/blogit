@@ -14,8 +14,6 @@ const FormHeader = ({
   setStatus,
   type = "create",
   handleSubmit,
-  handleDelete,
-  isDeleteLoading,
   post,
 }) => {
   const { t } = useTranslation();
@@ -58,10 +56,7 @@ const FormHeader = ({
             closeOnOutsideClick={false}
             icon={() => <MenuHorizontal />}
           >
-            <DeleteButton
-              isLoading={isDeleteLoading}
-              {...{ post, handleDelete }}
-            />
+            <DeleteButton {...{ post }} />
           </Dropdown>
         )}
       </div>

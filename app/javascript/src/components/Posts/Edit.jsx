@@ -3,11 +3,7 @@ import routes from "constants/routes";
 import React, { useState, useEffect } from "react";
 
 import { Container, PageLoader } from "components/commons";
-import {
-  useShowPost,
-  useUpdatePost,
-  useDeletePost,
-} from "hooks/reactQuery/usePostsApi";
+import { useShowPost, useUpdatePost } from "hooks/reactQuery/usePostsApi";
 import Logger from "js-logger";
 import { useParams, useHistory } from "react-router-dom";
 
@@ -48,22 +44,8 @@ const Edit = () => {
     });
   };
 
-  const { mutate: deletePost, isLoading: isDeleteLoading } = useDeletePost({
-    onSuccess: () => {
-      history.push(routes.root);
-    },
-    onError: error => {
-      Logger.error(error);
-    },
-  });
-
-  const handleDelete = event => {
-    event.stopPropagation();
-    deletePost(slug);
-  };
-
   useEffect(() => {
-    if (isPageLoading || isDeleteLoading) return;
+    if (isPageLoading) return;
 
     if (post) {
       setTitle(post.title);
@@ -71,7 +53,7 @@ const Edit = () => {
       setSelectedCategories(post.categories);
       setStatus(post.status);
     }
-  }, [post, isPageLoading, isDeleteLoading]);
+  }, [post, isPageLoading]);
 
   if (isPageLoading) {
     return (
@@ -88,11 +70,9 @@ const Edit = () => {
           handleSubmit={handleUpdate}
           type="update"
           {...{
-            isDeleteLoading,
             status,
             setStatus,
             post,
-            handleDelete,
           }}
         />
         <Form

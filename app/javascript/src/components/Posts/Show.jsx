@@ -60,9 +60,18 @@ const Show = () => {
         </div>
         <div className="mt-1 flex w-full items-start justify-between gap-x-6 md:max-w-6xl">
           <div className="flex flex-col gap-y-2">
-            <Typography className="font-semibold" style="h1">
-              {post?.title}
-            </Typography>
+            <div className="mt-6 flex items-center gap-2">
+              <Typography className="font-semibold" style="h1">
+                {post?.title}
+              </Typography>
+              {post.status === "draft" && (
+                <Tag
+                  className="border-red-500 px-4  text-red-500"
+                  label={t("status.draftTitle")}
+                  style=""
+                />
+              )}
+            </div>
             <div className="flex  items-center gap-3">
               <Avatar className="-z-10" user={post.user} />
               <div className="">
