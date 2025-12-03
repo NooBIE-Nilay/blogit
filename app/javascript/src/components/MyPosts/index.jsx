@@ -69,7 +69,7 @@ const MyPosts = () => {
   return (
     <Container>
       <div className="flex flex-col gap-y-8 ">
-        <PageTitle title={t("myPosts.title")} />
+        <PageTitle count={meta.total_count} title={t("myPosts.title")} />
         <Table data={posts} />
         <div className="flex items-center justify-end">
           <Pagination

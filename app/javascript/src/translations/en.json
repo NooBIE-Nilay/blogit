@@ -56,6 +56,7 @@
   "common": {
     "title": "Title",
     "delete": "Delete",
+    "articles": " articles",
     "titlePlaceholder": "Enter title",
     "category": "Category",
     "description": "Description",
