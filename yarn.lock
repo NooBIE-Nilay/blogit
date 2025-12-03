@@ -2829,6 +2829,7 @@ __metadata:
     buffer: "npm:^6.0.3"
     classnames: "npm:2.3.1"
     crypto-browserify: "npm:^3.12.1"
+    dayjs: "npm:^1.11.19"
     esbuild: "npm:^0.25.12"
     esbuild-plugin-svgr: "npm:^3.1.0"
     esbuild-plugins-node-modules-polyfill: "npm:^1.6.8"
@@ -2849,7 +2850,6 @@ __metadata:
     i18next: "npm:21.7.0"
     js-logger: "npm:^1.6.1"
     lint-staged: "npm:12.3.7"
-    lucide-react: "npm:^0.553.0"
     path-browserify: "npm:^1.0.1"
     postcss: "npm:^8.4.31"
     postcss-flexbugs-fixes: "npm:^5.0.2"
@@ -4021,7 +4021,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dayjs@npm:1.x":
+"dayjs@npm:1.x, dayjs@npm:^1.11.19":
   version: 1.11.19
   resolution: "dayjs@npm:1.11.19"
   checksum: 10c0/7d8a6074a343f821f81ea284d700bd34ea6c7abbe8d93bce7aba818948957c1b7f56131702e5e890a5622cdfc05dcebe8aed0b8313bdc6838a594d7846b0b000
@@ -6290,15 +6290,6 @@ __metadata:
   dependencies:
     yallist: "npm:^3.0.2"
   checksum: 10c0/89b2ef2ef45f543011e38737b8a8622a2f8998cddf0e5437174ef8f1f70a8b9d14a918ab3e232cb3ba343b7abddffa667f0b59075b2b80e6b4d63c3de6127482
-  languageName: node
-  linkType: hard
-
-"lucide-react@npm:^0.553.0":
-  version: 0.553.0
-  resolution: "lucide-react@npm:0.553.0"
-  peerDependencies:
-    react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
-  checksum: 10c0/b1283f1a2302a50d6a16bd67b9f7417ae08a74cba59ae5ca9953527cb9724247df12ba8c72ca2fc6a70b745f8315cc709ac7573643c4088728766da151999ef6
   languageName: node
   linkType: hard
 

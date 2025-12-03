@@ -1,37 +1,22 @@
 import routes from "constants/routes";
 
-import React, { useState } from "react";
+import React from "react";
 
-import { useDeletePost } from "hooks/reactQuery/usePostsApi";
-import Logger from "js-logger";
-import { Alert, Button, Tag, Typography } from "neetoui";
+import dayjs from "dayjs";
+import { Tag, Typography } from "neetoui";
 import PropTypes from "prop-types";
 import { either, isEmpty, isNil } from "ramda";
-import { Trans, useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 
 const Item = ({ post }) => {
-  const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false);
-
-  const { t } = useTranslation();
-
   const history = useHistory();
-
-  const { mutate: deletePost } = useDeletePost({
-    onError: error => {
-      Logger.error(error);
-    },
-  });
-
-  const showPost = slug => {
-    if (isDeleteAlertOpen) return;
-    history.push(routes.posts.show.replace(":slug", slug));
-  };
 
   return (
     <div
       className="w-full  cursor-pointer rounded-md border-b border-gray-200 px-4 py-6 hover:bg-slate-100"
-      onClick={() => showPost(post.slug)}
+      onClick={() =>
+        history.push(routes.posts.show.replace(":slug", post.slug))
+      }
     >
       <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
         <div className="flex-1">
@@ -58,37 +43,7 @@ const Item = ({ post }) => {
         </div>
         <div className="flex flex-col items-end space-y-2">
           <div className="text-sm text-gray-500">
-            {new Date(post.created_at).toDateString()}
-          </div>
-          <div className="flex items-center gap-3">
-            <Button
-              label="Delete"
-              style="danger"
-              onClick={event => {
-                event.stopPropagation();
-                setIsDeleteAlertOpen(prev => !prev);
-              }}
-            />
-            <Alert
-              isOpen={isDeleteAlertOpen}
-              submitButtonLabel={t("removeItemConfirmation.button")}
-              title={t("removeItemConfirmation.title")}
-              message={
-                <Trans
-                  i18nKey="removeItemConfirmation.message"
-                  values={{ itemName: post.title }}
-                />
-              }
-              onClose={event => {
-                event?.stopPropagation();
-                setIsDeleteAlertOpen(prev => !prev);
-              }}
-              onSubmit={event => {
-                event?.stopPropagation();
-                setIsDeleteAlertOpen(prev => !prev);
-                deletePost(post.slug);
-              }}
-            />
+            {dayjs(post.updated_at).format("DD MMMM YYYY")}
           </div>
         </div>
       </div>

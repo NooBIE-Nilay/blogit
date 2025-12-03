@@ -6,7 +6,7 @@ import { setAuthHeaders } from "apis/axios";
 import LoginForm from "components/Authentication/Login/Form";
 import { useLogin } from "hooks/reactQuery/useAuthApi";
 import Logger from "js-logger";
-import { setToLocalStorage } from "utils/storage";
+import { setAuthToLocalStorage } from "utils/storage";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -14,7 +14,7 @@ const Login = () => {
 
   const { mutateAsync: login, isLoading: isLoginLoading } = useLogin({
     onSuccess: ({ data }) => {
-      setToLocalStorage({
+      setAuthToLocalStorage({
         authToken: data.authentication_token,
         email: email.toLowerCase(),
         userId: data.id,

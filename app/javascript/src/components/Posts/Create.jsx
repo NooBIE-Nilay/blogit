@@ -1,25 +1,33 @@
 import routes from "constants/routes";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-import { Container, PageTitle } from "components/commons";
-import Form from "components/Posts/Form";
+import { Container } from "components/commons";
 import { useCreatePost } from "hooks/reactQuery/usePostsApi";
+import useFuncDebounce from "hooks/useFuncDebounce";
 import Logger from "js-logger";
-import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
+import {
+  setToLocalStorage,
+  getFromLocalStorage,
+  deleteFromLocalStorage,
+} from "utils/storage";
+
+import { CREATE_POST_PREVIEW_DATA, POST_STATUS } from "./constants";
+import Form from "./Form";
+import FormHeader from "./FormHeader";
 
 const Create = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [status, setStatus] = useState(POST_STATUS.DRAFT);
   const [selectedCategories, setSelectedCategories] = useState([]);
 
   const history = useHistory();
 
-  const { t } = useTranslation();
-
   const { mutate: createPost, isLoading } = useCreatePost({
     onSuccess: () => {
+      deleteFromLocalStorage(CREATE_POST_PREVIEW_DATA);
       history.push(routes.root);
     },
     onError: error => {
@@ -33,23 +41,58 @@ const Create = () => {
       title,
       description,
       category_ids: selectedCategories.map(category => category.id),
+      status,
     });
   };
+
+  const savePreview = () => {
+    const payload = {
+      title,
+      description,
+      categories: selectedCategories,
+      status,
+      user: {
+        id: getFromLocalStorage("authUserId"),
+        name: getFromLocalStorage("authUserName"),
+      },
+      updated_at: new Date().toISOString(),
+    };
+
+    setToLocalStorage({
+      key: CREATE_POST_PREVIEW_DATA,
+      value: JSON.stringify(payload),
+    });
+  };
+
+  const debouncedSave = useFuncDebounce(savePreview);
+
+  useEffect(() => {
+    const savedPreview = getFromLocalStorage(CREATE_POST_PREVIEW_DATA);
+    if (savedPreview) {
+      setTitle(savedPreview.title || "");
+      setDescription(savedPreview.description || "");
+      setSelectedCategories(savedPreview.categories || []);
+      setStatus(savedPreview.status || POST_STATUS.DRAFT);
+    }
+  }, []);
+
+  useEffect(() => {
+    debouncedSave();
+  }, [title, description, selectedCategories, status]);
 
   return (
     <Container>
       <div className="flex flex-col gap-y-8">
-        <PageTitle title={t("posts.new")} />
+        <FormHeader {...{ status, setStatus, handleSubmit }} />
         <Form
           {...{
-            handleSubmit,
             isLoading,
             title,
             setTitle,
             description,
+            setDescription,
             selectedCategories,
             setSelectedCategories,
-            setDescription,
           }}
         />
       </div>

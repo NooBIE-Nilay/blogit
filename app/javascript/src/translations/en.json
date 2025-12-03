@@ -3,11 +3,38 @@
   "pageTitle": "{{title}} | Blogit",
   "posts": {
     "empty": "No blogs to see. Create some blogs to display here!",
+    "empty_filter": "No blogs to see. Maybe try updating filters",
     "showAll": "Show all posts",
+    "preview": {
+      "empty": "Something went wrong, unable to load blog preview."
+    },
     "title": "Blog posts",
     "new": "New blog post",
     "add": "Add new blog post",
     "edit": "Edit blog post"
+  },
+  "date": {
+    "published": "Last published",
+    "created": "Draft created on"
+  },
+  "table": {
+    "title": "Title",
+    "category": "Category",
+    "status": "Status",
+    "lastPublishedAt": "Last published at"
+  },
+  "myPosts": {
+    "show": "Show my blog posts",
+    "title": "My blog posts"
+  },
+  "status": {
+    "published": "Publish",
+    "draftTitle": "Draft",
+    "draft": "Save as draft",
+    "update": {
+      "publish": "Publish",
+      "unpublish": "Unpublish"
+    }
   },
   "category": {
     "new": {
@@ -35,12 +62,16 @@
     "passwordPlaceholder": "******"
   },
   "common": {
+    "home": "Redirect to home",
     "title": "Title",
+    "delete": "Delete",
+    "articles": " articles",
     "titlePlaceholder": "Enter title",
     "category": "Category",
     "description": "Description",
     "descriptionPlaceholder": "Enter Description",
     "register": "Register",
+    "add": "Add",
     "cancel": "Cancel",
     "submit": "Submit",
     "update": "Update",

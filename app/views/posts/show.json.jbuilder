@@ -5,15 +5,14 @@ json.post do
     :slug,
     :id,
     :title,
+    :status,
     :description,
-    :created_at,
+    :last_published_at,
     :updated_at
 
   json.user do
     json.extract! @post.user,
-      :id,
-      :name,
-      :email
+      :name, :id
   end
 
   json.categories @post.categories do |category|

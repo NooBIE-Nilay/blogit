@@ -1,26 +1,26 @@
+import routes from "constants/routes";
+
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
 import { useFetchCategories } from "hooks/reactQuery/useCategoriesApi";
 import { Close, Search } from "neetoIcons";
 import { Button, Typography, Input } from "neetoui";
 import { useTranslation } from "react-i18next";
-import useCategoryStore from "stores/useCategoryStore";
+import { useHistory } from "react-router-dom";
 
 import AddCategoryModal from "./AddCategoryModal";
 import FilteredCategories from "./FilteredCategories";
 
-const CategoryPane = ({ setIsCategoryPaneOpen, isCategoryPaneOpen }) => {
+const CategoryPane = ({ isCategoryPaneOpen, setIsCategoryPaneOpen }) => {
   const [showSearchInput, setShowSearchInput] = useState(false);
   const [isAddCategoryOpen, setIsAddCategoryOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
   const categoryPaneRef = useRef();
-
+  const history = useHistory();
   const { t } = useTranslation();
 
   const { data } = useFetchCategories();
-
-  const { toggleCategory, isSelected } = useCategoryStore();
 
   const categories = data?.data.categories;
 
@@ -41,6 +41,12 @@ const CategoryPane = ({ setIsCategoryPaneOpen, isCategoryPaneOpen }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [categoryPaneRef, isAddCategoryOpen]);
+
+  useEffect(() => {
+    if (history.location.pathname !== routes.dashboard) {
+      setIsCategoryPaneOpen(false);
+    }
+  }, []);
 
   const filteredCategories = useMemo(() => {
     if (!categories) return [];
@@ -84,13 +90,12 @@ const CategoryPane = ({ setIsCategoryPaneOpen, isCategoryPaneOpen }) => {
           <Input
             className="w-full rounded-md px-2 py-1 text-sm"
             placeholder={t("category.searchPlaceholder")}
+            prefix={<Search />}
             value={searchTerm}
             onChange={event => setSearchTerm(event.target.value)}
           />
         )}
-        <FilteredCategories
-          {...{ filteredCategories, isSelected, toggleCategory }}
-        />
+        <FilteredCategories {...{ filteredCategories }} />
       </div>
     </div>
   );
