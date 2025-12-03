@@ -3,7 +3,7 @@ services:
     name: blogit-noobie
     runtime: ruby
     repo: https://github.com/NooBIE-Nilay/blogit
-    branch: main
+    branch: master
     plan: free
     envVars:
       - key: DATABASE_URL
