@@ -10,3 +10,8 @@ export const getLastUpdatedDate = post => {
       )}`
     : `${t("date.created")}: ${dayjs(post.updated_at).format("DD MMMM YYYY")}`;
 };
+
+export const formatLastPublishedDate = lastPublishedAt =>
+  dayjs(lastPublishedAt).isValid()
+    ? dayjs(lastPublishedAt).format("MMM D, YYYY, h:mm A	")
+    : "-";

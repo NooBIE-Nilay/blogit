@@ -20,34 +20,7 @@ const Navbar = () => {
 
   return (
     <>
-      {/* For mobile screens */}
-      <header className="border-b bg-white md:hidden">
-        <div className="mx-auto max-w-6xl px-4">
-          <div className="flex h-14 items-center justify-between">
-            <Link to={routes.dashboard}>
-              <BlogitLogo />
-            </Link>
-            <div className="mr-3 flex gap-2">
-              <Button
-                className="flex h-9 w-9 items-center justify-center rounded-md"
-                icon={() => <List />}
-                style="primary"
-                tooltipProps={{ content: t("posts.showAll") }}
-                onClick={() => history.push(routes.dashboard)}
-              />
-              <Button
-                className="flex h-9 w-9 items-center justify-center rounded-md"
-                icon={() => <ListDetails />}
-                style="primary"
-                tooltipProps={{ content: t("posts.add") }}
-                onClick={() => history.push(routes.posts.create)}
-              />
-            </div>
-          </div>
-        </div>
-      </header>
-      {/* For larger screens */}
-      <aside className=" hidden justify-between pb-8 md:fixed md:left-0 md:top-0 md:flex md:h-screen md:w-20 md:flex-col md:items-center md:border-gray-200 md:bg-gray-50">
+      <aside className=" fixed hidden justify-between pb-8 md:left-0 md:top-0 md:flex md:h-screen md:w-20 md:flex-col md:items-center md:border-gray-200 md:bg-gray-50">
         <div className="flex flex-col  gap-y-3 pt-4">
           <Link aria-label="Home" to={routes.dashboard}>
             <BlogitLogo />

@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Input, Button } from "neetoui";
+import PropTypes from "prop-types";
 import { withTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
@@ -40,5 +41,12 @@ const Form = ({ handleSubmit, setEmail, setPassword, isLoading, t }) => (
     </div>
   </div>
 );
+
+Form.propTypes = {
+  handleSubmit: PropTypes.func.isRequired,
+  setEmail: PropTypes.func.isRequired,
+  setPassword: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+};
 
 export default withTranslation()(Form);

@@ -11,6 +11,8 @@ import { MenuHorizontal } from "neetoIcons";
 import { Dropdown, Button } from "neetoui";
 import PropTypes from "prop-types";
 
+import { POST_STATUS } from "../../Posts/constants";
+
 const StatusField = ({ post }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false);
@@ -20,7 +22,7 @@ const StatusField = ({ post }) => {
   const { Menu, MenuItem } = Dropdown;
 
   const updateLabel =
-    post.status === "published"
+    post.status === POST_STATUS.PUBLISHED
       ? t("status.update.unpublish")
       : t("status.update.publish");
 
@@ -35,7 +37,10 @@ const StatusField = ({ post }) => {
     updatePost({
       slug: post.slug,
       payload: {
-        status: post.status === "published" ? "draft" : "published",
+        status:
+          post.status === POST_STATUS.PUBLISHED
+            ? POST_STATUS.DRAFT
+            : POST_STATUS.PUBLISHED,
       },
     });
     setIsDropdownOpen(false);

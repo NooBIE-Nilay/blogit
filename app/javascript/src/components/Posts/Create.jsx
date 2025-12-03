@@ -13,14 +13,14 @@ import {
   deleteFromLocalStorage,
 } from "utils/storage";
 
-import { CREATE_POST_PREVIEW_DATA } from "./constants";
+import { CREATE_POST_PREVIEW_DATA, POST_STATUS } from "./constants";
 import Form from "./Form";
 import FormHeader from "./FormHeader";
 
 const Create = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [status, setStatus] = useState("draft");
+  const [status, setStatus] = useState(POST_STATUS.DRAFT);
   const [selectedCategories, setSelectedCategories] = useState([]);
 
   const history = useHistory();
@@ -72,7 +72,7 @@ const Create = () => {
       setTitle(savedPreview.title || "");
       setDescription(savedPreview.description || "");
       setSelectedCategories(savedPreview.categories || []);
-      setStatus(savedPreview.status || "draft");
+      setStatus(savedPreview.status || POST_STATUS.DRAFT);
     }
   }, []);
 

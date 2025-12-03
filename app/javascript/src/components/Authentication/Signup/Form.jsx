@@ -4,6 +4,7 @@ import React from "react";
 
 import { useFetchOrganizations } from "hooks/reactQuery/useOrganizationApi";
 import { Input, Button, Select } from "neetoui";
+import PropTypes from "prop-types";
 import { useTranslation, withTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
@@ -92,6 +93,16 @@ const Form = ({
       </div>
     </div>
   );
+};
+
+Form.propTypes = {
+  handleSubmit: PropTypes.func.isRequired,
+  setName: PropTypes.func.isRequired,
+  setEmail: PropTypes.func.isRequired,
+  setPassword: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  setPasswordConfirmation: PropTypes.func.isRequired,
+  setSelectedOrganizationId: PropTypes.func.isRequired,
 };
 
 export default withTranslation()(Form);

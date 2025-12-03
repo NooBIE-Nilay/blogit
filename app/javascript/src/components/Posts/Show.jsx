@@ -12,6 +12,8 @@ import { useHistory, useParams } from "react-router-dom";
 import { getLastUpdatedDate } from "utils/date";
 import { getFromLocalStorage } from "utils/storage";
 
+import { POST_STATUS } from "./constants";
+
 const Show = () => {
   const { slug } = useParams();
 
@@ -63,7 +65,7 @@ const Show = () => {
               <Typography className="font-semibold" style="h1">
                 {post?.title}
               </Typography>
-              {post.status === "draft" && (
+              {post.status === POST_STATUS.DRAFT && (
                 <Tag
                   className="border-red-500 px-4  text-red-500"
                   label={t("status.draftTitle")}

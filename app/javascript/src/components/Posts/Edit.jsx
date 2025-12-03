@@ -13,7 +13,7 @@ import {
   deleteFromLocalStorage,
 } from "utils/storage";
 
-import { EDIT_POST_PREVIEW_DATA } from "./constants";
+import { EDIT_POST_PREVIEW_DATA, FORM_TYPE } from "./constants";
 import Form from "./Form";
 import FormHeader from "./FormHeader";
 
@@ -110,7 +110,7 @@ const Edit = () => {
       <div className="flex flex-col gap-y-8">
         <FormHeader
           handleSubmit={handleUpdate}
-          type="update"
+          type={FORM_TYPE.UPDATE}
           {...{
             status,
             setStatus,

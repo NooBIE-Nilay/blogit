@@ -2,11 +2,11 @@ import routes from "constants/routes";
 
 import React, { useState } from "react";
 
-import dayjs from "dayjs";
 import { t } from "i18next";
 import { Tooltip, Table as NeetoTable } from "neetoui";
 import { isEmpty } from "ramda";
 import { useHistory } from "react-router-dom";
+import { formatLastPublishedDate } from "utils/date";
 
 import StatusField from "./StatusField";
 
@@ -44,9 +44,7 @@ const Table = ({ data: rowData = [] }) => {
       dataIndex: "last_published_at",
       render: last_published_at => (
         <div className="flex flex-row items-center ">
-          {dayjs(last_published_at).isValid()
-            ? dayjs(last_published_at).format("MMM D, YYYY, h:mm A	")
-            : "-"}
+          {formatLastPublishedDate(last_published_at)}
         </div>
       ),
     },

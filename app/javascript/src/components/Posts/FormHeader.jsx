@@ -2,17 +2,18 @@ import routes from "constants/routes";
 
 import React, { useState } from "react";
 
+import { DeleteButton, PageTitle } from "components/commons";
 import { MenuHorizontal, ExternalLink } from "neetoIcons";
 import { ActionDropdown, Button, Dropdown } from "neetoui";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 
-import { DeleteButton, PageTitle } from "../commons";
+import { FORM_TYPE, POST_STATUS } from "./constants";
 
 const FormHeader = ({
   status,
   setStatus,
-  type = "create",
+  type = FORM_TYPE.CREATE,
   handleSubmit,
   post,
 }) => {
@@ -23,7 +24,7 @@ const FormHeader = ({
   const { Menu, MenuItem } = ActionDropdown;
 
   const handlePreview = () => {
-    if (type === "update") {
+    if (type === FORM_TYPE.UPDATE) {
       history.push(routes.posts.preview.edit.replace(":slug", post.slug));
     } else {
       history.push(routes.posts.preview.create);
@@ -32,7 +33,9 @@ const FormHeader = ({
 
   return (
     <div className="flex w-full items-center justify-between  pr-6">
-      <PageTitle title={t(type === "create" ? "posts.new" : "posts.edit")} />
+      <PageTitle
+        title={t(type === FORM_TYPE.CREATE ? "posts.new" : "posts.edit")}
+      />
       <div className="flex gap-2">
         <Button
           icon={() => <ExternalLink />}
@@ -47,7 +50,7 @@ const FormHeader = ({
         <ActionDropdown label={t(`status.${status}`)} onClick={handleSubmit}>
           <Menu>
             <MenuItem.Button
-              id="published"
+              id={POST_STATUS.PUBLISHED}
               onClick={event => {
                 setStatus(event.target.id);
               }}
@@ -55,7 +58,7 @@ const FormHeader = ({
               {t("status.published")}
             </MenuItem.Button>
             <MenuItem.Button
-              id="draft"
+              id={POST_STATUS.DRAFT}
               onClick={event => {
                 setStatus(event.target.id);
               }}
@@ -64,7 +67,7 @@ const FormHeader = ({
             </MenuItem.Button>
           </Menu>
         </ActionDropdown>
-        {type === "update" && (
+        {type === FORM_TYPE.UPDATE && (
           <Dropdown
             buttonStyle="text"
             closeOnOutsideClick={false}
