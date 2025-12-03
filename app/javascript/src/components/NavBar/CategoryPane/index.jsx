@@ -1,9 +1,12 @@
+import routes from "constants/routes";
+
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
 import { useFetchCategories } from "hooks/reactQuery/useCategoriesApi";
 import { Close, Search } from "neetoIcons";
 import { Button, Typography, Input } from "neetoui";
 import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
 
 import AddCategoryModal from "./AddCategoryModal";
 import FilteredCategories from "./FilteredCategories";
@@ -14,7 +17,7 @@ const CategoryPane = ({ isCategoryPaneOpen, setIsCategoryPaneOpen }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const categoryPaneRef = useRef();
-
+  const history = useHistory();
   const { t } = useTranslation();
 
   const { data } = useFetchCategories();
@@ -38,6 +41,12 @@ const CategoryPane = ({ isCategoryPaneOpen, setIsCategoryPaneOpen }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [categoryPaneRef, isAddCategoryOpen]);
+
+  useEffect(() => {
+    if (history.location.pathname !== routes.dashboard) {
+      setIsCategoryPaneOpen(false);
+    }
+  }, []);
 
   const filteredCategories = useMemo(() => {
     if (!categories) return [];

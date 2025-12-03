@@ -107,6 +107,7 @@ const Navbar = () => {
           />
           <Button
             className="mx-auto flex h-10 w-10 items-center justify-center rounded-md"
+            disabled={history.location.pathname !== routes.dashboard}
             icon={() => <ListDetails size={20} />}
             style="secondary"
             tooltipProps={{ content: t("category.filter") }}
