@@ -6,7 +6,7 @@ import Form from "components/Authentication/Signup/Form";
 import { useSignup } from "hooks/reactQuery/useAuthApi";
 import Logger from "js-logger";
 
-const Signup = ({ history }) => {
+const Signup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -15,7 +15,7 @@ const Signup = ({ history }) => {
 
   const { mutateAsync: signup, isLoading } = useSignup({
     onSuccess: () => {
-      history.push(routes.root);
+      window.location.href = routes.login;
     },
     onError: error => {
       Logger.error(error);

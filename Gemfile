@@ -93,6 +93,7 @@ gem "bcrypt", "~> 3.1.13"
 
 gem "kaminari"
 
+gem "mocha", require: false, group: :test
 gem "simplecov", require: false, group: :test
 
 group :development, :test do

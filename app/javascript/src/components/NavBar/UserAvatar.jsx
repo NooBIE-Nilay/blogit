@@ -29,7 +29,7 @@ const UserAvatar = () => {
         userName: null,
       });
       resetAuthTokens();
-      history.push(routes.root);
+      history.push(routes.login);
     } catch (error) {
       Logger.error(error);
     }

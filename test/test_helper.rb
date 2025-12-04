@@ -19,6 +19,7 @@ enable_test_coverage if ENV["COVERAGE"]
 ENV["RAILS_ENV"] ||= "test"
 require_relative "../config/environment"
 require "rails/test_help"
+require "mocha/minitest"
 
 module ActiveSupport
   class TestCase
@@ -30,5 +31,13 @@ module ActiveSupport
     # fixtures :all
 
     # Add more helper methods to be used by all tests here...
+    def headers(user, options = {})
+      {
+        Accept: "application/json",
+        "Content_Type" => "application/json",
+        "X-Auth-Token" => user.authentication_token,
+        "X-Auth-Email" => user.email
+      }.merge(options)
+    end
   end
 end

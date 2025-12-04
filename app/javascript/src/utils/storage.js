@@ -1,8 +1,15 @@
 const setAuthToLocalStorage = ({ authToken, email, userId, userName }) => {
-  localStorage.setItem("authToken", JSON.stringify(authToken));
-  localStorage.setItem("authEmail", JSON.stringify(email));
-  localStorage.setItem("authUserId", JSON.stringify(userId));
-  localStorage.setItem("authUserName", JSON.stringify(userName));
+  if (authToken === null) localStorage.removeItem("authToken");
+  else localStorage.setItem("authToken", JSON.stringify(authToken));
+
+  if (email === null) localStorage.removeItem("authEmail");
+  else localStorage.setItem("authEmail", JSON.stringify(email));
+
+  if (userId === null) localStorage.removeItem("authUserId");
+  else localStorage.setItem("authUserId", JSON.stringify(userId));
+
+  if (userName === null) localStorage.removeItem("authUserName");
+  else localStorage.setItem("authUserName", JSON.stringify(userName));
 };
 
 const setToLocalStorage = ({ key, value }) => {

@@ -12,9 +12,6 @@ class User < ApplicationRecord
   belongs_to :organization
   has_many :posts
 
-  has_secure_password
-  has_secure_token :authentication_token
-
   validates :name,
     presence: true,
     length: { maximum: MAX_NAME_LENGTH },
@@ -32,6 +29,9 @@ class User < ApplicationRecord
   validates :password_confirmation, presence: true, on: :create
 
   before_save :normalize_email
+
+  has_secure_password
+  has_secure_token :authentication_token
 
   private
 
