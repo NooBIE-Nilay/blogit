@@ -3,8 +3,8 @@ import routes from "constants/routes";
 import React, { useState } from "react";
 
 import { t } from "i18next";
-import { Tooltip, Table as NeetoTable } from "neetoui";
-import { isEmpty } from "ramda";
+import { NoData, Tooltip, Table as NeetoTable } from "neetoui";
+import { either, isEmpty, isNil } from "ramda";
 import { useHistory } from "react-router-dom";
 import { formatLastPublishedDate } from "utils/date";
 
@@ -54,6 +54,20 @@ const Table = ({ data: rowData = [] }) => {
       render: (_, post) => <StatusField {...{ post }} />,
     },
   ];
+
+  if (either(isNil, isEmpty)(rowData)) {
+    return (
+      <div className="flex h-[50vh] items-center justify-center">
+        <NoData
+          title={t("posts.empty")}
+          primaryButtonProps={{
+            label: t("posts.add"),
+            onClick: () => history.push(routes.posts.create),
+          }}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className=" inline-block min-w-full ">
