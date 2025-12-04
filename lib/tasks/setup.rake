@@ -17,7 +17,10 @@ def create_sample_data!
   puts 'Seeding with sample data...'
   create_user! email: 'oliver@example.com', name: 'Oliver', organization: Organization.find_by(name: "Testing Organization")
   create_user! email: 'sam@example.com', name: 'Sam',organization_id:1
-  puts 'Done! Now you can login with either "oliver@example.com" or "sam@example.com", using password "welcome"'
+  create_user! email: 'oliver@orga.com', name: 'Oliver_OrgA', organization: Organization.find_by(name: "Organization A")
+  create_user! email: 'oliver@orgb.com', name: 'Oliver_OrgB', organization: Organization.find_by(name: "Organization B")
+  create_user! email: 'oliver@orgc.com', name: 'Oliver_OrgC', organization: Organization.find_by(name: "Organization C")
+  puts 'Done! Now you can login with either "oliver@example.com", "oliver@orga.com", "oliver@orgb.com", "oliver@orgc.com"  or "sam@example.com", using password "welcome"'
 end
 
 def create_user!(options = {})
@@ -27,4 +30,7 @@ def create_user!(options = {})
 end
 def create_organization!(options = {})
   Organization.create!(name: "Testing Organization")
+  Organization.create!(name: "Organization A")
+  Organization.create!(name: "Organization B")
+  Organization.create!(name: "Organization C")
 end
