@@ -6,7 +6,7 @@ class UsersController < ApplicationController
   def create
     user = User.new(user_params)
     user.save!
-    render_notice(t("successfully_created", name: "User"))
+    render_notice(t("successfully_created", entity: t("user.title")))
   end
 
   private

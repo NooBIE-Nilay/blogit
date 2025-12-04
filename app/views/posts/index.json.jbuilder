@@ -1,27 +1,9 @@
 # frozen_string_literal: true
 
 json.posts @posts do |post|
-  json.extract! post,
-    :id,
-    :title,
-    :slug,
-    :status,
-    :description,
-    :last_published_at,
-    :updated_at
-
-  json.user do
-  json.extract! post.user, :name
-end
-
-  json.categories post.categories do |category|
-    json.extract! category, :name, :id
-  end
+  json.partial! "posts/post", post: post
 end
 
 json.meta do
-  json.total_count @posts.total_count
-  json.current_page @posts.current_page
-  json.total_pages @posts.total_pages
-  json.per_page @posts.limit_value
+  json.partial! "posts/meta"
 end
