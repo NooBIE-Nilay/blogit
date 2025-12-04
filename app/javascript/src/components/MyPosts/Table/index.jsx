@@ -56,9 +56,11 @@ const Table = ({ data: rowData = [] }) => {
   ];
 
   return (
-    <div className="inline-block min-w-full">
+    <div className=" inline-block min-w-full ">
       <NeetoTable
+        fixedHeight
         rowSelection
+        className="min-h-4xl"
         {...{ rowData, columnData, selectedRowKeys }}
         onRowSelect={selectedRowKeys => setSelectedRowKeys(selectedRowKeys)}
       />
