@@ -73,6 +73,7 @@ const StatusField = ({ post }) => {
           closeOnOutsideClick={false}
           icon={() => <MenuHorizontal size={16} />}
           isOpen={isDropdownOpen}
+          position="auto"
           onClick={() => setIsDropdownOpen(prevState => !prevState)}
         >
           <Menu className="flex flex-col gap-2">

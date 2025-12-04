@@ -6,7 +6,7 @@ import { withTranslation } from "react-i18next";
 const PageTitle = ({ title, count, t }) => (
   <>
     <h2 className="mt-8 text-4xl font-semibold">{title}</h2>
-    {count && (
+    {!!count && (
       <div className="text-xl font-semibold">
         {`${count} ${t("common.articles")}`}
       </div>

@@ -1,19 +1,18 @@
 import routes from "constants/routes";
 
-import React from "react";
+import React, { useState } from "react";
 
 import { List, Edit, ListDetails, Folder } from "neetoIcons";
 import { Button } from "neetoui";
 import { useTranslation } from "react-i18next";
 import { Link, useHistory } from "react-router-dom";
-import useUIStore from "stores/useUIStore";
 
 import BlogitLogo from "./BlogitLogo";
 import CategoryPane from "./CategoryPane";
 import UserAvatar from "./UserAvatar";
 
 const Navbar = () => {
-  const { isCategoryPaneOpen, setIsCategoryPaneOpen } = useUIStore();
+  const [isCategoryPaneOpen, setIsCategoryPaneOpen] = useState(false);
 
   const history = useHistory();
   const { t } = useTranslation();
