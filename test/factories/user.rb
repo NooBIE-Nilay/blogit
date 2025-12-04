@@ -6,5 +6,6 @@ FactoryBot.define do
     email { Faker::Internet.email }
     password { "welcome" }
     password_confirmation { "welcome" }
+    organization
   end
 end
