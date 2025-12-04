@@ -21,7 +21,7 @@ const Login = () => {
         userName: data.name,
       });
       setAuthHeaders();
-      window.location.href = routes.root;
+      window.location.href = routes.dashboard;
     },
     onError: error => {
       Logger.error(error);
