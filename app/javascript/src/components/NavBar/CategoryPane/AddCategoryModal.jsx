@@ -12,19 +12,22 @@ const AddCategoryModal = ({ isAddCategoryOpen, setIsAddCategoryOpen }) => {
   const { t } = useTranslation();
 
   const { mutate: createCategory, isLoading: isAddCategoryLoading } =
-    useCreateCategory({
-      onSuccess: () => {
-        setIsAddCategoryOpen(false);
-      },
-      onError: error => {
-        Logger.error(error);
-      },
-    });
+    useCreateCategory();
 
   const handleSubmit = () => {
-    createCategory({
-      name: categoryTitle,
-    });
+    createCategory(
+      {
+        name: categoryTitle,
+      },
+      {
+        onSuccess: () => {
+          setIsAddCategoryOpen(false);
+        },
+        onError: error => {
+          Logger.error(error);
+        },
+      }
+    );
   };
 
   return (

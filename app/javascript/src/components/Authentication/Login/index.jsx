@@ -12,25 +12,27 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { mutateAsync: login, isLoading: isLoginLoading } = useLogin({
-    onSuccess: ({ data }) => {
-      setAuthToLocalStorage({
-        authToken: data.authentication_token,
-        email: email.toLowerCase(),
-        userId: data.id,
-        userName: data.name,
-      });
-      setAuthHeaders();
-      window.location.href = routes.dashboard;
-    },
-    onError: error => {
-      Logger.error(error);
-    },
-  });
+  const { mutateAsync: login, isLoading: isLoginLoading } = useLogin();
 
-  const handleSubmit = async event => {
-    event.preventDefault();
-    await login({ email, password });
+  const handleSubmit = async () => {
+    await login(
+      { email, password },
+      {
+        onSuccess: ({ data }) => {
+          setAuthToLocalStorage({
+            authToken: data.authentication_token,
+            email: email.toLowerCase(),
+            userId: data.id,
+            userName: data.name,
+          });
+          setAuthHeaders();
+          window.location.href = routes.dashboard;
+        },
+        onError: error => {
+          Logger.error(error);
+        },
+      }
+    );
   };
 
   return (

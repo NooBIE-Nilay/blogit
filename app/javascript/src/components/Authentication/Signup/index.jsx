@@ -13,24 +13,26 @@ const Signup = () => {
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [selectedOrganizationId, setSelectedOrganizationId] = useState("");
 
-  const { mutateAsync: signup, isLoading } = useSignup({
-    onSuccess: () => {
-      window.location.href = routes.login;
-    },
-    onError: error => {
-      Logger.error(error);
-    },
-  });
+  const { mutateAsync: signup, isLoading } = useSignup();
 
-  const handleSubmit = async event => {
-    event.preventDefault();
-    signup({
-      name,
-      email,
-      password,
-      password_confirmation: passwordConfirmation,
-      organization_id: selectedOrganizationId,
-    });
+  const handleSubmit = async () => {
+    signup(
+      {
+        name,
+        email,
+        password,
+        password_confirmation: passwordConfirmation,
+        organization_id: selectedOrganizationId,
+      },
+      {
+        onSuccess: () => {
+          window.location.href = routes.login;
+        },
+        onError: error => {
+          Logger.error(error);
+        },
+      }
+    );
   };
 
   return (

@@ -32,26 +32,29 @@ const Edit = () => {
 
   const post = data?.data.post || [];
 
-  const { mutate: updatePost, isLoading } = useUpdatePost({
-    onSuccess: () => {
-      history.push(routes.dashboard);
-      deleteFromLocalStorage(`${EDIT_POST_PREVIEW_DATA}:${slug}`);
-    },
-    onError: error => {
-      Logger.error(error);
-    },
-  });
+  const { mutate: updatePost, isLoading } = useUpdatePost();
 
   const handleUpdate = async () => {
-    updatePost({
-      slug,
-      payload: {
-        title,
-        description,
-        status,
-        category_ids: selectedCategories.map(category => category.id),
+    updatePost(
+      {
+        slug,
+        payload: {
+          title,
+          description,
+          status,
+          category_ids: selectedCategories.map(category => category.id),
+        },
       },
-    });
+      {
+        onSuccess: () => {
+          history.push(routes.dashboard);
+          deleteFromLocalStorage(`${EDIT_POST_PREVIEW_DATA}:${slug}`);
+        },
+        onError: error => {
+          Logger.error(error);
+        },
+      }
+    );
   };
 
   useEffect(() => {

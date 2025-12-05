@@ -17,17 +17,17 @@ const DeleteButton = ({
 }) => {
   const history = useHistory();
 
-  const { mutate: deletePost, isLoading } = useDeletePost({
-    onSuccess: () => {
-      history.push(redirectRoute);
-    },
-    onError: error => {
-      Logger.error(error);
-    },
-  });
+  const { mutate: deletePost, isLoading } = useDeletePost();
 
   const handleDelete = () => {
-    deletePost(post.slug);
+    deletePost(post.slug, {
+      onSuccess: () => {
+        history.push(redirectRoute);
+      },
+      onError: error => {
+        Logger.error(error);
+      },
+    });
     setIsDeleteAlertOpen(false);
   };
 

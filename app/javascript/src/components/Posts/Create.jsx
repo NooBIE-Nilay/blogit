@@ -26,23 +26,26 @@ const Create = () => {
 
   const history = useHistory();
 
-  const { mutate: createPost, isLoading } = useCreatePost({
-    onSuccess: () => {
-      deleteFromLocalStorage(CREATE_POST_PREVIEW_DATA);
-      history.push(routes.root);
-    },
-    onError: error => {
-      Logger.error(error);
-    },
-  });
+  const { mutate: createPost, isLoading } = useCreatePost();
 
   const handleSubmit = async () => {
-    createPost({
-      title,
-      description,
-      category_ids: selectedCategories.map(category => category.id),
-      status,
-    });
+    createPost(
+      {
+        title,
+        description,
+        category_ids: selectedCategories.map(category => category.id),
+        status,
+      },
+      {
+        onSuccess: () => {
+          deleteFromLocalStorage(CREATE_POST_PREVIEW_DATA);
+          history.push(routes.root);
+        },
+        onError: error => {
+          Logger.error(error);
+        },
+      }
+    );
   };
 
   const savePreview = () => {
