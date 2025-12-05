@@ -15,3 +15,6 @@ export const formatLastPublishedDate = lastPublishedAt =>
   dayjs(lastPublishedAt).isValid()
     ? dayjs(lastPublishedAt).format("MMM D, YYYY, h:mm A	")
     : "-";
+
+export const formatUpdatedAt = updatedAt =>
+  dayjs(updatedAt).isValid() ? dayjs(updatedAt).format("DD MMMM YYYY") : "-";

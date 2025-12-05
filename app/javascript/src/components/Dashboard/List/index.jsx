@@ -3,9 +3,10 @@ import routes from "constants/routes";
 import React from "react";
 
 import { t } from "i18next";
+import { isNotPresent } from "neetoCist";
 import { NoData } from "neetoui";
 import PropTypes from "prop-types";
-import { isNil, isEmpty, either, isNotEmpty } from "ramda";
+import { isNotEmpty } from "ramda";
 import { useHistory } from "react-router-dom";
 import useCategoryStore from "stores/useCategoryStore";
 
@@ -16,7 +17,7 @@ const List = ({ data }) => {
 
   const { selectedCategories } = useCategoryStore();
 
-  if (either(isNil, isEmpty)(data)) {
+  if (isNotPresent(data)) {
     let title = t("posts.empty");
     if (isNotEmpty(selectedCategories)) {
       title = t("posts.empty_filter");

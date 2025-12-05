@@ -23,13 +23,13 @@ const Dashboard = () => {
 
   const { selectedCategories } = useCategoryStore();
 
-  const pageNo = Number(propOr(DEFAULT_PAGE_NUMBER, "page", queryParams));
-  const perPage = Number(propOr(DEFAULT_PAGE_SIZE, "perPage", queryParams));
+  const pageNumber = Number(propOr(DEFAULT_PAGE_NUMBER, "page", queryParams));
+  const pageSize = Number(propOr(DEFAULT_PAGE_SIZE, "pageSize", queryParams));
 
   const { data, isLoading } = useFetchPosts({
     selectedCategoryIds: selectedCategories.map(category => category.id),
-    page: pageNo,
-    perPage,
+    page: pageNumber,
+    pageSize,
   });
 
   const posts = data?.data.posts || [];
@@ -37,17 +37,20 @@ const Dashboard = () => {
 
   const handlePageNavigation = page => {
     history.replace(
-      buildUrl(routes.root, mergeLeft({ page, per_page: perPage }, queryParams))
+      buildUrl(
+        routes.root,
+        mergeLeft({ page, page_size: pageSize }, queryParams)
+      )
     );
   };
 
   useEffect(() => {
     if (isLoading) return;
 
-    if (meta.total_pages && pageNo > meta.total_pages) {
+    if (meta.total_pages && pageNumber > meta.total_pages) {
       handlePageNavigation(DEFAULT_PAGE_NUMBER);
     }
-  }, [meta, isLoading, pageNo, queryParams]);
+  }, [meta, isLoading, pageNumber, queryParams]);
 
   if (isLoading) {
     return (
@@ -75,8 +78,8 @@ const Dashboard = () => {
           <Pagination
             count={meta.total_count}
             navigate={handlePageNavigation}
-            pageNo={meta.current_page || pageNo}
-            pageSize={meta.per_page || perPage}
+            pageNumber={meta.current_page || pageNumber}
+            pageSize={meta.page_size || pageSize}
           />
         </div>
       </div>

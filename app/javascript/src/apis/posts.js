@@ -18,16 +18,12 @@ const update = ({ slug, payload }) =>
 
 const destroy = slug => axios.delete(`${API_ENDPOINTS.POSTS}/${slug}`);
 
-const fetchMyPosts = (params = {}) =>
-  axios.get(API_ENDPOINTS.MY_POSTS, { params });
-
 const postsApi = {
   fetch,
   show,
   create,
   update,
   destroy,
-  fetchMyPosts,
 };
 
 export default postsApi;

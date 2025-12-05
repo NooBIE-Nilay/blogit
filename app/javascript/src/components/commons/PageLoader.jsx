@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 const PageLoader = ({ className = "" }) => (
   <div
     className={classnames(
-      [className],
+      className,
       "flex h-screen w-screen flex-row items-center justify-center"
     )}
   >

@@ -8,7 +8,7 @@ import Dashboard from "components/Dashboard";
 import MyPosts from "components/MyPosts";
 import { CreatePost, ShowPost, EditPost } from "components/Posts";
 import Preview from "components/Posts/Preview";
-import { either, isEmpty, isNil } from "ramda";
+import { isNotPresent } from "neetoCist";
 import { QueryClientProvider } from "react-query";
 import { Route, Switch, BrowserRouter as Router } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
@@ -17,7 +17,7 @@ import { getFromLocalStorage } from "utils/storage";
 
 const App = () => {
   const authToken = getFromLocalStorage("authToken");
-  const isLoggedIn = !either(isNil, isEmpty)(authToken);
+  const isLoggedIn = isNotPresent(authToken);
 
   return (
     <QueryClientProvider client={queryClient}>

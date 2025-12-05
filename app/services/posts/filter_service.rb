@@ -29,7 +29,7 @@ module Posts
 
       def paginate
         @scoped_posts = scoped_posts.page(params[:page] || Constants::DEFAULT_PAGE_NUMBER)
-          .per(params[:per_page] || DEFAULT_PAGE_SIZE)
+          .per(params[:page_size] || DEFAULT_PAGE_SIZE)
       end
   end
 end

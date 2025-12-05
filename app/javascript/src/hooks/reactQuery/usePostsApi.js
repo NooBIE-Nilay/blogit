@@ -3,23 +3,11 @@ import { QUERY_KEYS } from "constants/query";
 import postsApi from "apis/posts";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
-const useFetchPosts = ({ selectedCategoryIds = [], page, perPage }) =>
+const useFetchPosts = ({ selectedCategoryIds = [], page, pageSize }) =>
   useQuery({
-    queryKey: [QUERY_KEYS.POSTS, selectedCategoryIds, page, perPage],
+    queryKey: [QUERY_KEYS.POSTS, selectedCategoryIds, page, pageSize],
     queryFn: () =>
-      postsApi.fetch({ categoryIds: selectedCategoryIds, page, perPage }),
-    keepPreviousData: true,
-  });
-
-const useFetchMyPosts = ({ selectedCategoryIds = [], page, perPage }) =>
-  useQuery({
-    queryKey: [QUERY_KEYS.MY_POSTS],
-    queryFn: () =>
-      postsApi.fetchMyPosts({
-        categoryIds: selectedCategoryIds,
-        page,
-        perPage,
-      }),
+      postsApi.fetch({ categoryIds: selectedCategoryIds, page, pageSize }),
     keepPreviousData: true,
   });
 
@@ -82,7 +70,6 @@ const useDeletePost = ({ onSuccess, onError } = {}) => {
 
 export {
   useFetchPosts,
-  useFetchMyPosts,
   useShowPost,
   useCreatePost,
   useUpdatePost,

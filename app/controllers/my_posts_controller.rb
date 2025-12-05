@@ -18,6 +18,6 @@ class MyPostsController < ApplicationController
 
     def paginate (scope)
       scope.page(params[:page] || Constants::DEFAULT_PAGE_NUMBER)
-        .per(params[:per_page] || DEFAULT_PAGE_SIZE)
+        .per(params[:page_size] || DEFAULT_PAGE_SIZE)
     end
 end
