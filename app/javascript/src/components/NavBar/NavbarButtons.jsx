@@ -28,7 +28,9 @@ const NavbarButtons = ({ setIsCategoryPaneOpen }) => {
       onClick: () => history.push(routes.posts.create),
     },
     {
-      disabled: history.location.pathname !== routes.dashboard,
+      disabled:
+        history.location.pathname !== routes.dashboard &&
+        history.location.pathname !== routes.root,
       icon: () => <ListDetails size={20} />,
       tooltipProps: { content: t("category.filter") },
       onClick: () => setIsCategoryPaneOpen(prevState => !prevState),

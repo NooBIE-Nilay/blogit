@@ -42,7 +42,10 @@ const CategoryPane = ({ isCategoryPaneOpen, setIsCategoryPaneOpen }) => {
   }, [categoryPaneRef, isAddCategoryOpen]);
 
   useEffect(() => {
-    if (history.location.pathname !== routes.dashboard) {
+    if (
+      history.location.pathname !== routes.dashboard ||
+      history.location.pathname !== routes.root
+    ) {
       setIsCategoryPaneOpen(false);
     }
   }, []);
