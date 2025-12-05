@@ -1,12 +1,6 @@
 # frozen_string_literal: true
 
 class Post < ApplicationRecord
-  scope :by_category_ids, ->(ids) {
-    return all if ids.blank?
-
-    joins(:categories).where(categories: { id: ids }).distinct
-  }
-
   enum :status, { draft: "draft", published: "published" }, default: :draft
 
   belongs_to :user

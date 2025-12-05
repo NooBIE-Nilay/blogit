@@ -18,8 +18,8 @@ class PostsController < ApplicationController
   end
 
   def create
-    post = @current_user.posts.new(
-      post_params.merge(organization_id: @current_user.organization_id))
+    post = @current_user.posts.new(post_params)
+    post.organization_id = @current_user.organization_id
     authorize post
     post.save!
     render_notice(t("successfully_created", entity: t("post.title")))
@@ -44,6 +44,7 @@ class PostsController < ApplicationController
     def post_params
       permitted = params.require(:post).permit(:title, :description, :status, category_ids: [],)
       permitted[:last_published_at] = Time.current if permitted[:status] == "published"
+      permitted
     end
 
     def authorize_post

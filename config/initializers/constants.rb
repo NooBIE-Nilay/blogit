@@ -13,4 +13,5 @@ module Constants
   VALID_TITLE_REGEX = /\A.*[a-zA-Z0-9].*\z/i.freeze
   VALID_EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i.freeze
   VALID_BLOGGABLE_VALUES = [true, false].freeze
+  DEFAULT_PAGE_NUMBER = 1
 end

@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class CategoriesController < ApplicationController
-  before_action :load_category, only: [:show]
+  after_action :verify_policy_scoped, only: :index
+  after_action :verify_authorized, only: :create
 
   def index
     @categories = policy_scope(Category)

@@ -2,9 +2,7 @@
 
 module Posts
   class FilterService
-    DEFAULT_PAGE_NUMBER = 1
-    DEFAULT_PAGE_SIZE = 8
-
+    DEFAULT_PAGE_SIZE = 4
     attr_reader :scoped_posts, :params
 
     def initialize(scoped_posts, params)
@@ -14,23 +12,23 @@ module Posts
 
     def process!
       filter_by_categories
-      apply_pagination
+      paginate
     end
 
     private
 
       def filter_by_categories
-        return scoped_posts unless params[:category_ids].present?
+        return @scoped_posts unless params[:category_ids].present?
 
         category_ids = Array(params[:category_ids]).map(&:to_i)
 
-        scoped_posts.joins(:categories)
+        @scoped_posts = scoped_posts.joins(:categories)
           .where(categories: { id: category_ids })
           .distinct
       end
 
-      def apply_pagination
-        scoped_posts.page(params[:page] || DEFAULT_PAGE_NUMBER)
+      def paginate
+        @scoped_posts = scoped_posts.page(params[:page] || Constants::DEFAULT_PAGE_NUMBER)
           .per(params[:per_page] || DEFAULT_PAGE_SIZE)
       end
   end
