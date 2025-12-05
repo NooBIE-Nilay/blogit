@@ -5,7 +5,7 @@ import { useQuery } from "react-query";
 
 const useFetchMyPosts = ({ selectedCategoryIds = [], page, pageSize }) =>
   useQuery({
-    queryKey: [QUERY_KEYS.MY_POSTS],
+    queryKey: [QUERY_KEYS.MY_POSTS, page, pageSize],
     queryFn: () =>
       myPostsApi.fetch({
         categoryIds: selectedCategoryIds,

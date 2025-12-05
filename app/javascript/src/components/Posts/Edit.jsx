@@ -64,11 +64,17 @@ const Edit = () => {
       const { title, description, categories, status } = post;
       const previewKey = `${EDIT_POST_PREVIEW_DATA}:${slug}`;
       const savedPreview = getFromLocalStorage(previewKey);
-
-      setTitle(propOr(savedPreview?.title, title));
-      setDescription(propOr(savedPreview?.description, description));
-      setSelectedCategories(propOr(savedPreview?.categories || categories));
-      setStatus(propOr(savedPreview?.status || status));
+      if (isPresent(savedPreview)) {
+        setTitle(propOr(savedPreview.title, title));
+        setDescription(propOr(savedPreview.description, description));
+        setSelectedCategories(propOr(savedPreview.categories || categories));
+        setStatus(propOr(savedPreview.status || status));
+      } else {
+        setTitle(title);
+        setDescription(description);
+        setSelectedCategories(categories);
+        setStatus(status);
+      }
     }
   }, [post, isPageLoading, slug]);
 

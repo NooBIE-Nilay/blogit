@@ -16,9 +16,9 @@ import { buildUrl } from "utils/urls";
 
 const Dashboard = () => {
   const history = useHistory();
+  const queryParams = useQueryParams();
   const { t } = useTranslation();
   const { selectedCategories } = useSelectedCategoryStore();
-  const queryParams = useQueryParams();
 
   const pageNumber = Number(propOr(DEFAULT_PAGE_NUMBER, "page", queryParams));
   const pageSize = Number(propOr(DEFAULT_PAGE_SIZE, "pageSize", queryParams));
@@ -38,10 +38,7 @@ const Dashboard = () => {
 
   const handlePageNavigation = page => {
     history.replace(
-      buildUrl(
-        routes.root,
-        mergeLeft({ page, page_size: pageSize }, queryParams)
-      )
+      buildUrl(routes.dashboard, mergeLeft({ page, pageSize }, queryParams))
     );
   };
 
@@ -51,7 +48,7 @@ const Dashboard = () => {
     if (resultCount && pageNumber > resultCount) {
       handlePageNavigation(DEFAULT_PAGE_NUMBER);
     }
-  }, [resultCount, isLoading, pageNumber, queryParams]);
+  }, [isLoading, pageNumber, queryParams, resultCount]);
 
   if (isLoading) {
     return (

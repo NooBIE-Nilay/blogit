@@ -13,16 +13,14 @@ import { Pagination } from "neetoui";
 import { mergeLeft, propOr } from "ramda";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
-import useSelectedCategoryStore from "stores/useSelectedCategoryStore";
 import { buildUrl } from "utils/urls";
 
-import Table from "./Table";
+import PostsTable from "./Table";
 
 const MyPosts = () => {
   const history = useHistory();
   const queryParams = useQueryParams();
   const { t } = useTranslation();
-  const { selectedCategories } = useSelectedCategoryStore();
 
   const pageNumber = Number(propOr(DEFAULT_PAGE_NUMBER, "page", queryParams));
   const pageSize = Number(
@@ -30,7 +28,6 @@ const MyPosts = () => {
   );
 
   const { data, isLoading } = useFetchMyPosts({
-    selectedCategoryIds: selectedCategories.map(category => category.id),
     page: pageNumber,
     pageSize,
   });
@@ -44,10 +41,7 @@ const MyPosts = () => {
 
   const handlePageNavigation = page => {
     history.replace(
-      buildUrl(
-        routes.myPosts,
-        mergeLeft({ page, page_size: pageSize }, queryParams)
-      )
+      buildUrl(routes.myPosts, mergeLeft({ page, pageSize }, queryParams))
     );
   };
 
@@ -71,7 +65,7 @@ const MyPosts = () => {
     <Container>
       <div className="flex flex-col gap-y-8 ">
         <PageTitle count={resultCount} title={t("myPosts.title")} />
-        <Table data={posts} />
+        <PostsTable data={posts} />
         <div className="flex items-center justify-end">
           <Pagination
             count={resultCount}
