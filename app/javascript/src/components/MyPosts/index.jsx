@@ -20,11 +20,8 @@ import Table from "./Table";
 
 const MyPosts = () => {
   const history = useHistory();
-
   const queryParams = useQueryParams();
-
   const { t } = useTranslation();
-
   const { selectedCategories } = useSelectedCategoryStore();
 
   const pageNumber = Number(propOr(DEFAULT_PAGE_NUMBER, "page", queryParams));

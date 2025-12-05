@@ -2,12 +2,15 @@ import routes from "constants/routes";
 
 import React from "react";
 
-import { Input, Button } from "neetoui";
+import { Button } from "neetoui";
+import { Form as NeetoForm, Input } from "neetoui/formik";
 import PropTypes from "prop-types";
 import { withTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
-const Form = ({ handleSubmit, setEmail, setPassword, isLoading, t }) => (
+import { LOGIN_INITIAL_VALUES, LOGIN_VALIDATION_SCHEMA } from "../constants";
+
+const Form = ({ handleSubmit, isLoading, t }) => (
   <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
     <div className="w-full max-w-md">
       <h2 className="mt-6 text-center text-3xl font-extrabold leading-9 text-gray-700">
@@ -21,33 +24,39 @@ const Form = ({ handleSubmit, setEmail, setPassword, isLoading, t }) => (
           {t("auth.signupLink")}
         </Link>
       </div>
-      <form className="mt-8 flex flex-col gap-y-6" onSubmit={handleSubmit}>
+      <NeetoForm
+        className="mt-8 flex flex-col gap-y-6"
+        formikProps={{
+          initialValues: LOGIN_INITIAL_VALUES,
+          validationSchema: LOGIN_VALIDATION_SCHEMA,
+          onSubmit: handleSubmit,
+        }}
+      >
         <Input
           label={t("auth.email")}
+          name="email"
           placeholder={t("auth.emailPlaceholder")}
           type="email"
-          onChange={e => setEmail(e.target.value)}
         />
         <Input
           label={t("auth.password")}
+          name="password"
           placeholder={t("auth.passwordPlaceholder")}
           type="password"
-          onChange={e => setPassword(e.target.value)}
         />
         <Button
+          className="justify-center"
           disabled={isLoading}
           label={t("auth.signinTitle")}
           type="submit"
         />
-      </form>
+      </NeetoForm>
     </div>
   </div>
 );
 
 Form.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
-  setEmail: PropTypes.func.isRequired,
-  setPassword: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
 };
 

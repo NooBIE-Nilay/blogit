@@ -1,50 +1,34 @@
 import routes from "constants/routes";
 
-import React, { useState } from "react";
+import React from "react";
 
 import SignupForm from "components/Authentication/Signup/Form";
 import { useSignup } from "hooks/reactQuery/useAuthApi";
-import Logger from "js-logger";
 
 const Signup = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordConfirmation, setPasswordConfirmation] = useState("");
-  const [selectedOrganizationId, setSelectedOrganizationId] = useState("");
+  const { mutate: signup, isLoading } = useSignup();
 
-  const { mutateAsync: signup, isLoading } = useSignup();
+  const handleSubmit = data => {
+    const { organization, passwordConfirmation, ...user } = data;
 
-  const handleSubmit = async () => {
-    signup(
-      {
-        name,
-        email,
-        password,
-        password_confirmation: passwordConfirmation,
-        organization_id: selectedOrganizationId,
+    const payload = {
+      ...user,
+      organization_id: organization.value,
+      password_confirmation: passwordConfirmation,
+    };
+
+    signup(payload, {
+      onSuccess: () => {
+        window.location.href = routes.login;
       },
-      {
-        onSuccess: () => {
-          window.location.href = routes.login;
-        },
-        onError: error => {
-          Logger.error(error);
-        },
-      }
-    );
+    });
   };
 
   return (
     <SignupForm
       {...{
         handleSubmit,
-        setName,
-        setEmail,
-        setPassword,
         isLoading,
-        setPasswordConfirmation,
-        setSelectedOrganizationId,
       }}
     />
   );

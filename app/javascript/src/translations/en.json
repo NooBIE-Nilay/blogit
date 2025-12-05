@@ -85,6 +85,34 @@
   },
   "pageNotFound": {
     "title": "The page you're looking for can't be found",
-    "label": "Back to home"
+    "buttonLabel": "Back to home"
+  },
+  "validations": {
+    "titleRequired": "Title is required",
+    "descriptionRequired": "Description is required",
+    "titleMaxLength": "Title must be at most {{max}} characters",
+    "descriptionMaxLength": "Description must be at most {{max}} characters",
+    "categoryRequired": "Category is required",
+    "atLeastOneCategoryRequired": "Please select at least one category",
+    "categoryNameRequired": "Category title is required",
+    "name": {
+      "required": "Name is required",
+      "min": "Name must be at least 3 characters"
+    },
+    "email": {
+      "required": "Email is required",
+      "invalid": "Enter a valid email address"
+    },
+    "password": {
+      "required": "Password is required",
+      "min": "Password must be at least 6 characters"
+    },
+    "passwordConfirmation": {
+      "required": "Password confirmation is required",
+      "match": "Passwords must match"
+    },
+    "organization": {
+      "required": "Organization is required"
+    }
   }
 }

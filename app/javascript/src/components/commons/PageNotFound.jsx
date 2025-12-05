@@ -7,9 +7,9 @@ import routes from "routes";
 const PageNotFound = ({ t }) => (
   <div className="flex min-h-screen w-full items-center justify-center">
     <NoData
-      title={t("errors.pageNotFound")}
+      title={t("pageNotFound")}
       primaryButtonProps={{
-        label: t("labels.backToHome"),
+        label: t("pageNotFound.buttonLabel"),
         className: "bg-neutral-800 hover:bg-neutral-950",
         to: routes.root,
       }}

@@ -16,9 +16,9 @@ import { buildUrl } from "utils/urls";
 
 const Dashboard = () => {
   const history = useHistory();
-  const queryParams = useQueryParams();
   const { t } = useTranslation();
   const { selectedCategories } = useSelectedCategoryStore();
+  const queryParams = useQueryParams();
 
   const pageNumber = Number(propOr(DEFAULT_PAGE_NUMBER, "page", queryParams));
   const pageSize = Number(propOr(DEFAULT_PAGE_SIZE, "pageSize", queryParams));

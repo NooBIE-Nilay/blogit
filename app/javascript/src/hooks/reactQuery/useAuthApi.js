@@ -1,28 +1,35 @@
-import { QUERY_KEYS } from "constants/query";
-
 import authApi from "apis/auth";
-import { useMutation, useQueryClient } from "react-query";
+import { setAuthHeaders, resetAuthTokens } from "apis/axios";
+import { useMutation } from "react-query";
+import queryClient from "utils/queryClient";
+import { setAuthToLocalStorage } from "utils/storage";
 
-const useSignup = () => {
-  const queryClient = useQueryClient();
+export const useSignup = () => useMutation(authApi.signup);
 
-  return useMutation({
-    mutationFn: payload => authApi.signup(payload),
-    onSuccess: () => {
-      queryClient.invalidateQueries([QUERY_KEYS.USER]);
+export const useLogin = () =>
+  useMutation(authApi.login, {
+    onSuccess: ({ data }) => {
+      queryClient.clear();
+      setAuthToLocalStorage({
+        authToken: data.authentication_token,
+        userId: data.id,
+        userName: data.name,
+        email: data.email,
+      });
+      setAuthHeaders();
     },
   });
-};
 
-const useLogin = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: payload => authApi.login(payload),
+export const useLogout = () =>
+  useMutation(authApi.logout, {
     onSuccess: () => {
-      queryClient.invalidateQueries([QUERY_KEYS.USER]);
+      queryClient.clear();
+      setAuthToLocalStorage({
+        authToken: null,
+        userId: null,
+        userName: null,
+        email: null,
+      });
+      resetAuthTokens();
     },
   });
-};
-
-export { useSignup, useLogin };
