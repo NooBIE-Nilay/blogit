@@ -1,3 +1,5 @@
+import routes from "constants/routes";
+
 import React from "react";
 
 import { Input, Button } from "neetoui";
@@ -14,7 +16,7 @@ const Form = ({ handleSubmit, setEmail, setPassword, isLoading, t }) => (
       <div className="text-center">
         <Link
           className="mt-2 text-sm font-medium text-indigo-500 transition duration-150 ease-in-out focus:underline focus:outline-none"
-          to="/signup"
+          to={routes.signup}
         >
           {t("auth.signupLink")}
         </Link>
