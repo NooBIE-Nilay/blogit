@@ -19,7 +19,6 @@ const CategoryPane = ({ isCategoryPaneOpen, setIsCategoryPaneOpen }) => {
   const categoryPaneRef = useRef();
   const history = useHistory();
   const { t } = useTranslation();
-
   const { data } = useFetchCategories();
 
   const categories = data?.data.categories;

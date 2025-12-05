@@ -13,7 +13,7 @@ import { Pagination } from "neetoui";
 import { mergeLeft, propOr } from "ramda";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
-import useCategoryStore from "stores/useCategoryStore";
+import useSelectedCategoryStore from "stores/useSelectedCategoryStore";
 import { buildUrl } from "utils/urls";
 
 import Table from "./Table";
@@ -25,7 +25,7 @@ const MyPosts = () => {
 
   const { t } = useTranslation();
 
-  const { selectedCategories } = useCategoryStore();
+  const { selectedCategories } = useSelectedCategoryStore();
 
   const pageNumber = Number(propOr(DEFAULT_PAGE_NUMBER, "page", queryParams));
   const pageSize = Number(
@@ -39,7 +39,11 @@ const MyPosts = () => {
   });
 
   const posts = data?.data.posts || [];
-  const meta = data?.data.meta || {};
+  const {
+    total_count: resultCount,
+    current_page: resultPageNumber,
+    page_size: resultPageSize,
+  } = data?.data.meta || {};
 
   const handlePageNavigation = page => {
     history.replace(
@@ -53,10 +57,10 @@ const MyPosts = () => {
   useEffect(() => {
     if (isLoading) return;
 
-    if (meta.total_pages && pageNumber > meta.total_pages) {
+    if (resultCount && pageNumber > resultCount) {
       handlePageNavigation(DEFAULT_PAGE_NUMBER);
     }
-  }, [meta, isLoading, pageNumber, queryParams]);
+  }, [isLoading, pageNumber, queryParams, resultCount]);
 
   if (isLoading) {
     return (
@@ -69,14 +73,14 @@ const MyPosts = () => {
   return (
     <Container>
       <div className="flex flex-col gap-y-8 ">
-        <PageTitle count={meta.total_count} title={t("myPosts.title")} />
+        <PageTitle count={resultCount} title={t("myPosts.title")} />
         <Table data={posts} />
         <div className="flex items-center justify-end">
           <Pagination
-            count={meta.total_count}
+            count={resultCount}
             navigate={handlePageNavigation}
-            pageNumber={meta.current_page || pageNumber}
-            pageSize={meta.page_size || pageSize}
+            pageNo={resultPageNumber || pageNumber}
+            pageSize={resultPageSize || pageSize}
           />
         </div>
       </div>

@@ -3,32 +3,24 @@ import { QUERY_KEYS } from "constants/query";
 import authApi from "apis/auth";
 import { useMutation, useQueryClient } from "react-query";
 
-const useSignup = ({ onSuccess, onError } = {}) => {
+const useSignup = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: payload => authApi.signup(payload),
-    onSuccess: (...args) => {
+    onSuccess: () => {
       queryClient.invalidateQueries([QUERY_KEYS.USER]);
-      onSuccess?.(...args);
-    },
-    onError: (...args) => {
-      onError?.(...args);
     },
   });
 };
 
-const useLogin = ({ onSuccess, onError } = {}) => {
+const useLogin = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: payload => authApi.login(payload),
-    onSuccess: (...args) => {
+    onSuccess: () => {
       queryClient.invalidateQueries([QUERY_KEYS.USER]);
-      onSuccess?.(...args);
-    },
-    onError: (...args) => {
-      onError?.(...args);
     },
   });
 };

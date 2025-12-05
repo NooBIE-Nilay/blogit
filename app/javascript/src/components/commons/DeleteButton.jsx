@@ -26,8 +26,7 @@ const DeleteButton = ({
     },
   });
 
-  const handleDelete = event => {
-    event.stopPropagation();
+  const handleDelete = () => {
     deletePost(post.slug);
     setIsDeleteAlertOpen(false);
   };
@@ -41,8 +40,7 @@ const DeleteButton = ({
         label={t("common.delete")}
         loading={isLoading}
         style="danger-text"
-        onClick={event => {
-          event.stopPropagation();
+        onClick={() => {
           setIsDeleteAlertOpen(prev => !prev);
         }}
       />
@@ -58,8 +56,7 @@ const DeleteButton = ({
           />
         }
         onSubmit={handleDelete}
-        onClose={event => {
-          event.stopPropagation();
+        onClose={() => {
           setIsDeleteAlertOpen(prev => !prev);
         }}
       />

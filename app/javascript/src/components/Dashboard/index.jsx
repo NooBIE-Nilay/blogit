@@ -11,17 +11,14 @@ import { Button, Pagination } from "neetoui";
 import { mergeLeft, propOr } from "ramda";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
-import useCategoryStore from "stores/useCategoryStore";
+import useSelectedCategoryStore from "stores/useSelectedCategoryStore";
 import { buildUrl } from "utils/urls";
 
 const Dashboard = () => {
   const history = useHistory();
-
   const queryParams = useQueryParams();
-
   const { t } = useTranslation();
-
-  const { selectedCategories } = useCategoryStore();
+  const { selectedCategories } = useSelectedCategoryStore();
 
   const pageNumber = Number(propOr(DEFAULT_PAGE_NUMBER, "page", queryParams));
   const pageSize = Number(propOr(DEFAULT_PAGE_SIZE, "pageSize", queryParams));
@@ -33,7 +30,11 @@ const Dashboard = () => {
   });
 
   const posts = data?.data.posts || [];
-  const meta = data?.data.meta || {};
+  const {
+    total_count: resultCount,
+    current_page: resultPageNumber,
+    page_size: resultPageSize,
+  } = data?.data.meta || {};
 
   const handlePageNavigation = page => {
     history.replace(
@@ -47,10 +48,10 @@ const Dashboard = () => {
   useEffect(() => {
     if (isLoading) return;
 
-    if (meta.total_pages && pageNumber > meta.total_pages) {
+    if (resultCount && pageNumber > resultCount) {
       handlePageNavigation(DEFAULT_PAGE_NUMBER);
     }
-  }, [meta, isLoading, pageNumber, queryParams]);
+  }, [resultCount, isLoading, pageNumber, queryParams]);
 
   if (isLoading) {
     return (
@@ -76,10 +77,10 @@ const Dashboard = () => {
         <List data={posts} />
         <div className="flex items-center justify-end">
           <Pagination
-            count={meta.total_count}
+            count={resultCount}
             navigate={handlePageNavigation}
-            pageNumber={meta.current_page || pageNumber}
-            pageSize={meta.page_size || pageSize}
+            pageNo={resultPageNumber || pageNumber}
+            pageSize={resultPageSize || pageSize}
           />
         </div>
       </div>

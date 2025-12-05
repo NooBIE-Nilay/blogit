@@ -2,7 +2,7 @@ import { findById, removeById } from "@bigbinary/neeto-cist";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-const useCategoryStore = create(
+const useSelectedCategoryStore = create(
   persist(
     (set, get) => ({
       selectedCategories: [],
@@ -19,10 +19,11 @@ const useCategoryStore = create(
 
       clear: () => set({ selectedCategories: [] }),
 
-      isSelected: category => !!findById(category.id, get().selectedCategories),
+      isSelected: categoryId =>
+        !!findById(categoryId, get().selectedCategories),
     }),
     { name: "categoryStore" }
   )
 );
 
-export default useCategoryStore;
+export default useSelectedCategoryStore;

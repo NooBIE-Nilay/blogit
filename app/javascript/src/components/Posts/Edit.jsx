@@ -6,6 +6,8 @@ import { Container, PageLoader } from "components/commons";
 import { useShowPost, useUpdatePost } from "hooks/reactQuery/usePostsApi";
 import useFuncDebounce from "hooks/useFuncDebounce";
 import Logger from "js-logger";
+import { isPresent } from "neetoCist";
+import { propOr } from "ramda";
 import { useParams, useHistory } from "react-router-dom";
 import {
   setToLocalStorage,
@@ -14,7 +16,7 @@ import {
 } from "utils/storage";
 
 import { EDIT_POST_PREVIEW_DATA, FORM_TYPE } from "./constants";
-import Form from "./Form";
+import PostForm from "./Form";
 import FormHeader from "./FormHeader";
 
 const Edit = () => {
@@ -26,8 +28,9 @@ const Edit = () => {
   const history = useHistory();
   const { slug } = useParams();
 
-  const { data: { data: { post = {} } = {} } = {}, isLoading: isPageLoading } =
-    useShowPost(slug);
+  const { data, isLoading: isPageLoading } = useShowPost(slug);
+
+  const post = data?.data.post || [];
 
   const { mutate: updatePost, isLoading } = useUpdatePost({
     onSuccess: () => {
@@ -39,8 +42,7 @@ const Edit = () => {
     },
   });
 
-  const handleUpdate = async event => {
-    event.preventDefault();
+  const handleUpdate = async () => {
     updatePost({
       slug,
       payload: {
@@ -55,21 +57,15 @@ const Edit = () => {
   useEffect(() => {
     if (isPageLoading) return;
 
-    if (post) {
+    if (isPresent(post)) {
+      const { title, description, categories, status } = post;
       const previewKey = `${EDIT_POST_PREVIEW_DATA}:${slug}`;
       const savedPreview = getFromLocalStorage(previewKey);
 
-      if (savedPreview && savedPreview.updated_at > post.updated_at) {
-        setTitle(savedPreview.title || post.title);
-        setDescription(savedPreview.description || post.description);
-        setSelectedCategories(savedPreview.categories || post.categories);
-        setStatus(savedPreview.status || post.status);
-      } else {
-        setTitle(post.title);
-        setDescription(post.description);
-        setSelectedCategories(post.categories);
-        setStatus(post.status);
-      }
+      setTitle(propOr(savedPreview.title, title));
+      setDescription(propOr(savedPreview.description, description));
+      setSelectedCategories(propOr(savedPreview.categories || categories));
+      setStatus(propOr(savedPreview.status || status));
     }
   }, [post, isPageLoading, slug]);
 
@@ -117,7 +113,7 @@ const Edit = () => {
             post,
           }}
         />
-        <Form
+        <PostForm
           {...{
             isLoading,
             title,

@@ -32,8 +32,7 @@ const StatusField = ({ post }) => {
     },
   });
 
-  const handleUpdate = async event => {
-    event.preventDefault();
+  const handleUpdate = async () => {
     updatePost({
       slug: post.slug,
       payload: {

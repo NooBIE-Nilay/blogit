@@ -7,7 +7,7 @@ import { Tag, Typography } from "neetoui";
 import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
-import { formatUpdatedAt } from "utils/date";
+import { getLastPublishedDateString } from "utils/date";
 
 const Item = ({ post }) => {
   const history = useHistory();
@@ -19,7 +19,7 @@ const Item = ({ post }) => {
     slug,
     categories,
     user: { name: userName },
-    updated_at: updatedAt,
+    last_published_at: lastPublishedAt,
   } = post;
 
   return (
@@ -54,7 +54,7 @@ const Item = ({ post }) => {
         </div>
         <div className="flex flex-col items-end space-y-2">
           <div className="text-sm text-gray-500">
-            {formatUpdatedAt(updatedAt)}
+            {getLastPublishedDateString(lastPublishedAt)}
           </div>
         </div>
       </div>

@@ -17,7 +17,7 @@ const UserAvatar = () => {
 
   const history = useHistory();
 
-  const userName = getFromLocalStorage("authUserName");
+  const username = getFromLocalStorage("authUserName");
 
   const handleLogout = async () => {
     try {
@@ -36,13 +36,10 @@ const UserAvatar = () => {
   };
 
   return (
-    <Dropdown
-      buttonStyle=""
-      icon={() => <Avatar user={{ username: userName }} />}
-    >
+    <Dropdown buttonStyle="" icon={() => <Avatar user={{ username }} />}>
       <Menu className="p-2">
         <Typography className="font-semibold" style="h5">
-          {userName}
+          {username}
         </Typography>
         <Divider />
         <Button

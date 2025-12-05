@@ -31,6 +31,8 @@ const FormHeader = ({
     }
   };
 
+  const isUpdateForm = type === FORM_TYPE.UPDATE;
+
   return (
     <div className="flex w-full items-center justify-between  pr-6">
       <PageTitle
@@ -67,7 +69,7 @@ const FormHeader = ({
             </MenuItem.Button>
           </Menu>
         </ActionDropdown>
-        {type === FORM_TYPE.UPDATE && (
+        {isUpdateForm && (
           <Dropdown
             buttonStyle="text"
             closeOnOutsideClick={false}

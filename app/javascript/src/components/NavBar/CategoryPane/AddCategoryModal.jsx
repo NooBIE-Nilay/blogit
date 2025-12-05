@@ -21,8 +21,7 @@ const AddCategoryModal = ({ isAddCategoryOpen, setIsAddCategoryOpen }) => {
       },
     });
 
-  const handleSubmit = event => {
-    event.preventDefault();
+  const handleSubmit = () => {
     createCategory({
       name: categoryTitle,
     });

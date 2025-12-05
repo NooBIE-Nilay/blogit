@@ -6,6 +6,7 @@ import { Container } from "components/commons";
 import { useCreatePost } from "hooks/reactQuery/usePostsApi";
 import useFuncDebounce from "hooks/useFuncDebounce";
 import Logger from "js-logger";
+import { isPresent } from "neetoCist";
 import { useHistory } from "react-router-dom";
 import {
   setToLocalStorage,
@@ -14,7 +15,7 @@ import {
 } from "utils/storage";
 
 import { CREATE_POST_PREVIEW_DATA, POST_STATUS } from "./constants";
-import Form from "./Form";
+import PostForm from "./Form";
 import FormHeader from "./FormHeader";
 
 const Create = () => {
@@ -35,8 +36,7 @@ const Create = () => {
     },
   });
 
-  const handleSubmit = async event => {
-    event.preventDefault();
+  const handleSubmit = async () => {
     createPost({
       title,
       description,
@@ -68,11 +68,11 @@ const Create = () => {
 
   useEffect(() => {
     const savedPreview = getFromLocalStorage(CREATE_POST_PREVIEW_DATA);
-    if (savedPreview) {
-      setTitle(savedPreview.title || "");
-      setDescription(savedPreview.description || "");
-      setSelectedCategories(savedPreview.categories || []);
-      setStatus(savedPreview.status || POST_STATUS.DRAFT);
+    if (isPresent(savedPreview)) {
+      setTitle(savedPreview.title);
+      setDescription(savedPreview.description);
+      setSelectedCategories(savedPreview.categories);
+      setStatus(savedPreview.status);
     }
   }, []);
 
@@ -84,7 +84,7 @@ const Create = () => {
     <Container>
       <div className="flex flex-col gap-y-8">
         <FormHeader {...{ status, setStatus, handleSubmit }} />
-        <Form
+        <PostForm
           {...{
             isLoading,
             title,
