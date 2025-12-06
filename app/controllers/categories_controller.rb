@@ -1,27 +1,21 @@
 # frozen_string_literal: true
 
 class CategoriesController < ApplicationController
-  before_action :set_category, only: [:show]
+  after_action :verify_policy_scoped, only: :index
+  after_action :verify_authorized, only: :create
 
   def index
-    categories = Category.all
-    render_json({ categories: })
+    @categories = policy_scope(Category)
   end
 
   def create
-    category = Category.create!(category_params)
-    render_notice(t("successfully_created", name: category.name))
-  end
-
-  def show
-    @category = Category.includes(posts: :user).find(params[:id])
+    category = @current_user.organization.categories.new(category_params)
+    authorize category
+    category.save!
+    render_notice(t("successfully_created", entity: t("category.title")))
   end
 
   private
-
-    def set_category
-      @category = Category.find(params[:id])
-    end
 
     def category_params
       params.require(:category).permit(:name)

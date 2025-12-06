@@ -5,6 +5,8 @@ import { useFetchCategories } from "hooks/reactQuery/useCategoriesApi";
 import { Input, Textarea, Select } from "neetoui";
 import { useTranslation } from "react-i18next";
 
+import { MAX_DESCRIPTION_LENGTH, MAX_TITLE_LENGTH } from "./constants";
+
 const Form = ({
   title = "",
   setTitle,
@@ -38,7 +40,7 @@ const Form = ({
             label={t("common.title")}
             placeholder={t("common.titlePlaceholder")}
             value={title}
-            onChange={e => setTitle(e.target.value.slice(0, 125))}
+            onChange={e => setTitle(e.target.value.slice(0, MAX_TITLE_LENGTH))}
           />
           <div>
             <Select
@@ -57,7 +59,7 @@ const Form = ({
                 {t("common.description")}*
               </div>
               <div className="text-xs text-gray-500">
-                {description.length}/10000
+                {description.length}/{MAX_DESCRIPTION_LENGTH}
               </div>
             </div>
             <div className="mt-1">
@@ -66,7 +68,11 @@ const Form = ({
                 placeholder={t("common.descriptionPlaceholder")}
                 rows={8}
                 value={description}
-                onChange={e => setDescription(e.target.value.slice(0, 10000))}
+                onChange={e =>
+                  setDescription(
+                    e.target.value.slice(0, MAX_DESCRIPTION_LENGTH)
+                  )
+                }
               />
             </div>
           </div>

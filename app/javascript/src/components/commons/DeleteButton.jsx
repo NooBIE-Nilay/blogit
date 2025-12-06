@@ -17,18 +17,17 @@ const DeleteButton = ({
 }) => {
   const history = useHistory();
 
-  const { mutate: deletePost, isLoading } = useDeletePost({
-    onSuccess: () => {
-      history.push(redirectRoute);
-    },
-    onError: error => {
-      Logger.error(error);
-    },
-  });
+  const { mutate: deletePost, isLoading } = useDeletePost();
 
-  const handleDelete = event => {
-    event.stopPropagation();
-    deletePost(post.slug);
+  const handleDelete = () => {
+    deletePost(post.slug, {
+      onSuccess: () => {
+        history.push(redirectRoute);
+      },
+      onError: error => {
+        Logger.error(error);
+      },
+    });
     setIsDeleteAlertOpen(false);
   };
 
@@ -41,8 +40,7 @@ const DeleteButton = ({
         label={t("common.delete")}
         loading={isLoading}
         style="danger-text"
-        onClick={event => {
-          event.stopPropagation();
+        onClick={() => {
           setIsDeleteAlertOpen(prev => !prev);
         }}
       />
@@ -58,8 +56,7 @@ const DeleteButton = ({
           />
         }
         onSubmit={handleDelete}
-        onClose={event => {
-          event.stopPropagation();
+        onClose={() => {
           setIsDeleteAlertOpen(prev => !prev);
         }}
       />

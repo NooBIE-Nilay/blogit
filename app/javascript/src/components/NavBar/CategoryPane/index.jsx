@@ -19,7 +19,6 @@ const CategoryPane = ({ isCategoryPaneOpen, setIsCategoryPaneOpen }) => {
   const categoryPaneRef = useRef();
   const history = useHistory();
   const { t } = useTranslation();
-
   const { data } = useFetchCategories();
 
   const categories = data?.data.categories;
@@ -43,7 +42,10 @@ const CategoryPane = ({ isCategoryPaneOpen, setIsCategoryPaneOpen }) => {
   }, [categoryPaneRef, isAddCategoryOpen]);
 
   useEffect(() => {
-    if (history.location.pathname !== routes.dashboard) {
+    if (
+      history.location.pathname !== routes.dashboard ||
+      history.location.pathname !== routes.root
+    ) {
       setIsCategoryPaneOpen(false);
     }
   }, []);

@@ -3,20 +3,17 @@ import routes from "constants/routes";
 import React from "react";
 
 import { useFetchOrganizations } from "hooks/reactQuery/useOrganizationApi";
-import { Input, Button, Select } from "neetoui";
+import { Button } from "neetoui";
+import { Form as NeetoForm, Input, Select } from "neetoui/formik";
 import PropTypes from "prop-types";
 import { useTranslation, withTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
-const Form = ({
-  handleSubmit,
-  setName,
-  setEmail,
-  setPassword,
-  isLoading,
-  setPasswordConfirmation,
-  setSelectedOrganizationId,
-}) => {
+import { getOprganizationOptions } from "./utils";
+
+import { SIGNUP_INITIAL_VALUES, SIGNUP_VALIDATION_SCHEMA } from "../constants";
+
+const Form = ({ handleSubmit, isLoading }) => {
   const { data, isLoading: isOrganizationsLoading } = useFetchOrganizations();
 
   const organizations = data?.data?.organizations;
@@ -45,51 +42,56 @@ const Form = ({
             {t("auth.loginLink")}
           </Link>
         </div>
-        <form className="mt-8 flex flex-col gap-y-6" onSubmit={handleSubmit}>
+        <NeetoForm
+          className="mt-8 flex flex-col gap-y-6"
+          formikProps={{
+            initialValues: SIGNUP_INITIAL_VALUES,
+            validationSchema: SIGNUP_VALIDATION_SCHEMA,
+            onSubmit: handleSubmit,
+          }}
+        >
           <Input
             required
             label={t("auth.name")}
+            name="name"
             placeholder={t("auth.namePlaceholder")}
-            onChange={e => setName(e.target.value)}
           />
           <Input
             required
             label={t("auth.email")}
+            name="email"
             placeholder={t("auth.emailPlaceholder")}
             type="email"
-            onChange={e => setEmail(e.target.value)}
           />
           <Select
             required
             isDisabled={isOrganizationsLoading}
             label={t("auth.organizations")}
-            optionRemapping={{ label: "name", value: "id" }}
-            options={organizations}
+            name="organization"
+            options={getOprganizationOptions(organizations)}
             placeholder={t("auth.organizationsPlaceholder")}
-            onChange={selectedOrg => {
-              setSelectedOrganizationId(selectedOrg.id);
-            }}
           />
           <Input
             required
             label={t("auth.password")}
+            name="password"
             placeholder={t("auth.passwordPlaceholder")}
             type="password"
-            onChange={e => setPassword(e.target.value)}
           />
           <Input
             required
             label={t("auth.passwordConfirmation")}
+            name="passwordConfirmation"
             placeholder={t("auth.passwordPlaceholder")}
             type="password"
-            onChange={e => setPasswordConfirmation(e.target.value)}
           />
           <Button
+            className="justify-center"
             disabled={isLoading}
             label={t("common.register")}
             type="submit"
           />
-        </form>
+        </NeetoForm>
       </div>
     </div>
   );
@@ -97,12 +99,7 @@ const Form = ({
 
 Form.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
-  setName: PropTypes.func.isRequired,
-  setEmail: PropTypes.func.isRequired,
-  setPassword: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
-  setPasswordConfirmation: PropTypes.func.isRequired,
-  setSelectedOrganizationId: PropTypes.func.isRequired,
 };
 
 export default withTranslation()(Form);

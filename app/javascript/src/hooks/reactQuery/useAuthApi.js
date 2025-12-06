@@ -1,36 +1,35 @@
-import { QUERY_KEYS } from "constants/query";
-
 import authApi from "apis/auth";
-import { useMutation, useQueryClient } from "react-query";
+import { setAuthHeaders, resetAuthTokens } from "apis/axios";
+import { useMutation } from "react-query";
+import queryClient from "utils/queryClient";
+import { setAuthToLocalStorage } from "utils/storage";
 
-const useSignup = ({ onSuccess, onError } = {}) => {
-  const queryClient = useQueryClient();
+export const useSignup = () => useMutation(authApi.signup);
 
-  return useMutation({
-    mutationFn: payload => authApi.signup(payload),
-    onSuccess: (...args) => {
-      queryClient.invalidateQueries([QUERY_KEYS.USER]);
-      onSuccess?.(...args);
-    },
-    onError: (...args) => {
-      onError?.(...args);
-    },
-  });
-};
-
-const useLogin = ({ onSuccess, onError } = {}) => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: payload => authApi.login(payload),
-    onSuccess: (...args) => {
-      queryClient.invalidateQueries([QUERY_KEYS.USER]);
-      onSuccess?.(...args);
-    },
-    onError: (...args) => {
-      onError?.(...args);
+export const useLogin = () =>
+  useMutation(authApi.login, {
+    onSuccess: ({ data }) => {
+      queryClient.clear();
+      setAuthToLocalStorage({
+        authToken: data.authentication_token,
+        userId: data.id,
+        userName: data.name,
+        email: data.email,
+      });
+      setAuthHeaders();
     },
   });
-};
 
-export { useSignup, useLogin };
+export const useLogout = () =>
+  useMutation(authApi.logout, {
+    onSuccess: () => {
+      queryClient.clear();
+      setAuthToLocalStorage({
+        authToken: null,
+        userId: null,
+        userName: null,
+        email: null,
+      });
+      resetAuthTokens();
+    },
+  });

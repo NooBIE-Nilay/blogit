@@ -26,23 +26,25 @@ const StatusField = ({ post }) => {
       ? t("status.update.unpublish")
       : t("status.update.publish");
 
-  const { mutate: updatePost } = useUpdatePost({
-    onError: error => {
-      Logger.error(error);
-    },
-  });
+  const { mutate: updatePost } = useUpdatePost();
 
-  const handleUpdate = async event => {
-    event.preventDefault();
-    updatePost({
-      slug: post.slug,
-      payload: {
-        status:
-          post.status === POST_STATUS.PUBLISHED
-            ? POST_STATUS.DRAFT
-            : POST_STATUS.PUBLISHED,
+  const handleUpdate = async () => {
+    updatePost(
+      {
+        slug: post.slug,
+        payload: {
+          status:
+            post.status === POST_STATUS.PUBLISHED
+              ? POST_STATUS.DRAFT
+              : POST_STATUS.PUBLISHED,
+        },
       },
-    });
+      {
+        onError: error => {
+          Logger.error(error);
+        },
+      }
+    );
     setIsDropdownOpen(false);
   };
 

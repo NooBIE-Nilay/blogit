@@ -1,7 +1,7 @@
 const API_ENDPOINTS = {
   ROOT: "/",
   POSTS: "/posts",
-  MY_POSTS: "/posts/my_posts",
+  MY_POSTS: "/my_posts",
   CATEGORIES: "/categories",
   ORGANIZATIONS: "/organizations",
   USERS: "/users",

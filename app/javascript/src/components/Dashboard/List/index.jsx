@@ -3,28 +3,27 @@ import routes from "constants/routes";
 import React from "react";
 
 import { t } from "i18next";
+import { isNotPresent } from "neetoCist";
 import { NoData } from "neetoui";
 import PropTypes from "prop-types";
-import { isNil, isEmpty, either, isNotEmpty } from "ramda";
+import { isNotEmpty } from "ramda";
 import { useHistory } from "react-router-dom";
-import useCategoryStore from "stores/useCategoryStore";
+import useSelectedCategoryStore from "stores/useSelectedCategoryStore";
 
 import Item from "./Item";
 
 const List = ({ data }) => {
   const history = useHistory();
+  const { selectedCategories } = useSelectedCategoryStore();
 
-  const { selectedCategories } = useCategoryStore();
-
-  if (either(isNil, isEmpty)(data)) {
-    let title = t("posts.empty");
-    if (isNotEmpty(selectedCategories)) {
-      title = t("posts.empty_filter");
-    }
+  if (isNotPresent(data)) {
+    const noDataTitle = isNotEmpty(selectedCategories)
+      ? t("posts.empty_filter")
+      : t("posts.empty");
 
     return (
       <NoData
-        title={title}
+        title={noDataTitle}
         primaryButtonProps={{
           label: t("posts.add"),
           onClick: () => history.push(routes.posts.create),

@@ -3,23 +3,11 @@ import { QUERY_KEYS } from "constants/query";
 import postsApi from "apis/posts";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
-const useFetchPosts = ({ selectedCategoryIds = [], page, perPage }) =>
+const useFetchPosts = ({ selectedCategoryIds = [], page, pageSize }) =>
   useQuery({
-    queryKey: [QUERY_KEYS.POSTS, selectedCategoryIds, page, perPage],
+    queryKey: [QUERY_KEYS.POSTS, selectedCategoryIds, page, pageSize],
     queryFn: () =>
-      postsApi.fetch({ categoryIds: selectedCategoryIds, page, perPage }),
-    keepPreviousData: true,
-  });
-
-const useFetchMyPosts = ({ selectedCategoryIds = [], page, perPage }) =>
-  useQuery({
-    queryKey: [QUERY_KEYS.MY_POSTS],
-    queryFn: () =>
-      postsApi.fetchMyPosts({
-        categoryIds: selectedCategoryIds,
-        page,
-        perPage,
-      }),
+      postsApi.fetch({ categoryIds: selectedCategoryIds, page, pageSize }),
     keepPreviousData: true,
   });
 
@@ -30,59 +18,46 @@ const useShowPost = slug =>
     enabled: !!slug,
   });
 
-const useCreatePost = ({ onSuccess, onError } = {}) => {
+const useCreatePost = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: payload => postsApi.create(payload),
-    onSuccess: (...args) => {
+    onSuccess: () => {
       queryClient.invalidateQueries([QUERY_KEYS.POSTS]);
       queryClient.invalidateQueries([QUERY_KEYS.MY_POSTS]);
-      onSuccess?.(...args);
-    },
-    onError: (...args) => {
-      onError?.(...args);
     },
   });
 };
 
-const useUpdatePost = ({ onSuccess, onError } = {}) => {
+const useUpdatePost = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: ({ payload, slug }) => postsApi.update({ payload, slug }),
-    onSuccess: (data, { slug }) => {
+    onSuccess: (_, { slug }) => {
       queryClient.invalidateQueries([QUERY_KEYS.POSTS]);
       queryClient.invalidateQueries([QUERY_KEYS.MY_POSTS]);
       queryClient.invalidateQueries([QUERY_KEYS.POST, slug]);
-      onSuccess?.(data);
-    },
-    onError: (...args) => {
-      onError?.(...args);
     },
   });
 };
 
-const useDeletePost = ({ onSuccess, onError } = {}) => {
+const useDeletePost = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: slug => postsApi.destroy(slug),
-    onSuccess: (data, slug) => {
+    onSuccess: (_, slug) => {
       queryClient.removeQueries([QUERY_KEYS.POST, slug]);
       queryClient.invalidateQueries([QUERY_KEYS.POSTS]);
       queryClient.invalidateQueries([QUERY_KEYS.MY_POSTS]);
-      onSuccess?.(data);
-    },
-    onError: (...args) => {
-      onError?.(...args);
     },
   });
 };
 
 export {
   useFetchPosts,
-  useFetchMyPosts,
   useShowPost,
   useCreatePost,
   useUpdatePost,

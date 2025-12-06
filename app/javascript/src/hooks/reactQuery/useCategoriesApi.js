@@ -9,17 +9,13 @@ const useFetchCategories = () =>
     queryFn: () => categoriesApi.fetch(),
   });
 
-const useCreateCategory = ({ onSuccess, onError } = {}) => {
+const useCreateCategory = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: newCategory => categoriesApi.create(newCategory),
-    onSuccess: (...args) => {
+    onSuccess: () => {
       queryClient.invalidateQueries([QUERY_KEYS.CATEGORIES]);
-      onSuccess?.(...args);
-    },
-    onError: (...args) => {
-      onError?.(...args);
     },
   });
 };

@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import { t } from "i18next";
 
-export const getLastUpdatedDate = post => {
+export const getLastUpdatedDateString = post => {
   if (!post) return "";
 
   return dayjs(post?.last_published_at).isValid()
@@ -11,7 +11,7 @@ export const getLastUpdatedDate = post => {
     : `${t("date.created")}: ${dayjs(post.updated_at).format("DD MMMM YYYY")}`;
 };
 
-export const formatLastPublishedDate = lastPublishedAt =>
+export const getLastPublishedDateString = lastPublishedAt =>
   dayjs(lastPublishedAt).isValid()
     ? dayjs(lastPublishedAt).format("MMM D, YYYY, h:mm A	")
     : "-";

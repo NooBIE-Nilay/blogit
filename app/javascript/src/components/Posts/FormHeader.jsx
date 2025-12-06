@@ -31,11 +31,16 @@ const FormHeader = ({
     }
   };
 
+  const isUpdateForm = type === FORM_TYPE.UPDATE;
+  const dropdownLabel =
+    status === POST_STATUS.PUBLISHED
+      ? t("status.published")
+      : t("status.draft");
+  const pageTitle = isUpdateForm ? t("posts.edit") : t("posts.new");
+
   return (
     <div className="flex w-full items-center justify-between  pr-6">
-      <PageTitle
-        title={t(type === FORM_TYPE.CREATE ? "posts.new" : "posts.edit")}
-      />
+      <PageTitle title={pageTitle} />
       <div className="flex gap-2">
         <Button
           icon={() => <ExternalLink />}
@@ -43,11 +48,11 @@ const FormHeader = ({
           onClick={handlePreview}
         />
         <Button
-          label="Cancel"
+          label={t("common.cancel")}
           style="secondary"
           onClick={() => history.push(routes.root)}
         />
-        <ActionDropdown label={t(`status.${status}`)} onClick={handleSubmit}>
+        <ActionDropdown label={dropdownLabel} onClick={handleSubmit}>
           <Menu>
             <MenuItem.Button
               id={POST_STATUS.PUBLISHED}
@@ -67,7 +72,7 @@ const FormHeader = ({
             </MenuItem.Button>
           </Menu>
         </ActionDropdown>
-        {type === FORM_TYPE.UPDATE && (
+        {isUpdateForm && (
           <Dropdown
             buttonStyle="text"
             closeOnOutsideClick={false}

@@ -2,13 +2,11 @@ import routes from "constants/routes";
 
 import React from "react";
 
-import authApi from "apis/auth";
-import { resetAuthTokens } from "apis/axios";
-import Logger from "js-logger";
+import { useLogout } from "hooks/reactQuery/useAuthApi";
 import { Avatar, Button, Dropdown, Typography } from "neetoui";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
-import { getFromLocalStorage, setAuthToLocalStorage } from "utils/storage";
+import { getFromLocalStorage } from "utils/storage";
 
 const UserAvatar = () => {
   const { Menu, Divider } = Dropdown;
@@ -17,32 +15,23 @@ const UserAvatar = () => {
 
   const history = useHistory();
 
-  const userName = getFromLocalStorage("authUserName");
+  const username = getFromLocalStorage("authUserName");
+
+  const { mutate: logout } = useLogout();
 
   const handleLogout = async () => {
-    try {
-      await authApi.logout();
-      setAuthToLocalStorage({
-        authToken: null,
-        email: null,
-        userId: null,
-        userName: null,
-      });
-      resetAuthTokens();
-      history.push(routes.login);
-    } catch (error) {
-      Logger.error(error);
-    }
+    logout(null, {
+      onSuccess: () => {
+        history.push(routes.login);
+      },
+    });
   };
 
   return (
-    <Dropdown
-      buttonStyle=""
-      icon={() => <Avatar user={{ username: userName }} />}
-    >
+    <Dropdown buttonStyle="" icon={() => <Avatar user={{ username }} />}>
       <Menu className="p-2">
         <Typography className="font-semibold" style="h5">
-          {userName}
+          {username}
         </Typography>
         <Divider />
         <Button

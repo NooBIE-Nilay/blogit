@@ -14,7 +14,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   def test_name_should_be_of_valid_length
-    @user.name = "a" * (User::MAX_NAME_LENGTH + 1)
+    @user.name = "a" * (Constants::MAX_NAME_LENGTH + 1)
     assert @user.invalid?
   end
 
@@ -36,7 +36,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   def test_reject_email_of_invalid_length
-    @user.email = ("a" * User::MAX_EMAIL_LENGTH) + "@test.com"
+    @user.email = ("a" * Constants::MAX_EMAIL_LENGTH) + "@test.com"
     assert @user.invalid?
   end
 
