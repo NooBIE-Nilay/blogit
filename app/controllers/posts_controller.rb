@@ -20,12 +20,14 @@ class PostsController < ApplicationController
   def create
     post = @current_user.posts.new(post_params)
     post.organization_id = @current_user.organization_id
-    authorize post
+    set_last_published post
     post.save!
+    authorize post
     render_notice(t("successfully_created", entity: t("post.title")))
   end
 
   def update
+    set_last_published @post
     @post.update!(post_params)
     render_notice(t("successfully_updated", entity: t("post.title")))
   end
@@ -42,9 +44,13 @@ class PostsController < ApplicationController
     end
 
     def post_params
-      permitted = params.require(:post).permit(:title, :description, :status, category_ids: [],)
-      permitted[:last_published_at] = Time.current if permitted[:status] == "published"
-      permitted
+      params.require(:post).permit(:title, :description, :status, category_ids: [])
+    end
+
+    def set_last_published(post)
+      return unless post_params[:status] == "published"
+
+      post.last_published_at = Time.current
     end
 
     def authorize_post

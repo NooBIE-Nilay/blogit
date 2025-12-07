@@ -3,8 +3,9 @@
 class MyPostsController < ApplicationController
   DEFAULT_PAGE_SIZE = 8
 
-  before_action :load_scoped_posts!, only: :index
   after_action :verify_policy_scoped, only: :index
+
+  before_action :load_scoped_posts!, only: :index
 
   def index
     @posts = paginate(@scoped_posts.order(created_at: :desc))

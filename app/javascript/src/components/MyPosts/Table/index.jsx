@@ -10,7 +10,13 @@ import { getLastPublishedDateString } from "utils/date";
 
 import StatusField from "./StatusField";
 
-const Table = ({ data: rowData = [] }) => {
+const Table = ({
+  data: rowData = [],
+  defaultPageSize,
+  currentPageNumber,
+  handlePageChange,
+  totalCount,
+}) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   const history = useHistory();
@@ -75,11 +81,16 @@ const Table = ({ data: rowData = [] }) => {
   return (
     <div className=" inline-block min-w-full ">
       <NeetoTable
-        fixedHeight
         rowSelection
         className="h-4xl"
         {...{ rowData, columnData, selectedRowKeys }}
         onRowSelect={selectedRowKeys => setSelectedRowKeys(selectedRowKeys)}
+        {...{
+          defaultPageSize,
+          currentPageNumber,
+          handlePageChange,
+          totalCount,
+        }}
       />
     </div>
   );
