@@ -4,23 +4,28 @@ import {
 } from "constants/pagination";
 import routes from "constants/routes";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
-import { PageLoader, PageTitle, Container } from "components/commons";
+import { PageLoader, Container } from "components/commons";
 import { useFetchMyPosts } from "hooks/reactQuery/useMyPostsApi";
 import useQueryParams from "hooks/useQueryParams";
-import { Pagination } from "neetoui";
 import { mergeLeft, propOr } from "ramda";
-import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import { buildUrl } from "utils/urls";
 
+import MyPostsPageHeader from "./PageHeader";
 import PostsTable from "./Table";
 
 const MyPosts = () => {
+  const [checkedTitles, setCheckedTitles] = useState([
+    "title",
+    "category",
+    "lastPublishedAt",
+    "status",
+  ]);
+
   const history = useHistory();
   const queryParams = useQueryParams();
-  const { t } = useTranslation();
 
   const pageNumber = Number(propOr(DEFAULT_PAGE_NUMBER, "page", queryParams));
   const pageSize = Number(
@@ -64,16 +69,17 @@ const MyPosts = () => {
   return (
     <Container>
       <div className="flex flex-col gap-y-8 ">
-        <PageTitle count={resultCount} title={t("myPosts.title")} />
-        <PostsTable data={posts} />
-        <div className="flex items-center justify-end">
-          <Pagination
-            count={resultCount}
-            navigate={handlePageNavigation}
-            pageNo={resultPageNumber || pageNumber}
-            pageSize={resultPageSize || pageSize}
-          />
-        </div>
+        <MyPostsPageHeader
+          count={resultCount}
+          {...{ checkedTitles, setCheckedTitles }}
+        />
+        <PostsTable
+          currentPageNumber={resultPageNumber || pageNumber}
+          data={posts}
+          defaultPageSize={resultPageSize || pageSize}
+          handlePageChange={handlePageNavigation}
+          totalCount={resultCount}
+        />
       </div>
     </Container>
   );

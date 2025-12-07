@@ -62,13 +62,18 @@
     "passwordPlaceholder": "******"
   },
   "common": {
+    "status": "Status",
     "home": "Redirect to home",
+    "filters": "Filters",
+    "apply": "Apply",
+    "clearFilter": "Clear filters",
     "title": "Title",
     "delete": "Delete",
     "articles": " articles",
     "titlePlaceholder": "Enter title",
     "category": "Category",
     "description": "Description",
+    "columns": "Columns",
     "descriptionPlaceholder": "Enter Description",
     "register": "Register",
     "add": "Add",
