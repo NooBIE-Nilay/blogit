@@ -16,15 +16,15 @@ const Table = ({
   currentPageNumber,
   handlePageChange,
   totalCount,
+  selectedColumns,
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   const history = useHistory();
 
-  const columnData = [
+  const columnProps = [
     {
       title: t("table.title"),
-      width: "35%",
       dataIndex: "title",
       render: (_, { title, slug }) => (
         <Link
@@ -48,11 +48,11 @@ const Table = ({
     },
     {
       title: t("table.lastPublishedAt"),
-      dataIndex: "last_published_at",
+      dataIndex: "lastPublishedAt",
       width: "20%",
-      render: last_published_at => (
+      render: lastPublishedAt => (
         <div className="flex flex-row items-center ">
-          {getLastPublishedDateString(last_published_at)}
+          {getLastPublishedDateString(lastPublishedAt)}
         </div>
       ),
     },
@@ -63,6 +63,10 @@ const Table = ({
       render: (_, post) => <StatusField {...{ post }} />,
     },
   ];
+
+  const columnData = columnProps.filter(({ dataIndex }) =>
+    selectedColumns.includes(dataIndex)
+  );
 
   if (isNotPresent(rowData)) {
     return (

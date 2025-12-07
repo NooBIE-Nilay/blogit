@@ -2,11 +2,10 @@ import React, { useState } from "react";
 
 import { Filter } from "neetoIcons";
 import { Button, Pane, Typography, Input, Select } from "neetoui";
-import { Form } from "neetoui/formik";
 import { useTranslation } from "react-i18next";
 
 const FilterPane = () => {
-  const [isPaneOpen, setIsPaneOpen] = useState(true);
+  const [isPaneOpen, setIsPaneOpen] = useState(false);
 
   const { t } = useTranslation();
 
@@ -28,14 +27,14 @@ const FilterPane = () => {
           </Typography>
         </Header>
         <Body>
-          <Form className="flex w-full flex-col gap-5">
+          <div className="flex w-full flex-col gap-5">
             <Input
               label={t("common.title")}
               placeHolder={t("common.titlePlaceholder")}
             />
             <Select isMulti label={t("common.category")} />
             <Select isMulti label={t("common.status")} />
-          </Form>
+          </div>
         </Body>
         <Footer>
           <div className="flex items-center justify-start gap-2">

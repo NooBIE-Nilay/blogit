@@ -55,7 +55,9 @@ const CategoryPane = ({ isCategoryPaneOpen, setIsCategoryPaneOpen }) => {
     const term = searchTerm.trim().toLowerCase();
     if (!term) return categories;
 
-    return categories.filter(c => c.name?.toLowerCase().includes(term));
+    return categories.filter(category =>
+      category.name.toLowerCase().includes(term)
+    );
   }, [categories, searchTerm]);
 
   if (!isCategoryPaneOpen) return <div />;

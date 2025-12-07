@@ -19,7 +19,7 @@ import PostsTable from "./Table";
 const MyPosts = () => {
   const [checkedTitles, setCheckedTitles] = useState([
     "title",
-    "category",
+    "categories",
     "lastPublishedAt",
     "status",
   ]);
@@ -78,6 +78,7 @@ const MyPosts = () => {
           data={posts}
           defaultPageSize={resultPageSize || pageSize}
           handlePageChange={handlePageNavigation}
+          selectedColumns={checkedTitles}
           totalCount={resultCount}
         />
       </div>

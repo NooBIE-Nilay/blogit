@@ -4,14 +4,12 @@ import React, { useState, useEffect, useRef } from "react";
 
 import DeleteButton from "components/commons/DeleteButton";
 import { useUpdatePost } from "hooks/reactQuery/usePostsApi";
-import { t } from "i18next";
-import Logger from "js-logger";
 import { capitalize } from "neetoCist";
 import { MenuHorizontal } from "neetoIcons";
 import { Dropdown, Button } from "neetoui";
 import PropTypes from "prop-types";
 
-import { POST_STATUS } from "../../Posts/constants";
+import { getStatusLabel, toggleStatus } from "./utils";
 
 const StatusField = ({ post }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -21,37 +19,24 @@ const StatusField = ({ post }) => {
 
   const { Menu, MenuItem } = Dropdown;
 
-  const updateLabel =
-    post.status === POST_STATUS.PUBLISHED
-      ? t("status.update.unpublish")
-      : t("status.update.publish");
-
   const { mutate: updatePost } = useUpdatePost();
 
+  const { slug, status } = post;
+
   const handleUpdate = async () => {
-    updatePost(
-      {
-        slug: post.slug,
-        payload: {
-          status:
-            post.status === POST_STATUS.PUBLISHED
-              ? POST_STATUS.DRAFT
-              : POST_STATUS.PUBLISHED,
-        },
+    updatePost({
+      slug,
+      payload: {
+        status: toggleStatus(status),
       },
-      {
-        onError: error => {
-          Logger.error(error);
-        },
-      }
-    );
+    });
     setIsDropdownOpen(false);
   };
 
   useEffect(() => {
     const handleOutsideClick = event => {
       if (!isDropdownOpen || isDeleteAlertOpen) return;
-      const target = event.target;
+      const { target } = event;
 
       const clickedOutsideDropdown =
         dropdownRef.current && !dropdownRef.current.contains(target);
@@ -68,7 +53,7 @@ const StatusField = ({ post }) => {
 
   return (
     <div className="flex items-center justify-between">
-      <div>{capitalize(post.status)}</div>
+      <div>{capitalize(status)}</div>
       <div ref={dropdownRef}>
         <Dropdown
           buttonStyle="text"
@@ -76,13 +61,14 @@ const StatusField = ({ post }) => {
           icon={() => <MenuHorizontal size={16} />}
           isOpen={isDropdownOpen}
           position="auto"
+          strategy="fixed"
           onClick={() => setIsDropdownOpen(prevState => !prevState)}
         >
           <Menu className="flex flex-col gap-2">
             <MenuItem>
               <Button
                 fullWidth
-                label={updateLabel}
+                label={getStatusLabel(status)}
                 style="text"
                 onClick={handleUpdate}
               />

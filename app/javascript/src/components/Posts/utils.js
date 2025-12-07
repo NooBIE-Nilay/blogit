@@ -1,11 +1,9 @@
+import { POST_STATUS } from "constants";
+
 import { isPresent } from "neetoCist";
 import { getFromLocalStorage } from "utils/storage";
 
-import {
-  CREATE_POST_PREVIEW_DATA,
-  EDIT_POST_PREVIEW_DATA,
-  POST_STATUS,
-} from "./constants";
+import { CREATE_POST_PREVIEW_DATA, EDIT_POST_PREVIEW_DATA } from "./constants";
 
 export const getPreviewKey = (source, slug) =>
   source === "edit" && slug
