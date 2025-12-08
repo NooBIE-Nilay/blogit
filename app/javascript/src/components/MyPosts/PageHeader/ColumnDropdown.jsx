@@ -26,11 +26,11 @@ const ColumnDropdown = ({ checkedTitles, setCheckedTitles }) => {
       label={t("common.columns")}
     >
       <Menu>
-        {menuItems.map(itemProps => (
+        {menuItems.map(({ labelKey, ...itemProps }) => (
           <MenuItem className="p-2 " key={itemProps.id}>
             <Checkbox
               checked={isCheckboxChecked(itemProps.id)}
-              label={t(itemProps.labelKey)}
+              label={t(labelKey)}
               onChange={handleCheckboxChange}
               {...itemProps}
             />

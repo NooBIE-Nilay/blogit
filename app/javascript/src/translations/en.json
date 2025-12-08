@@ -27,6 +27,14 @@
     "show": "Show my blog posts",
     "title": "My blog posts"
   },
+  "post": {
+    "title": "Post",
+    "plural": "posts",
+    "status": {
+      "published": "Published",
+      "draft": "Draft"
+    }
+  },
   "status": {
     "published": "Publish",
     "draftTitle": "Draft",
@@ -70,6 +78,7 @@
     "title": "Title",
     "delete": "Delete",
     "articles": " articles",
+    "selected": " selected",
     "titlePlaceholder": "Enter title",
     "category": "Category",
     "description": "Description",
@@ -86,6 +95,11 @@
   "removeItemConfirmation": {
     "title": "Remove item?",
     "message": "You are removing <strong>{{itemName}}</strong> blog post. Do you want to continue?",
+    "button": "Yes, remove"
+  },
+  "removeBulkConfirmation": {
+    "title": "Remove items?",
+    "message": "You are removing <strong>{{count}} {{entity}}</strong>. This action cannot be undone.",
     "button": "Yes, remove"
   },
   "pageNotFound": {

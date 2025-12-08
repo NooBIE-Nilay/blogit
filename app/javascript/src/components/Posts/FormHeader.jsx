@@ -1,3 +1,4 @@
+import { POST_STATUS } from "constants";
 import routes from "constants/routes";
 
 import React, { useState } from "react";
@@ -8,7 +9,7 @@ import { ActionDropdown, Button, Dropdown } from "neetoui";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 
-import { FORM_TYPE, POST_STATUS } from "./constants";
+import { FORM_TYPE } from "./constants";
 
 const FormHeader = ({
   status,

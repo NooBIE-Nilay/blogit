@@ -1,18 +1,45 @@
 import React, { useState } from "react";
 
+import { useFetchCategories } from "hooks/reactQuery/useCategoriesApi";
 import { Filter } from "neetoIcons";
 import { Button, Pane, Typography, Input, Select } from "neetoui";
-import { Form } from "neetoui/formik";
 import { useTranslation } from "react-i18next";
 
-const FilterPane = () => {
-  const [isPaneOpen, setIsPaneOpen] = useState(true);
+import { getStatusOptions } from "./constants";
+import { categoryOptions } from "./utils";
+
+const FilterPane = ({ onApply }) => {
+  const [title, setTitle] = useState("");
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedStatus, setSelectedStatus] = useState([]);
+  const [isPaneOpen, setIsPaneOpen] = useState(false);
 
   const { t } = useTranslation();
+  const { data: categoriesData } = useFetchCategories();
+  const categories = categoriesData?.data.categories || [];
 
   const { Header, Body, Footer } = Pane;
 
+  const clearFilters = () => {
+    setTitle("");
+    setSelectedCategories([]);
+    setSelectedStatus([]);
+  };
+
   const handleClose = () => setIsPaneOpen(false);
+
+  const handleApply = () => {
+    onApply?.({
+      title,
+      selectedCategoryIds: selectedCategories.map(({ value: id }) => id),
+      status: selectedStatus.map(({ value }) => value),
+    });
+    handleClose();
+  };
+
+  const handleClear = () => {
+    clearFilters();
+  };
 
   return (
     <>
@@ -28,22 +55,38 @@ const FilterPane = () => {
           </Typography>
         </Header>
         <Body>
-          <Form className="flex w-full flex-col gap-5">
+          <div className="flex w-full flex-col gap-5">
             <Input
               label={t("common.title")}
-              placeHolder={t("common.titlePlaceholder")}
+              placeholder={t("common.titlePlaceholder")}
+              value={title}
+              onChange={e => setTitle(e.target.value)}
             />
-            <Select isMulti label={t("common.category")} />
-            <Select isMulti label={t("common.status")} />
-          </Form>
+            <Select
+              isMulti
+              label={t("common.category")}
+              options={categoryOptions(categories)}
+              value={selectedCategories}
+              onChange={selected => setSelectedCategories(selected)}
+            />
+            <Select
+              isMulti
+              label={t("common.status")}
+              options={getStatusOptions(t)}
+              value={selectedStatus}
+              onChange={selected => {
+                setSelectedStatus(selected);
+              }}
+            />
+          </div>
         </Body>
         <Footer>
           <div className="flex items-center justify-start gap-2">
-            <Button label={t("common.apply")} />
+            <Button label={t("common.apply")} onClick={handleApply} />
             <Button
               label={t("common.clearFilter")}
               style="secondary"
-              onClick={handleClose}
+              onClick={handleClear}
             />
           </div>
         </Footer>

@@ -1,6 +1,6 @@
 import routes from "constants/routes";
 
-import React, { useState } from "react";
+import React from "react";
 
 import { t } from "i18next";
 import { isPresent, isNotPresent } from "neetoCist";
@@ -16,15 +16,15 @@ const Table = ({
   currentPageNumber,
   handlePageChange,
   totalCount,
+  selectedColumns,
+  selectedRowKeys = [],
+  onRowSelect = () => {},
 }) => {
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-
   const history = useHistory();
 
-  const columnData = [
+  const columnProps = [
     {
       title: t("table.title"),
-      width: "35%",
       dataIndex: "title",
       render: (_, { title, slug }) => (
         <Link
@@ -50,9 +50,9 @@ const Table = ({
       title: t("table.lastPublishedAt"),
       dataIndex: "last_published_at",
       width: "20%",
-      render: last_published_at => (
+      render: lastPublishedAt => (
         <div className="flex flex-row items-center ">
-          {getLastPublishedDateString(last_published_at)}
+          {getLastPublishedDateString(lastPublishedAt)}
         </div>
       ),
     },
@@ -63,6 +63,10 @@ const Table = ({
       render: (_, post) => <StatusField {...{ post }} />,
     },
   ];
+
+  const columnData = columnProps.filter(({ dataIndex }) =>
+    selectedColumns.includes(dataIndex)
+  );
 
   if (isNotPresent(rowData)) {
     return (
@@ -83,9 +87,11 @@ const Table = ({
       <NeetoTable
         rowSelection
         className="h-4xl"
-        {...{ rowData, columnData, selectedRowKeys }}
-        onRowSelect={selectedRowKeys => setSelectedRowKeys(selectedRowKeys)}
         {...{
+          rowData,
+          columnData,
+          selectedRowKeys,
+          onRowSelect,
           defaultPageSize,
           currentPageNumber,
           handlePageChange,
