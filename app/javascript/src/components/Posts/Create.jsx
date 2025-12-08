@@ -1,3 +1,4 @@
+import { POST_STATUS } from "constants";
 import routes from "constants/routes";
 
 import React, { useState, useEffect } from "react";
@@ -14,7 +15,7 @@ import {
   deleteFromLocalStorage,
 } from "utils/storage";
 
-import { CREATE_POST_PREVIEW_DATA, POST_STATUS } from "./constants";
+import { CREATE_POST_PREVIEW_DATA } from "./constants";
 import PostForm from "./Form";
 import FormHeader from "./FormHeader";
 

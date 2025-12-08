@@ -19,8 +19,10 @@ const DeleteButton = ({
 
   const { mutate: deletePost, isLoading } = useDeletePost();
 
+  const { slug, title } = post;
+
   const handleDelete = () => {
-    deletePost(post.slug, {
+    deletePost(slug, {
       onSuccess: () => {
         history.push(redirectRoute);
       },
@@ -52,7 +54,7 @@ const DeleteButton = ({
         message={
           <Trans
             i18nKey="removeItemConfirmation.message"
-            values={{ itemName: post.title }}
+            values={{ itemName: title }}
           />
         }
         onSubmit={handleDelete}

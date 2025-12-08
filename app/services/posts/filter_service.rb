@@ -11,11 +11,20 @@ module Posts
     end
 
     def process!
+      filter_by_title
       filter_by_categories
+      filter_by_status
       paginate
     end
 
     private
+
+      def filter_by_title
+        return @scoped_posts unless params[:title].present?
+
+        sanitized_title = ActiveRecord::Base.sanitize_sql_like(params[:title].to_s.downcase)
+        @scoped_posts = scoped_posts.where("LOWER(title) LIKE ?", "%#{sanitized_title}%")
+      end
 
       def filter_by_categories
         return @scoped_posts unless params[:category_ids].present?
@@ -25,6 +34,14 @@ module Posts
         @scoped_posts = scoped_posts.joins(:categories)
           .where(categories: { id: category_ids })
           .distinct
+      end
+
+      def filter_by_status
+        return @scoped_posts unless params[:status].present?
+
+        statuses = Array(params[:status])
+
+        @scoped_posts = scoped_posts.where(status: statuses)
       end
 
       def paginate

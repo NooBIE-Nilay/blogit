@@ -1,7 +1,11 @@
 const API_ENDPOINTS = {
   ROOT: "/",
   POSTS: "/posts",
-  MY_POSTS: "/my_posts",
+  MY_POSTS: {
+    INDEX: "/my_posts",
+    BULK_DELETE: "/my_posts/bulk_delete",
+    BULK_UPDATE_STATUS: "/my_posts/bulk_update_status",
+  },
   CATEGORIES: "/categories",
   ORGANIZATIONS: "/organizations",
   USERS: "/users",

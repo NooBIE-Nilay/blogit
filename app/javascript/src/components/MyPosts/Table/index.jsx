@@ -1,6 +1,6 @@
 import routes from "constants/routes";
 
-import React, { useState } from "react";
+import React from "react";
 
 import { t } from "i18next";
 import { isPresent, isNotPresent } from "neetoCist";
@@ -17,9 +17,9 @@ const Table = ({
   handlePageChange,
   totalCount,
   selectedColumns,
+  selectedRowKeys = [],
+  onRowSelect = () => {},
 }) => {
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-
   const history = useHistory();
 
   const columnProps = [
@@ -48,7 +48,7 @@ const Table = ({
     },
     {
       title: t("table.lastPublishedAt"),
-      dataIndex: "lastPublishedAt",
+      dataIndex: "last_published_at",
       width: "20%",
       render: lastPublishedAt => (
         <div className="flex flex-row items-center ">
@@ -87,9 +87,11 @@ const Table = ({
       <NeetoTable
         rowSelection
         className="h-4xl"
-        {...{ rowData, columnData, selectedRowKeys }}
-        onRowSelect={selectedRowKeys => setSelectedRowKeys(selectedRowKeys)}
         {...{
+          rowData,
+          columnData,
+          selectedRowKeys,
+          onRowSelect,
           defaultPageSize,
           currentPageNumber,
           handlePageChange,

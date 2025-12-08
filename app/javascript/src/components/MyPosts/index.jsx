@@ -9,6 +9,7 @@ import React, { useEffect, useState } from "react";
 import { PageLoader, Container } from "components/commons";
 import { useFetchMyPosts } from "hooks/reactQuery/useMyPostsApi";
 import useQueryParams from "hooks/useQueryParams";
+import { filterNonNull } from "neetoCist";
 import { mergeLeft, propOr } from "ramda";
 import { useHistory } from "react-router-dom";
 import { buildUrl } from "utils/urls";
@@ -20,9 +21,12 @@ const MyPosts = () => {
   const [checkedTitles, setCheckedTitles] = useState([
     "title",
     "categories",
-    "lastPublishedAt",
+    "last_published_at",
     "status",
   ]);
+
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [filters, setFilters] = useState({});
 
   const history = useHistory();
   const queryParams = useQueryParams();
@@ -32,10 +36,13 @@ const MyPosts = () => {
     propOr(DEFAULT_TABLE_PAGE_SIZE, "pageSize", queryParams)
   );
 
-  const { data, isLoading } = useFetchMyPosts({
-    page: pageNumber,
-    pageSize,
-  });
+  const { data, isLoading } = useFetchMyPosts(
+    filterNonNull({
+      page: pageNumber,
+      pageSize,
+      ...filters,
+    })
+  );
 
   const posts = data?.data.posts || [];
   const {
@@ -48,6 +55,13 @@ const MyPosts = () => {
     history.replace(
       buildUrl(routes.myPosts, mergeLeft({ page, pageSize }, queryParams))
     );
+  };
+  const onBulkActionComplete = () => setSelectedRowKeys([]);
+
+  const handleFiltersApply = filterData => {
+    setFilters(filterData);
+    setSelectedRowKeys([]);
+    handlePageNavigation(DEFAULT_PAGE_NUMBER);
   };
 
   useEffect(() => {
@@ -71,7 +85,13 @@ const MyPosts = () => {
       <div className="flex flex-col gap-y-8 ">
         <MyPostsPageHeader
           count={resultCount}
-          {...{ checkedTitles, setCheckedTitles }}
+          {...{
+            checkedTitles,
+            setCheckedTitles,
+            selectedRowKeys,
+            onBulkActionComplete,
+          }}
+          onFiltersApply={handleFiltersApply}
         />
         <PostsTable
           currentPageNumber={resultPageNumber || pageNumber}
@@ -79,7 +99,9 @@ const MyPosts = () => {
           defaultPageSize={resultPageSize || pageSize}
           handlePageChange={handlePageNavigation}
           selectedColumns={checkedTitles}
+          selectedRowKeys={selectedRowKeys}
           totalCount={resultCount}
+          onRowSelect={setSelectedRowKeys}
         />
       </div>
     </Container>
