@@ -13,5 +13,10 @@ export const getLastUpdatedDateString = post => {
 
 export const getLastPublishedDateString = lastPublishedAt =>
   dayjs(lastPublishedAt).isValid()
-    ? dayjs(lastPublishedAt).format("MMM D, YYYY, h:mm A	")
+    ? dayjs(lastPublishedAt).format("MMM DD, YYYY, h:mm A	")
+    : "-";
+
+export const getLastPublishedShortDateString = lastPublishedAt =>
+  dayjs(lastPublishedAt).isValid()
+    ? dayjs(lastPublishedAt).format("DD MMMM YYYY")
     : "-";

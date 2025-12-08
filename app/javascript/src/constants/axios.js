@@ -1,6 +1,7 @@
 const API_ENDPOINTS = {
   ROOT: "/",
   POSTS: "/posts",
+  VOTE: "/posts/:slug/vote",
   MY_POSTS: {
     INDEX: "/my_posts",
     BULK_DELETE: "/my_posts/bulk_delete",

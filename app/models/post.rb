@@ -5,6 +5,7 @@ class Post < ApplicationRecord
 
   belongs_to :user
   belongs_to :organization
+  has_many :votes, dependent: :destroy
   has_and_belongs_to_many :categories
 
   validates :title,
@@ -19,6 +20,14 @@ class Post < ApplicationRecord
   validate :slug_not_changed
 
   before_create :set_slug
+
+  def net_votes
+    votes.upvote.count - votes.downvote.count
+  end
+
+  def user_vote_type(user)
+    votes.find_by(user_id: user.id)&.vote_type
+  end
 
   private
 

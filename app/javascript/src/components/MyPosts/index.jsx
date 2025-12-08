@@ -85,13 +85,13 @@ const MyPosts = () => {
       <div className="flex flex-col gap-y-8 ">
         <MyPostsPageHeader
           count={resultCount}
+          onFiltersApply={handleFiltersApply}
           {...{
             checkedTitles,
             setCheckedTitles,
             selectedRowKeys,
             onBulkActionComplete,
           }}
-          onFiltersApply={handleFiltersApply}
         />
         <PostsTable
           currentPageNumber={resultPageNumber || pageNumber}

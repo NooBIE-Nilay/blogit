@@ -56,10 +56,23 @@ const useDeletePost = () => {
   });
 };
 
+const useVotePost = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ slug, voteType }) => postsApi.vote({ slug, voteType }),
+    onSuccess: (_, slug) => {
+      queryClient.invalidateQueries([QUERY_KEYS.POST, slug]);
+      queryClient.invalidateQueries([QUERY_KEYS.POSTS]);
+    },
+  });
+};
+
 export {
   useFetchPosts,
   useShowPost,
   useCreatePost,
   useUpdatePost,
   useDeletePost,
+  useVotePost,
 };
