@@ -3,9 +3,9 @@
 class MyPostsController < ApplicationController
   DEFAULT_PAGE_SIZE = 8
 
-  after_action :verify_policy_scoped, only: %i[index bulk_delete bulk_update_status]
+  after_action :verify_policy_scoped
 
-  before_action :load_scoped_posts!, only: %i[index bulk_delete bulk_update_status]
+  before_action :load_scoped_posts!
 
   def index
     @posts = Posts::FilterService.new(@scoped_posts, params).process!
@@ -16,7 +16,7 @@ class MyPostsController < ApplicationController
     count = post_ids.count
     return render_error("No posts selected", :bad_request) if post_ids.blank?
 
-    selected_posts = find_posts post_ids
+    selected_posts = select_posts post_ids
     update_posts selected_posts
     render_notice(t("successfully_updated_bulk", entity: t("post.plural"), count:))
   end
@@ -25,7 +25,7 @@ class MyPostsController < ApplicationController
     post_ids = Array(bulk_delete_params[:post_ids])
     return render_error("No posts selected", :bad_request) if post_ids.blank?
 
-    selected_posts = @scoped_posts.where(id: post_ids)
+    selected_posts = select_posts post_ids
     count = selected_posts.count
     selected_posts.destroy_all
     render_notice(t("successfully_deleted_bulk", entity: t("post.plural"), count:))
@@ -45,8 +45,11 @@ class MyPostsController < ApplicationController
       params.permit(:status, post_ids: [])
     end
 
-    def find_posts(post_ids)
-      @scoped_posts.where(id: post_ids).where.not(status: bulk_update_params[:status])
+    def select_posts(post_ids)
+      status = bulk_update_params[:status]
+      return @scoped_posts.where(id: post_ids).where.not(status:) if status.present?
+
+      @scoped_posts.where(id: post_ids)
     end
 
     def update_posts(posts)

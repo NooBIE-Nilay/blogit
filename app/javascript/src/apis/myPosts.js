@@ -11,11 +11,13 @@ const bulkUpdateStatus = payload =>
     status: payload.status,
   });
 
-const bulkDelete = payload =>
-  axios.delete(`${API_ENDPOINTS.MY_POSTS.BULK_DELETE}`, {
-    post_ids: payload.postIds,
+const bulkDelete = payload => {
+  const resp = axios.delete(`${API_ENDPOINTS.MY_POSTS.BULK_DELETE}`, {
+    data: { post_ids: payload.postIds },
   });
 
+  return resp;
+};
 const myPostsApi = { fetch, bulkUpdateStatus, bulkDelete };
 
 export default myPostsApi;
