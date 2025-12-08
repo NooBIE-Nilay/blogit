@@ -7,7 +7,9 @@ import { Tag, Typography } from "neetoui";
 import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
-import { getLastPublishedDateString } from "utils/date";
+import { getLastPublishedShortDateString } from "utils/date";
+
+import VoteAction from "./VoteAction";
 
 const Item = ({ post }) => {
   const history = useHistory();
@@ -18,8 +20,10 @@ const Item = ({ post }) => {
     title,
     slug,
     categories,
+    vote: { vote_type: voteType, net_votes: voteCount },
     user: { name: userName },
     last_published_at: lastPublishedAt,
+    is_bloggable: isBloggable,
   } = post;
 
   return (
@@ -29,12 +33,22 @@ const Item = ({ post }) => {
     >
       <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
         <div className="flex-1">
-          <div className="text-xl font-semibold text-gray-900">{title}</div>
+          <div className="flex gap-2">
+            <div className="items-center justify-center text-xl font-semibold text-gray-900">
+              {title}
+            </div>
+            {isBloggable && (
+              <Tag
+                className="my-1 border-green-600 bg-white px-5 text-green-600"
+                label={t("title")}
+              />
+            )}
+          </div>
           {isPresent(categories) ? (
             <div className="flex gap-2">
               {categories.map(({ id, name }) => (
                 <Tag
-                  className="my-2 capitalize"
+                  className="my-2 px-4 font-semibold capitalize"
                   key={id}
                   label={name}
                   style="success"
@@ -51,12 +65,11 @@ const Item = ({ post }) => {
           <Typography className="ml-1 font-semibold text-gray-600" style="h5">
             {userName}
           </Typography>
-        </div>
-        <div className="flex flex-col items-end space-y-2">
-          <div className="text-sm text-gray-500">
-            {getLastPublishedDateString(lastPublishedAt)}
+          <div className="ml-1  text-sm text-gray-500">
+            {getLastPublishedShortDateString(lastPublishedAt)}
           </div>
         </div>
+        <VoteAction {...{ slug, voteType, voteCount }} />
       </div>
     </div>
   );

@@ -14,4 +14,5 @@ module Constants
   VALID_EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i.freeze
   VALID_BLOGGABLE_VALUES = [true, false].freeze
   DEFAULT_PAGE_NUMBER = 1
+  BLOGGABLE_THRESHOLD = 2
 end

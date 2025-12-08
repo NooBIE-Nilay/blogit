@@ -18,12 +18,18 @@ const update = ({ slug, payload }) =>
 
 const destroy = slug => axios.delete(`${API_ENDPOINTS.POSTS}/${slug}`);
 
+const vote = ({ slug, voteType }) =>
+  axios.post(API_ENDPOINTS.VOTE.replace(":slug", slug), {
+    vote_type: voteType,
+  });
+
 const postsApi = {
   fetch,
   show,
   create,
   update,
   destroy,
+  vote,
 };
 
 export default postsApi;

@@ -3,6 +3,9 @@ en:
   successfully_updated: "%{entity} was successfully updated!"
   successfully_deleted: "%{entity} was successfully deleted!"
   successfully_updated_bulk: "%{count} %{entity} successfully updated!"
+  successfully_voted: "Post was successfully %{type}"
+  upvote: "upvoted"
+  downvote: "downvoted"
   successfully_deleted_bulk: "%{count} %{entity} successfully deleted!"
   generic_error: "Something went wrong. Please try again later."
   session:

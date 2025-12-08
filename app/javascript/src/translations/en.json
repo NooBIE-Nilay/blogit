@@ -2,7 +2,7 @@
   "title": "Blogit",
   "pageTitle": "{{title}} | Blogit",
   "posts": {
-    "empty": "No blogs to see. Create some blogs to display here!",
+    "empty": "No blogs to see. Maybe try updating filters or create some blogs to display here!",
     "empty_filter": "No blogs to see. Maybe try updating filters",
     "showAll": "Show all posts",
     "preview": {
