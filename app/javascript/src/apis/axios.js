@@ -38,8 +38,13 @@ const handleSuccessResponse = response => {
 
 const handleErrorResponse = axiosErrorObject => {
   if (axiosErrorObject.response?.status === 401) {
-    setAuthToLocalStorage({ authToken: null, email: null, userId: null });
-    setTimeout(() => (window.location.href = "/"), 2000);
+    setAuthToLocalStorage({
+      authToken: null,
+      email: null,
+      userId: null,
+      userName: null,
+    });
+    setTimeout(() => (window.location.href = "/login"), 500);
   }
 
   Toastr.error(

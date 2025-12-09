@@ -26,8 +26,8 @@ system!("yarn install")
   puts "\n== Precompiling assets =="
   system!("bin/rails assets:precompile")
 
-  # puts "\n== Setting up DB =="
-  # system! "bundle exec rake db:setup"
+  puts "\n== Setting up DB =="
+  system! "bundle exec rake db:create"
 
   puts "\n== Migrating DB =="
   system! "bundle exec rake db:migrate"
