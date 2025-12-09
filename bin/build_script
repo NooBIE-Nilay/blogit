@@ -18,6 +18,7 @@ FileUtils.chdir APP_ROOT do
   system!("corepack enable")
   system!("corepack prepare yarn@4.5.3 --activate")
   system!("yarn install")
+  system!("yarn build")
 
   # system!("bin/yarn")
 
@@ -26,8 +27,8 @@ FileUtils.chdir APP_ROOT do
   puts "\n== Precompiling assets =="
   system!("bin/rails assets:precompile")
 
-  # puts "\n== Setting up DB =="
-  # system! "bundle exec rake db:setup"
+  puts "\n== Setting up DB =="
+  system! "bundle exec rake db:setup"
 
   puts "\n== Migrating DB =="
   system! "bundle exec rake db:migrate"
