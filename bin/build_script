@@ -14,12 +14,12 @@ FileUtils.chdir APP_ROOT do
   system! "gem install bundler --conservative"
   system("bundle check") || system!("bundle install")
 
-  system!("corepack enable")
-system!("corepack prepare yarn@4.5.3 --activate")
-system!("yarn install")
-
   puts "\n== Executing yarn =="
-  system!("bin/yarn")
+  system!("corepack enable")
+  system!("corepack prepare yarn@4.5.3 --activate")
+  system!("yarn install")
+
+  # system!("bin/yarn")
 
 
 
