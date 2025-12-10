@@ -30,6 +30,7 @@
   "post": {
     "title": "Post",
     "plural": "posts",
+    "download": "Download blog post as pdf",
     "status": {
       "published": "Published",
       "draft": "Draft"
@@ -83,7 +84,8 @@
     "category": "Category",
     "description": "Description",
     "columns": "Columns",
-    "descriptionPlaceholder": "Enter Description",
+    "download": "Downloading blog post",
+    "descriptionPlaceholder": "Enter description",
     "register": "Register",
     "add": "Add",
     "cancel": "Cancel",

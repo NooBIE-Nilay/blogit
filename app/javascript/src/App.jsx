@@ -7,7 +7,6 @@ import { AuthProtectedRoute } from "components/commons";
 import Dashboard from "components/Dashboard";
 import MyPosts from "components/MyPosts";
 import { CreatePost, ShowPost, EditPost } from "components/Posts";
-import DownloadDocument from "components/Posts/DownloadDocument";
 import Preview from "components/Posts/Preview";
 import { QueryClientProvider } from "react-query";
 import {
@@ -28,10 +27,6 @@ const App = () => (
         <Route exact component={Login} path={routes.login} />
         <AuthProtectedRoute component={EditPost} path={routes.posts.edit} />
         <AuthProtectedRoute component={ShowPost} path={routes.posts.show} />
-        <AuthProtectedRoute
-          component={DownloadDocument}
-          path={routes.posts.document}
-        />
         <AuthProtectedRoute component={CreatePost} path={routes.posts.create} />
         <AuthProtectedRoute component={MyPosts} path={routes.myPosts} />
         <AuthProtectedRoute component={Dashboard} path={routes.dashboard} />

@@ -11,6 +11,7 @@ import { useTranslation } from "react-i18next";
 import { useHistory, useParams } from "react-router-dom";
 import { getLastUpdatedDateString } from "utils/date";
 
+import DownloadDocument from "./DownloadDocument";
 import { isDraft, isOwner } from "./utils";
 
 const Show = () => {
@@ -88,17 +89,20 @@ const Show = () => {
             </div>
             <pre className="text-wrap">{description}</pre>
           </div>
-          {isOwner(userId) && (
-            <div className="flex items-center justify-end gap-x-3">
-              <Button
-                icon={() => <Edit />}
-                size="small"
-                style="secondary"
-                tooltipProps={{ content: t("posts.edit") }}
-                onClick={updatePost}
-              />
-            </div>
-          )}
+          <div className="flex gap-2">
+            <DownloadDocument {...{ slug }} />
+            {isOwner(userId) && (
+              <div className="flex items-center justify-end gap-x-3">
+                <Button
+                  icon={() => <Edit />}
+                  size="small"
+                  style="secondary"
+                  tooltipProps={{ content: t("posts.edit") }}
+                  onClick={updatePost}
+                />
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </Container>

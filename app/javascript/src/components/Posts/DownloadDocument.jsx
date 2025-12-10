@@ -1,78 +1,87 @@
 import React, { useEffect, useState } from "react";
 
-import { Button } from "@bigbinary/neetoui";
 import postsApi from "apis/posts";
 import createConsumer from "channels/consumer";
 import { subscribeToDocumentDownloadChannel } from "channels/documentDownloadChannel";
-import { Container, ProgressBar, PageTitle } from "components/commons";
+import { ProgressBar } from "components/commons";
 import FileSaver from "file-saver";
 import Logger from "js-logger";
-import { useParams } from "react-router-dom";
+import { Download } from "neetoIcons";
+import { Button, Modal, Typography } from "neetoui";
+import { useTranslation } from "react-i18next";
 
-const DownloadDocument = () => {
-  const [isLoading, setIsLoading] = useState(true);
+const DownloadDocument = ({ slug }) => {
   const [progress, setProgress] = useState(0);
   const [message, setMessage] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
 
-  const { slug } = useParams();
+  const { Header, Body } = Modal;
 
   const consumer = createConsumer();
 
-  const generatePdf = async () => {
+  const { t } = useTranslation();
+
+  const generateDocument = async () => {
     try {
-      await postsApi.generatePdf({ slug });
+      await postsApi.generateDocument({ slug });
     } catch (error) {
-      logger.error(error);
+      Logger.error(error);
+      setIsOpen(false);
     }
   };
 
   const downloadPdf = async () => {
-    setIsLoading(true);
     try {
       const { data } = await postsApi.download({ slug });
-      FileSaver.saveAs(data, "blogit_blog_document.pdf");
+      FileSaver.saveAs(data, `blogit_${slug}.pdf`);
     } catch (error) {
       Logger.error(error);
     } finally {
-      setIsLoading(false);
+      setIsOpen(false);
     }
   };
 
   useEffect(() => {
-    subscribeToDocumentDownloadChannel({
-      consumer,
-      setMessage,
-      setProgress,
-      generatePdf,
-    });
+    if (isOpen) {
+      subscribeToDocumentDownloadChannel({
+        consumer,
+        setMessage,
+        setProgress,
+        generateDocument,
+      });
+    }
 
     return () => {
       consumer.disconnect();
     };
-  }, []);
+  }, [isOpen]);
 
   useEffect(() => {
     if (progress === 100) {
-      setIsLoading(false);
-      setMessage("Document is ready to be downloaded");
+      downloadPdf();
     }
   }, [progress]);
 
   return (
-    <Container>
-      <div className="flex flex-col gap-y-8">
-        <PageTitle title="Download document" />
-        <div className="mb-4 w-full">
-          <div className="mx-auto mb-4 w-full overflow-hidden rounded-lg border border-gray-200 bg-white text-gray-800 sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-2xl">
-            <div className="space-y-2 p-6">
-              <p className="text-xl font-semibold">{message}</p>
-              <ProgressBar progress={progress} />
-            </div>
-          </div>
-          <Button label="Download" loading={isLoading} onClick={downloadPdf} />
-        </div>
-      </div>
-    </Container>
+    <>
+      <Button
+        icon={() => <Download />}
+        style="text"
+        tooltipProps={{ content: t("post.download") }}
+        onClick={() => setIsOpen(true)}
+      />
+      <Modal {...{ isOpen }} onClose={setIsOpen}>
+        <Header>
+          <Typography className="font-bold" style="h2">
+            {t("common.download")}
+          </Typography>
+        </Header>
+        <Body>
+          <ProgressBar {...{ progress }} />
+          <Typography>{message}</Typography>
+        </Body>
+      </Modal>
+    </>
   );
 };
 

@@ -18,7 +18,7 @@ const update = ({ slug, payload }) =>
 
 const destroy = slug => axios.delete(`${API_ENDPOINTS.POSTS}/${slug}`);
 
-const generatePdf = ({ slug }) =>
+const generateDocument = ({ slug }) =>
   axios.post(API_ENDPOINTS.GENERATE_DOCUMENT.replace(":slug", slug), {});
 
 const download = ({ slug }) =>
@@ -37,7 +37,7 @@ const postsApi = {
   create,
   update,
   destroy,
-  generatePdf,
+  generateDocument,
   download,
   vote,
 };

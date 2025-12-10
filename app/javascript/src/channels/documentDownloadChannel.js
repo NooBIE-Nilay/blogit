@@ -4,7 +4,7 @@ export const subscribeToDocumentDownloadChannel = ({
   consumer,
   setMessage,
   setProgress,
-  generatePdf,
+  generateDocument,
 }) => {
   const userId = getFromLocalStorage("authUserId");
   const documentDownloadSubscription = consumer.subscriptions.create(
@@ -14,8 +14,8 @@ export const subscribeToDocumentDownloadChannel = ({
     },
     {
       connected() {
-        setMessage("Connected the Cables...");
-        generatePdf();
+        setMessage("Link connected...");
+        generateDocument();
       },
       received(data) {
         const { message, progress } = data;
