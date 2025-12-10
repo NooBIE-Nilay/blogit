@@ -22,3 +22,10 @@ en:
       immutable: "is immutable!"
   authorization:
     denied: "Access denied. You are not authorized to perform this action."
+  not_found: "Couldn't find %{entity}"
+  in_progress: "%{action} in progress "
+  report:
+    render: "Rendering the report"
+    generate: "Generating the document"
+    upload: "Uploading to server"
+    attach: "Attaching the report to the user"
