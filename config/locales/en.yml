@@ -22,3 +22,10 @@ en:
       immutable: "is immutable!"
   authorization:
     denied: "Access denied. You are not authorized to perform this action."
+  not_found: "Couldn't find %{entity}"
+  in_progress: "%{action} in progress "
+  document:
+    render: "Rendering the document"
+    generate: "Generating the PDF document"
+    upload: "Uploading to server"
+    attach: "Attaching the document to the user"

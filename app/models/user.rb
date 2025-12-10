@@ -3,6 +3,7 @@
 class User < ApplicationRecord
   belongs_to :organization
   has_many :posts
+  has_one_attached :document
 
   validates :name,
     presence: true,

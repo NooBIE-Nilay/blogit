@@ -3,8 +3,7 @@
   "private": true,
   "packageManager": "yarn@4.5.3+sha512.3003a14012e2987072d244c720506549c1aab73ee728208f1b2580a9fd67b92d61ba6b08fe93f6dce68fd771e3af1e59a0afa28dd242dd0940d73b95fedd4e90",
   "scripts": {
-    "build": "node esbuild.config.js && yarn build:css",
-    "build:css": "tailwindcss -i ./app/javascript/stylesheets/application.css -o ./app/assets/builds/application.css --minify",
+    "build": "node esbuild.config.js ",
     "dev": "vite",
     "prepare": "husky install"
   },
@@ -41,6 +40,7 @@
     "@bigbinary/neetoui": "5.2.41",
     "@emotion/is-prop-valid": "1.2.0",
     "@floating-ui/react": "^0.26.6",
+    "@rails/actioncable": "^8.1.100",
     "@rollup/pluginutils": "^5.1.4",
     "@svgr/plugin-svgo": "^8.1.0",
     "antd": "4.24.3",
@@ -55,7 +55,9 @@
     "esbuild-plugin-svgr": "^3.1.0",
     "esbuild-plugins-node-modules-polyfill": "^1.6.8",
     "esbuild-sass-plugin": "^3.3.1",
+    "file-saver": "^2.0.5",
     "formik": "2.2.0",
+    "framer-motion": "^12.23.26",
     "i18next": "21.7.0",
     "js-logger": "^1.6.1",
     "path-browserify": "^1.0.1",

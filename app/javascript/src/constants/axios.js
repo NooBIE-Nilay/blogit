@@ -1,6 +1,8 @@
 const API_ENDPOINTS = {
   ROOT: "/",
   POSTS: "/posts",
+  GENERATE_DOCUMENT: "/posts/:slug/document",
+  DOWNLOAD_DOCUMENT: "/posts/:slug/document/download",
   VOTE: "/posts/:slug/vote",
   MY_POSTS: {
     INDEX: "/my_posts",

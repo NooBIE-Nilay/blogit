@@ -9,6 +9,7 @@ const routes = {
     },
     show: "/posts/:slug/show",
     edit: "/posts/:slug/edit",
+    document: "/posts/:slug/document",
   },
   signup: "/signup",
   login: "/login",

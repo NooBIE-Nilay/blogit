@@ -18,6 +18,14 @@ const update = ({ slug, payload }) =>
 
 const destroy = slug => axios.delete(`${API_ENDPOINTS.POSTS}/${slug}`);
 
+const generateDocument = ({ slug }) =>
+  axios.post(API_ENDPOINTS.GENERATE_DOCUMENT.replace(":slug", slug), {});
+
+const download = ({ slug }) =>
+  axios.get(API_ENDPOINTS.DOWNLOAD_DOCUMENT.replace(":slug", slug), {
+    responseType: "blob",
+  });
+
 const vote = ({ slug, voteType }) =>
   axios.post(API_ENDPOINTS.VOTE.replace(":slug", slug), {
     vote_type: voteType,
@@ -29,6 +37,8 @@ const postsApi = {
   create,
   update,
   destroy,
+  generateDocument,
+  download,
   vote,
 };
 

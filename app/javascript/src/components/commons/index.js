@@ -3,6 +3,7 @@ import Container from "./Container";
 import DeleteButton from "./DeleteButton";
 import PageLoader from "./PageLoader";
 import PageTitle from "./PageTitle";
+import ProgressBar from "./ProgressBar";
 import Toastr from "./Toastr";
 
 export {
@@ -10,6 +11,7 @@ export {
   DeleteButton,
   PageLoader,
   PageTitle,
+  ProgressBar,
   Toastr,
   AuthProtectedRoute,
 };

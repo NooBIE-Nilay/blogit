@@ -3,9 +3,12 @@
 Rails.application.routes.draw do
   constraints(lambda { |req| req.format == :json }) do
     resources :posts, except: %i[new edit], param: :slug do
+      resource :document, only: %i[create], module: :posts do
+        get :download, on: :member
+      end
       member do
-       post :vote, controller: :votes
-     end
+        post :vote, controller: :votes
+      end
     end
     resources :my_posts, only: :index do
       collection do
@@ -17,7 +20,6 @@ Rails.application.routes.draw do
     resources :users, only: %i[create]
     resources :organizations, only: %i[index]
     resource :session, only: %i[create destroy]
-
   end
 
   root "home#index"

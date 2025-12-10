@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Post < ApplicationRecord
+  # scope :accessible_to, ->(user_id) { where("", user_id, user_id) } Add this
+
   enum :status, { draft: "draft", published: "published" }, default: :draft
 
   belongs_to :user
