@@ -4,21 +4,16 @@
    before_action :load_post, only: [:create, :download]
 
    def create
-     DocumentsJob.perform_async(@post.slug, download_path)
-     render_notice(t("in_progress", action: "PDF generation"))
+     DocumentsJob.perform_async(@post.slug, @current_user.id)
+     render_notice(t("in_progress", action: "Document generation"))
    end
 
    def download
-     if File.exist?(download_path)
-       send_file(
-         download_path,
-         type: "application/pdf",
-         filename: pdf_file_name,
-         disposition: "attachment"
-       )
-     else
-       render_error(t("not_found", entity: "PDF"), :not_found)
+     unless @current_user.document.attached?
+       render_error(t("not_found", entity: "Document"), :not_found) and return
      end
+
+     send_data @current_user.document.download, filename: pdf_file_name, content_type: "application/pdf"
    end
 
    private
