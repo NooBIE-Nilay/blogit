@@ -43,7 +43,7 @@ const Form = ({
   }
 
   return (
-    <form className="mb-4 w-full">
+    <div className="mb-4 w-full">
       <div className="rounded-lg border border-gray-200 bg-white p-6">
         <div className="space-y-4">
           <Input
@@ -92,7 +92,7 @@ const Form = ({
           </div>
         </div>
       </div>
-    </form>
+    </div>
   );
 };
 

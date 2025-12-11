@@ -8,5 +8,5 @@ class Category < ApplicationRecord
     presence: true,
     length: { maximum: Constants::MAX_NAME_LENGTH },
     format: { with: Constants::VALID_NAME_REGEX },
-    uniqueness: { case_sensitive: false }
+    uniqueness: { scope: :organization_id, case_sensitive: false }
 end
