@@ -57,10 +57,11 @@ const Form = ({
             <Select
               isCreateable
               isMulti
-              disabled={isCategoriesLoading && isLoading}
+              isDisabled={isCategoriesLoading && isLoading}
               label={t("common.category")}
               optionRemapping={{ label: "name", value: "id" }}
               options={categories}
+              placeholder={t("common.categoryPlaceholder")}
               value={selectedCategories}
               onChange={setSelectedCategories}
               onCreateOption={handleCreateCategory}

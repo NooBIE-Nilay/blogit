@@ -20,17 +20,17 @@ const Preview = () => {
 
   const { t } = useTranslation();
 
-  const previewKey = getPreviewKey(slug, source);
+  const previewKey = getPreviewKey(source, slug);
 
   const post = getFromLocalStorage(previewKey);
-  const isPostInvalid = isNotPresent(post);
+  const isPostInvalid = isNotPresent(post) || {};
 
   const {
-    title,
-    categories,
-    user: { name: username },
-    description,
-    status,
+    title = "",
+    categories = "",
+    user: { name: username = "" } = {},
+    description = "",
+    status = "",
   } = post;
 
   if (isPostInvalid) {

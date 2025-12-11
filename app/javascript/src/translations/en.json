@@ -82,6 +82,7 @@
     "selected": " selected",
     "titlePlaceholder": "Enter title",
     "category": "Category",
+    "categoryPlaceholder": "Enter categories",
     "description": "Description",
     "columns": "Columns",
     "download": "Downloading blog post",
