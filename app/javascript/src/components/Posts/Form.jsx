@@ -1,7 +1,10 @@
 import React from "react";
 
 import { PageLoader } from "components/commons";
-import { useFetchCategories } from "hooks/reactQuery/useCategoriesApi";
+import {
+  useFetchCategories,
+  useCreateCategory,
+} from "hooks/reactQuery/useCategoriesApi";
 import { Input, Textarea, Select } from "neetoui";
 import { useTranslation } from "react-i18next";
 
@@ -22,6 +25,14 @@ const Form = ({
     data: { data: { categories } = {} } = {},
     isLoading: isCategoriesLoading,
   } = useFetchCategories();
+
+  const { mutate: createCategory } = useCreateCategory();
+
+  const handleCreateCategory = categoryName => {
+    createCategory({
+      name: categoryName,
+    });
+  };
 
   if (isLoading && isCategoriesLoading) {
     return (
@@ -44,13 +55,15 @@ const Form = ({
           />
           <div>
             <Select
+              isCreateable
               isMulti
               disabled={isCategoriesLoading && isLoading}
               label={t("common.category")}
               optionRemapping={{ label: "name", value: "id" }}
               options={categories}
               value={selectedCategories}
-              onChange={value => setSelectedCategories(value)}
+              onChange={setSelectedCategories}
+              onCreateOption={handleCreateCategory}
             />
           </div>
           <div>

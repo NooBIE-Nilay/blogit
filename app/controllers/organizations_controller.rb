@@ -6,4 +6,14 @@ class OrganizationsController < ApplicationController
   def index
     @organizations = Organization.all
   end
+
+  def create
+    Organization.create(organization_params)
+  end
+
+  private
+
+    def organization_params
+      params.require(:organization).permit(:name)
+    end
 end

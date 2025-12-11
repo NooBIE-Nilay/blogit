@@ -1,7 +1,7 @@
 import { QUERY_KEYS } from "constants/query";
 
 import organizationsApi from "apis/organizations";
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
 const useFetchOrganizations = () =>
   useQuery({
@@ -9,4 +9,14 @@ const useFetchOrganizations = () =>
     queryFn: () => organizationsApi.fetch(),
   });
 
-export { useFetchOrganizations };
+const useCreateOrganization = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: newOrganization => organizationsApi.create(newOrganization),
+    onSuccess: () => {
+      queryClient.invalidateQueries([QUERY_KEYS.ORGANIZATIONS]);
+    },
+  });
+};
+export { useFetchOrganizations, useCreateOrganization };

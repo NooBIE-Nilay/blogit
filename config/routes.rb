@@ -16,9 +16,9 @@ Rails.application.routes.draw do
         delete :bulk_delete
       end
     end
-    resources :categories, only: %i[index create show]
+    resources :categories, only: %i[index create]
     resources :users, only: %i[create]
-    resources :organizations, only: %i[index]
+    resources :organizations, only: %i[index create]
     resource :session, only: %i[create destroy]
   end
 

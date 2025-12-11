@@ -2,14 +2,17 @@ import routes from "constants/routes";
 
 import React from "react";
 
-import { useFetchOrganizations } from "hooks/reactQuery/useOrganizationApi";
+import {
+  useFetchOrganizations,
+  useCreateOrganization,
+} from "hooks/reactQuery/useOrganizationApi";
 import { Button } from "neetoui";
 import { Form as NeetoForm, Input, Select } from "neetoui/formik";
 import PropTypes from "prop-types";
 import { useTranslation, withTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
-import { getOprganizationOptions } from "./utils";
+import { getOrganizationOptions } from "./utils";
 
 import { SIGNUP_INITIAL_VALUES, SIGNUP_VALIDATION_SCHEMA } from "../constants";
 
@@ -17,6 +20,14 @@ const Form = ({ handleSubmit, isLoading }) => {
   const { data, isLoading: isOrganizationsLoading } = useFetchOrganizations();
 
   const organizations = data?.data?.organizations;
+
+  const { mutate: createOrganization } = useCreateOrganization();
+
+  const handleCreateOrganization = organizationName => {
+    createOrganization({
+      name: organizationName,
+    });
+  };
 
   const { t } = useTranslation();
 
@@ -64,12 +75,14 @@ const Form = ({ handleSubmit, isLoading }) => {
             type="email"
           />
           <Select
+            isCreateable
             required
             isDisabled={isOrganizationsLoading}
             label={t("auth.organizations")}
             name="organization"
-            options={getOprganizationOptions(organizations)}
+            options={getOrganizationOptions(organizations)}
             placeholder={t("auth.organizationsPlaceholder")}
+            onCreateOption={handleCreateOrganization}
           />
           <Input
             required

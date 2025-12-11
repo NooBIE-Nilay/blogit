@@ -5,6 +5,11 @@ import axios from "axios";
 const fetch = (params = {}) =>
   axios.get(API_ENDPOINTS.ORGANIZATIONS, { params });
 
-const organizationsApi = { fetch };
+const create = payload =>
+  axios.post(API_ENDPOINTS.ORGANIZATIONS, {
+    organization: payload,
+  });
+
+const organizationsApi = { fetch, create };
 
 export default organizationsApi;
