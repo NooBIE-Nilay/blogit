@@ -22,8 +22,8 @@ const Preview = () => {
 
   const previewKey = getPreviewKey(source, slug);
 
-  const post = getFromLocalStorage(previewKey);
-  const isPostInvalid = isNotPresent(post) || {};
+  const post = getFromLocalStorage(previewKey) || {};
+  const isPostInvalid = isNotPresent(post);
 
   const {
     title = "",
