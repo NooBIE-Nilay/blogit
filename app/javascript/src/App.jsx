@@ -3,7 +3,7 @@ import routes from "constants/routes";
 import React from "react";
 
 import { Login, Signup } from "components/Authentication";
-import { AuthProtectedRoute } from "components/commons";
+import { AuthProtectedRoute, PageNotFound } from "components/commons";
 import Dashboard from "components/Dashboard";
 import MyPosts from "components/MyPosts";
 import { CreatePost, ShowPost, EditPost } from "components/Posts";
@@ -39,6 +39,7 @@ const App = () => (
           path={routes.posts.preview.create}
         />
         <Redirect exact from={routes.root} to={routes.dashboard} />
+        <Route component={PageNotFound} path="*" />
       </Switch>
     </Router>
   </QueryClientProvider>
